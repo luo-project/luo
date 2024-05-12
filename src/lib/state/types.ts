@@ -7,6 +7,8 @@ export interface GraphElement {
 
 export interface Vertex extends GraphElement {
   parent?: GraphElementId;
+  renderedX?: number;
+  renderedY?: number;
 }
 
 export interface Edge extends GraphElement {
@@ -38,4 +40,11 @@ export type State = {
   history: History;
 };
 
-export type History = State[];
+export type HistoryItem = Omit<State, "history">;
+
+export type History = {
+  index: number;
+  items: HistoryItem[];
+};
+
+export type StateHook = (state: State) => Promise<void>;

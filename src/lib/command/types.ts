@@ -5,6 +5,11 @@ export type CommandFunction = (state: State) => Promise<void>;
 export type CommandDefinition = {
   description?: string;
   // TODO deep readonly
-  available?: (state: State) => boolean;
+  available?: (state: State) =>
+    | {
+        reason?: string;
+        result: boolean;
+      }
+    | boolean;
   func: CommandFunction;
 };

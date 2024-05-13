@@ -13,3 +13,5 @@ export type CommandDefinition = {
     | boolean;
   func: CommandFunction;
 };
+
+export type CommandDefinitionWithId = CommandDefinition & { id: string };

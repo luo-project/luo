@@ -1,24 +1,60 @@
-
-class KeyMapping {
+export type KeyMap = {
   key: string;
   ctrl: boolean | undefined;
   shift: boolean | undefined;
+};
 
-  constructor(key:string, ctrl:boolean | undefined, shift:boolean | undefined) {
-    if (key.length !== 1) throw new Error('Key must be a single character');
-    if (!key.match(/[a-zA-Z0-9\[\]{};':",.\/<>?`~!@#$%^&*()-=_+]/)) throw new Error('Key must be in the set of allowed characters');
+export function KeyMapping(KeyMap: KeyMap) {
+  if (KeyMap.key.length !== 1)
+    throw new Error("Key must be a single character");
+  if (!KeyMap.key.match(/[a-zA-Z0-9\[\]{};':",.\/<>?`~!@#$%^&*()-=_+]/))
+    throw new Error("Key must be in the set of allowed characters");
 
-    this.key = key;
-    this.ctrl = ctrl;
-    this.shift = shift;
+  return {
+    toString() {
+      return `${KeyMap.ctrl ? "Ctrl+" : ""}${KeyMap.shift ? "Shift+" : ""}${KeyMap.key}`;
+    },
+  };
+}
+
+export function checkKeyMapString(keyMapString: string) {
+  const keyMap = keyMapString.split("+");
+
+  if (keyMap.length > 3) {
+    return false;
   }
 
-  toString() {
-    return `${this.ctrl ? 'Ctrl+' : ''}${this.shift ? 'Shift+' : ''}${this.key}`;
+  let key: string = "";
+  if (keyMap.length === 3) {
+    if (keyMap[0] !== "Ctrl" || keyMap[1] !== "Shift") {
+      return false;
+    }
+    key = keyMap[2];
+  } else if (keyMap.length === 2) {
+    if (keyMap[0] !== "Ctrl" && keyMap[0] !== "Shift") {
+      return false;
+    }
+    key = keyMap[1];
+  } else {
+    key = keyMap[0];
   }
 
-  static fromString(str:string) {
-    const parts = str.split('+');
-    return new KeyMapping(parts[parts.length - 1], parts.includes('Ctrl'), parts.includes('Shift'));
+  if (key.length !== 1) {
+    return false;
   }
+
+  if (!key.match(/[a-zA-Z0-9\[\]{};':",.\/<>?`~!@#$%^&*()-=_+]/)) {
+    return false;
+  }
+
+  return true;
+}
+
+export function checkKeybinding(keyMapping: Object) {
+  for (let key in keyMapping) {
+    if (checkKeyMapString(key)) {
+      return false;
+    }
+  }
+  return true;
 }

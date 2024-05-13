@@ -6,3 +6,23 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+#cy {
+  width: 700px;
+  height: 700px;
+  border: 1px solid red;
+  margin: 20px;
+}
+
+#temp {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+}
+
+#tempindicator {
+  display: inline;
+  width: 300px;
+  height: 700px;
+  overflow-y: auto;
+}

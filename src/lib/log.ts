@@ -1,38 +1,65 @@
-export type LogLevel = "trace" | "debug" | "info" | "warn" | "error";
-const minLevel = import.meta.env.MODE === "production" ? 2 : 0;
+import { PROD } from "./constants";
 
-type LevelDef = {
-  i: number;
-  func: any;
+type Logger = {
+  trace(...data: any[]): void;
+  debug(...data: any[]): void;
+  error(...data: any[]): void;
+  warn(...data: any[]): void;
+  info(...data: any[]): void;
+  log(...data: any[]): void;
+  time(label?: string): void;
+  timeEnd(label?: string): void;
+  timeLog(label?: string, ...data: any[]): void;
+
+  /**
+   * same as time but works in production mode.
+   */
+  prodTime(label?: string): void;
+
+  /**
+   * same as timeEnd but works in production mode.
+   */
+  prodTimeEnd(label?: string): void;
 };
 
-const levels: Record<LogLevel, LevelDef> = {
-  trace: {
-    i: 0,
-    func: console.trace,
-  },
-  debug: {
-    i: 1,
-    func: console.debug,
-  },
-  info: {
-    i: 2,
-    func: console.info,
-  },
-  warn: {
-    i: 3,
-    func: console.warn,
-  },
-  error: {
-    i: 4,
-    func: console.error,
-  },
-};
+export function logger(name: string): Logger {
+  return {
+    trace: prodNoop(varargs(console.trace, name)),
+    debug: prodNoop(varargs(console.debug, name)),
+    info: prodNoop(varargs(console.info, name)),
+    log: prodNoop(varargs(console.log, name)),
+    warn: varargs(console.warn, name),
+    error: varargs(console.error, name),
+    time: prodNoop(single(console.time, name)),
+    timeEnd: prodNoop(single(console.timeEnd, name)),
+    timeLog: prodNoop(first(console.timeLog, name)),
+    prodTime: single(console.time, name),
+    prodTimeEnd: single(console.timeEnd, name),
+  };
+}
 
-export function log(level: LogLevel, ...data: any[]) {
-  const { i, func } = levels[level];
-  if (i < minLevel) {
-    return;
+const noop = () => {};
+function prodNoop(v: any) {
+  if (PROD) {
+    return noop;
   }
-  func(...data);
+  return v;
+}
+
+function varargs(m: any, name: string) {
+  return (...args: any[]) => {
+    m(`[${name}]`, ...args);
+  };
+}
+
+function single(m: any, name: string) {
+  return (arg: string) => {
+    m(`[${name}] ${arg}`);
+  };
+}
+
+function first(m: any, name: string) {
+  return (arg: string, ...args: any[]) => {
+    m(`[${name}] ${arg}`, ...args);
+  };
 }

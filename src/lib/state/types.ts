@@ -3,12 +3,14 @@ export type GraphElementId = number;
 export interface GraphElement {
   id: GraphElementId;
   text?: string;
+  position?: {
+    x: number;
+    y: number;
+  };
 }
 
 export interface Vertex extends GraphElement {
   parent?: GraphElementId;
-  renderedX?: number;
-  renderedY?: number;
 }
 
 export interface Edge extends GraphElement {

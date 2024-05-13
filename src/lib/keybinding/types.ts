@@ -4,11 +4,15 @@ export type KeyMap = {
   shift: boolean | undefined;
 };
 
+function checkKeyString(key: string): boolean {
+  return (
+    key.length === 1 &&
+    key.match(/[a-zA-Z0-9\[\]{};':",.\/<>?`~!@#$%^&*()-=_+]/) !== null
+  );
+}
+
 export function KeyMapping(KeyMap: KeyMap) {
-  if (KeyMap.key.length !== 1)
-    throw new Error("Key must be a single character");
-  if (!KeyMap.key.match(/[a-zA-Z0-9\[\]{};':",.\/<>?`~!@#$%^&*()-=_+]/))
-    throw new Error("Key must be in the set of allowed characters");
+  if (!checkKeyString(KeyMap.key)) throw new Error("Invalid key string");
 
   return {
     toString() {
@@ -43,7 +47,7 @@ export function checkKeyMapString(keyMapString: string) {
     return false;
   }
 
-  if (!key.match(/[a-zA-Z0-9\[\]{};':",.\/<>?`~!@#$%^&*()-=_+]/)) {
+  if (!checkKeyString(key)) {
     return false;
   }
 

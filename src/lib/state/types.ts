@@ -47,4 +47,9 @@ export type History = {
   items: HistoryItem[];
 };
 
-export type StateHook = (state: State) => Promise<void>;
+export type StateHookFunc = (state: State) => Promise<void>;
+
+export type StateHook = {
+  id: string;
+  func: StateHookFunc;
+};

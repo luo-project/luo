@@ -11,17 +11,20 @@ type KeyEventListener = (e: KeyEvent) => boolean;
 export function initKeyboardEvent(listener: KeyEventListener) {
   const l = logger("keydown");
   document.addEventListener("keydown", (e) => {
+    if (e.repeat) {
+      return;
+    }
     const ke = { key: e.key.toLowerCase(), ctrl: e.ctrlKey, shift: e.shiftKey };
+    if (ke.key === " ") {
+      ke.key = "space";
+    }
+    l.debug(ke);
     if (listener(ke)) {
-      l.debug("consume", formatKeyEvent(ke));
+      l.debug("consume");
       e.preventDefault();
       e.stopPropagation();
     }
   });
-}
-
-function formatKeyEvent(ke: KeyEvent) {
-  return `${ke.ctrl ? "ctrl-" : ""}${ke.shift ? "shift-" : ""}${ke.key}`;
 }
 
 export function preventClose() {

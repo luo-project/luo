@@ -1,11 +1,11 @@
-import { loadCommands } from "./lib/command/utils";
 import { DEFAULT_STATE, PROD } from "./lib/constants";
+import type { StateHook } from "./lib/types";
+import { loadCommands, initCommandLoop } from "./lib/command";
 import { makeCytoscape } from "./lib/cytoscape/utils";
 import { initKeyboardEvent, preventClose } from "./lib/dom";
 import { logger } from "./lib/log";
-import type { StateHook } from "./lib/state/types";
-import { makeRunCommand } from "./lib/state/utils";
 import "./style.css";
+import { initKeybinding } from "./lib/keybinding";
 
 const l = logger("main");
 l.info("entrypoint");
@@ -19,36 +19,41 @@ const renderHook: StateHook = {
   func: cy.render,
 };
 
-//////////////////////////////////////////////////// TEMP START
-
 const tempIndicatorHook: StateHook = {
   id: "tempindicator",
   func: async (s) => {
-    const lines: string[] = [
-      `commands:<pre>${Object.keys(commands).join(",")}</pre>`,
-    ];
-    lines.push(`state:<pre>${JSON.stringify(s, null, 2)}</pre>`);
+    const lines: string[] = [];
+    lines.push(`<pre>${JSON.stringify(s, null, 2)}</pre>`);
     document.getElementById("tempindicator")!.innerHTML = lines.join("<br/>");
   },
 };
 
-document.getElementById("tempnoop")!.addEventListener("click", () => {
-  runCommand(commands["no-op"]);
-});
+const runCommand = initCommandLoop(state, [renderHook, tempIndicatorHook]);
 
-document.getElementById("tempasdf")!.addEventListener("click", () => {
-  runCommand(commands["sample-asdf"]);
-});
+// init
+runCommand(commands["no-op"]);
 
-//////////////////////////////////////////////////// TEMP END
+const keybinding = initKeybinding(
+  `no-op 1
+camera-move-left arrowleft
+camera-move-right arrowright
+camera-move-up arrowup
+camera-move-down arrowdown
+camera-zoom-in c-arrowup`,
+);
 
 initKeyboardEvent((e) => {
-  return e.key === "a";
+  const cmdId = keybinding.find(e);
+  if (cmdId === undefined) {
+    return false;
+  }
+  runCommand(commands[cmdId]);
+  return true;
 });
-
-const runCommand = makeRunCommand(state, [renderHook, tempIndicatorHook]);
-runCommand(commands["no-op"]);
 
 if (PROD) {
   preventClose();
 }
+
+document.getElementById("temptemp")!.innerHTML =
+  `<pre>${keybinding.set("camera-zoom-out", { ctrl: true, shift: false, key: "arrowdown" })}</pre>`;

@@ -1,4 +1,4 @@
-import type { State } from "./state/types";
+import type { State } from "./types";
 
 export const DEFAULT_STATE: State = {
   graph: {
@@ -19,7 +19,7 @@ export const DEFAULT_STATE: State = {
     ],
     nextId: 100,
   },
-  camera: { x: 0, y: 0, zoom: 1 },
+  viewport: { x: 0, y: 0, zoom: 1 },
   history: {
     index: -1,
     items: [],
@@ -28,3 +28,9 @@ export const DEFAULT_STATE: State = {
 };
 
 export const PROD = import.meta.env.MODE === "production";
+
+export const ANIMATION_DURATION = 20;
+export const VIEWPORT_PAN_AMOUNT = 200;
+export const VIEWPORT_ZOOM_AMOUNT = 0.4;
+export const MIN_ZOOM = 0.3;
+export const MAX_ZOOM = 3;

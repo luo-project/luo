@@ -1,16 +1,18 @@
+import type { DeepReadonly } from "ts-essentials";
+
 export type GraphElementId = number;
 
 export interface GraphElement {
   id: GraphElementId;
   text?: string;
-  position?: {
-    x: number;
-    y: number;
-  };
 }
 
 export interface Vertex extends GraphElement {
   parent?: GraphElementId;
+  position?: {
+    x: number;
+    y: number;
+  };
 }
 
 export interface Edge extends GraphElement {
@@ -24,7 +26,7 @@ export type Graph = {
   nextId: GraphElementId;
 };
 
-export type Camera = {
+export type Viewport = {
   x: number;
   y: number;
   zoom: number;
@@ -36,7 +38,7 @@ export type Cursor = GraphElementId;
 
 export type State = {
   graph: Graph;
-  camera: Camera;
+  viewport: Viewport;
   selections: Selection[];
   cursor?: Cursor;
   history: History;
@@ -55,3 +57,22 @@ export type StateHook = {
   id: string;
   func: StateHookFunc;
 };
+
+export type CommandFunction = (state: State) => Promise<void>;
+export type CommandMetadata = {
+  description?: string;
+  history?: boolean;
+};
+
+export type CommandDefinition = {
+  meta?: CommandMetadata;
+  available?: (state: DeepReadonly<State>) =>
+    | {
+        reason?: string;
+        result: boolean;
+      }
+    | boolean;
+  func: CommandFunction;
+};
+
+export type CommandDefinitionWithId = CommandDefinition & { id: string };

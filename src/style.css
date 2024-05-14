@@ -8,8 +8,8 @@
 }
 
 #cy {
-  width: 700px;
-  height: 700px;
+  width: 600px;
+  height: 600px;
   border: 1px solid red;
   margin: 20px;
 }
@@ -22,7 +22,8 @@
 
 #tempindicator {
   display: inline;
-  width: 300px;
+  width: 500px;
   height: 700px;
   overflow-y: auto;
+  font-size: 10px;
 }

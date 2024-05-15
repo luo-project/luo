@@ -20,11 +20,10 @@ export const DEFAULT_STATE: State = {
     ],
     nextId: 100,
   },
-  viewport: { x: 0, y: 0, zoom: 1 },
-  history: {
-    index: -1,
-    items: [],
+  graphHistory: {
+    graphs: [],
   },
+  viewport: { x: 0, y: 0, zoom: 1 },
   selections: [],
 };
 

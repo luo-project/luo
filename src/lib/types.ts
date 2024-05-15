@@ -38,23 +38,20 @@ export type Cursor = GraphElementId;
 
 export type State = {
   graph: Graph;
+  graphHistory: GraphHistory;
   viewport: Viewport;
   selections: Selection[];
   cursor?: Cursor;
-  history: History;
 };
 
-export type HistoryItem = Omit<State, "history">;
-
-export type History = {
-  index: number;
-  items: HistoryItem[];
+export type GraphHistory = {
+  index?: number;
+  graphs: Graph[];
 };
 
 export type CommandFunction = (state: State) => Promise<void>;
 export type CommandMetadata = {
   description?: string;
-  history?: boolean;
 };
 export type CommandDefinition = {
   meta?: CommandMetadata;

@@ -1,12 +1,22 @@
-import { HookDefinition, type HookDefinitionWithId } from "./types";
+import type { StateFunc } from "./state";
 import { loadEagerModules } from "./utils";
 
-export function loadHooks(): HookDefinitionWithId[] {
+export type HookDefinition = {
+  func: StateFunc;
+};
+
+export type HookDefinitionWithId = HookDefinition & { id: string };
+
+export function loadHooks() {
   const hooks = Object.values(
     loadEagerModules<HookDefinition>(
       import.meta.glob("./hooks/*.ts", { eager: true }),
-      (h) => {
-        return typeof h.func === "function";
+      (h, p) => {
+        const def = h.def as HookDefinition;
+        if (typeof def !== "object" || typeof def.func !== "function") {
+          throw new Error(`invalid hook: ${p}`);
+        }
+        return def;
       },
     ),
   );

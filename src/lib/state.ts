@@ -1,11 +1,29 @@
-import { MAX_ZOOM, MIN_ZOOM } from "./constants";
-import type { State } from "./types";
+import type { Config } from "./config";
+import type { Graph, GraphElementId, GraphHistory, GraphPallete } from "./graph";
 
-export function clampZoom(state: State) {
-  if (state.viewport.zoom < MIN_ZOOM) {
-    state.viewport.zoom = MIN_ZOOM;
-  }
-  if (state.viewport.zoom > MAX_ZOOM) {
-    state.viewport.zoom = MAX_ZOOM;
-  }
-}
+export type Viewport = {
+  x: number;
+  y: number;
+  zoom: number;
+};
+
+export type Selection = GraphElementId[];
+
+export type Cursor = GraphElementId;
+
+export type State = {
+  graph: Graph;
+  graphHistory: GraphHistory;
+  graphPallete: GraphPallete;
+  viewport: Viewport;
+  selections: Selection[];
+  cursor?: Cursor;
+};
+
+export type StateContext = Record<string, any>;
+
+export type StateFunc = (
+  state: State,
+  config: Readonly<Config>,
+  ctx: StateContext,
+) => Promise<void> | void;

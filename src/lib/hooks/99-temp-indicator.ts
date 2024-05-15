@@ -1,7 +1,10 @@
-import type { State } from "../types";
+import type { HookDefinition } from "../hook";
 
-export async function func(state: State) {
-  const lines: string[] = [];
-  lines.push(`<pre>${JSON.stringify(state, null, 2)}</pre>`);
-  document.getElementById("tempindicator")!.innerHTML = lines.join("<br/>");
-}
+export const def: HookDefinition = {
+  async func(state, config) {
+    const lines: string[] = [];
+    lines.push(`<pre>${JSON.stringify(state, null, 2)}</pre>`);
+    lines.push(`<pre>${JSON.stringify(config, null, 2)}</pre>`);
+    document.getElementById("tempindicator")!.innerHTML = lines.join("<br/>");
+  },
+};

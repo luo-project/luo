@@ -4,16 +4,14 @@ export function deepCopy<T>(v: T): T {
 
 export function loadEagerModules<T>(
   modules: Record<string, unknown>,
-  validate: (v: T) => boolean,
+  selector: (v: any, path: string) => T,
 ): Record<string, T & { id: string }> {
   const result: Record<string, T & { id: string }> = {};
   for (const path in modules) {
     const id = pathToId(path);
     const module = modules[path] as T;
-    if (!validate(module)) {
-      throw new Error(`module validation failed: ${path}`);
-    }
-    result[id] = { id, ...module };
+    const d = selector(module, path);
+    result[id] = { id, ...d };
   }
   return result;
 }

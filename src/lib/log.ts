@@ -6,7 +6,6 @@ type Logger = {
   error(...data: any[]): void;
   warn(...data: any[]): void;
   info(...data: any[]): void;
-  log(...data: any[]): void;
   time(label?: string): void;
   timeEnd(label?: string): void;
   timeLog(label?: string, ...data: any[]): void;
@@ -26,8 +25,7 @@ export function logger(name: string): Logger {
   return {
     trace: prodNoop(varargs(console.trace, name)),
     debug: prodNoop(varargs(console.debug, name)),
-    info: prodNoop(varargs(console.info, name)),
-    log: prodNoop(varargs(console.log, name)),
+    info: varargs(console.info, name),
     warn: varargs(console.warn, name),
     error: varargs(console.error, name),
     time: prodNoop(single(console.time, name)),
@@ -48,18 +46,18 @@ function prodNoop(v: any) {
 
 function varargs(m: any, name: string) {
   return (...args: any[]) => {
-    m(`[${name}]`, ...args);
+    m(`[luo][${name}]`, ...args);
   };
 }
 
 function single(m: any, name: string) {
   return (arg: string) => {
-    m(`[${name}] ${arg}`);
+    m(`[luo][${name}] ${arg}`);
   };
 }
 
 function first(m: any, name: string) {
   return (arg: string, ...args: any[]) => {
-    m(`[${name}] ${arg}`, ...args);
+    m(`[luo][${name}] ${arg}`, ...args);
   };
 }

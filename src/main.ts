@@ -1,35 +1,35 @@
-import { DEFAULT_KEYBINDING, DEFAULT_STATE, PROD } from "./lib/constants";
+import { DEFAULT_CONFIG, DEFAULT_STATE, PROD } from "./lib/constants";
 import { loadCommands, initCommandLoop } from "./lib/command";
 import { initKeyboardEvent, preventClose } from "./lib/dom";
 import { logger } from "./lib/log";
 import "./style.css";
-import { initKeybinding } from "./lib/keybinding";
+import { makeFindKeybinding } from "./lib/keybinding";
 import { loadHooks } from "./lib/hook";
 
 const l = logger("main");
-l.info("entrypoint");
 
 const commands = loadCommands();
 const hooks = loadHooks();
-l.debug(commands, hooks);
+l.debug("entrypoint", commands, hooks);
 
-const runCommand = initCommandLoop(DEFAULT_STATE, hooks);
-const keybinding = initKeybinding(DEFAULT_KEYBINDING);
+const state = DEFAULT_STATE;
+const config = DEFAULT_CONFIG;
+
+const runCommand = initCommandLoop(state, config, hooks);
+const findKeybinding = makeFindKeybinding(config);
 initKeyboardEvent((e) => {
-  const cmdId = keybinding.find(e);
-  if (cmdId === undefined) {
+  const cmdId = findKeybinding(e.key, e.ctrl, e.shift);
+  if (cmdId === null) {
     return false;
   }
-  runCommand(commands[cmdId]);
+  const cmd = commands[cmdId];
+  if (cmd === undefined) {
+    throw new Error(`invalid command ${cmdId} was in keybinding`);
+  }
+  runCommand(cmd);
   return true;
 });
 
-if (PROD) {
-  preventClose();
-}
-
 runCommand(commands["no-op"]);
 
-// TEMP
-document.getElementById("temptemp")!.innerHTML =
-  `<pre>${JSON.stringify(keybinding.set("camera-zoom-out", { ctrl: true, shift: false, key: "arrowdown" }), null, 2)}</pre>`;
+if (PROD) preventClose();

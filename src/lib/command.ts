@@ -83,8 +83,8 @@ const stateReference = new Proxy(
   {},
   {
     set(target: any, p, v, r) {
-      refLogger.debug("new", p, v);
       target[p] = v;
+      refLogger.debug(`new '${String(p)}'`, target);
       return true;
     },
   },

@@ -7,7 +7,7 @@ export type HookDefinition = {
 
 export type HookDefinitionWithId = HookDefinition & { id: string };
 
-export function loadHooks() {
+function loadHooks() {
   const hooks = Object.values(
     loadEagerModules<HookDefinition>(
       import.meta.glob("./hooks/*.ts", { eager: true }),
@@ -22,3 +22,5 @@ export function loadHooks() {
   );
   return hooks.sort((a, b) => a.id.localeCompare(b.id));
 }
+
+export const hooks = loadHooks();

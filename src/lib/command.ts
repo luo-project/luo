@@ -1,6 +1,6 @@
 import type { DeepReadonly } from "ts-essentials";
 import type { Config } from "./config";
-import type { HookDefinitionWithId } from "./hook";
+import { hooks } from "./hook";
 import { logger } from "./log";
 import type { State, StateFunc, StateReference } from "./state";
 import { deepCopy, loadEagerModules } from "./utils";
@@ -36,11 +36,7 @@ export type CommandDefinitionWithId = CommandDefinition & { id: string };
 
 export const currentCommandRef = Symbol("currentCommand");
 
-export function initCommandLoop(
-  initState: State,
-  config: Config,
-  hooks: HookDefinitionWithId[],
-) {
+export function initCommandLoop(initState: State, config: Config) {
   const cfg = Object.freeze(config);
   let state = deepCopy(initState);
   const l = logger("commandLoop");
@@ -70,7 +66,7 @@ export function initCommandLoop(
   };
 }
 
-export function loadCommands() {
+function loadCommands() {
   return loadEagerModules(
     import.meta.glob("./commands/*.ts", { eager: true }),
     (m, p) => {
@@ -82,6 +78,8 @@ export function loadCommands() {
     },
   );
 }
+
+export const commands = loadCommands();
 
 const refLogger = logger("ref");
 const stateReference = new Proxy(

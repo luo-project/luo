@@ -1,3 +1,5 @@
+import type { DeepReadonly } from "ts-essentials";
+import type { CommandDefinitionWithId } from "./command";
 import type { Config } from "./config";
 import type { GraphCursor, Graph, GraphPallete } from "./graph";
 
@@ -17,25 +19,17 @@ export type State = {
   viewport: Viewport;
 };
 
-export type StateReference = Record<string | symbol, any>;
-
 /**
  * StateFunc is a middleware for state mutation flow.
  * StateFunc can(should) mutate `state` argument.
  */
 export type StateFunc = (
   state: State,
-  config: Readonly<Config>,
-  ref: StateReference,
+  config: DeepReadonly<Config>,
+  ctx: DeepReadonly<StateFuncContext>,
 ) => Promise<void> | void;
 
-export async function useRef<T>(
-  ref: StateReference,
-  key: string | symbol,
-  init: () => Promise<T> | T,
-): Promise<T> {
-  if (ref[key] === undefined) {
-    ref[key] = await init();
-  }
-  return ref[key];
-}
+export type StateFuncContext = {
+  command: CommandDefinitionWithId;
+  commands: CommandDefinitionWithId[];
+};

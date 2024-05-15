@@ -16,7 +16,7 @@ const style: cytoscape.Stylesheet[] = [
   },
 ];
 
-export function initCytoscapeCore() {
+function initCytoscapeCore() {
   const container = document.getElementById("cy")!;
   const cy = cytoscape({
     container,
@@ -35,9 +35,11 @@ export function initCytoscapeCore() {
   return cy;
 }
 
+export const cy = initCytoscapeCore();
+
 let ids = new Set<number>();
 const l = logger("cy-render");
-export async function render(cy: cytoscape.Core, state: State, config: Config) {
+export async function render(state: State, config: Config) {
   l.time("categorize");
   const refs = new Map<number, GraphElement>();
   const sRefs = new Map<string, GraphElement>();

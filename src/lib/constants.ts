@@ -3,30 +3,31 @@ import type { State } from "./state";
 
 export const DEFAULT_STATE: State = {
   graph: {
-    vertices: [
+    current: 0,
+    snapshots: [
       {
-        id: 1,
-      },
-      {
-        id: 2,
+        vertices: [
+          {
+            id: 1,
+          },
+          {
+            id: 2,
+          },
+        ],
+        edges: [
+          {
+            id: 3,
+            from: 1,
+            to: 2,
+          },
+        ],
       },
     ],
-    edges: [
-      {
-        id: 3,
-        from: 1,
-        to: 2,
-      },
-    ],
-  },
-  graphHistory: {
-    graphs: [],
   },
   graphPallete: {
     nextId: 5,
   },
   viewport: { x: 0, y: 0, zoom: 1 },
-  selections: [],
 };
 
 export const DEFAULT_CONFIG: Config = {

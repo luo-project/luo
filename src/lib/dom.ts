@@ -1,5 +1,3 @@
-import { logger } from "./log";
-
 type KeyEvent = {
   key: string;
   ctrl: boolean;

@@ -5,6 +5,11 @@ import { logger } from "./log";
 import type { State, StateFunc } from "./state";
 import { deepCopy, loadEagerModules } from "./utils";
 
+/**
+ * Command is a javascript modules located in `src/lib/commands/`.
+ * Command has a unique identifier generated from the filename. (e.g. no-op.ts -> 'no-op')
+ * Command module must have named export variable `def` with type `CommandDefinition`.
+ */
 export type CommandDefinition = {
   /**
    * Description starts with lowercase thrid-person singular verb.

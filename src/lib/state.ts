@@ -20,7 +20,7 @@ export type State = {
 /**
  * StateReference is volatile, mutable,non-serializable object: guarenteed single reference over entire application lifecycle.
  */
-export type StateReference = Record<string, any>;
+export type StateReference = Record<string | symbol, any>;
 
 /**
  * StateFunc is a middleware for state mutation flow.
@@ -34,7 +34,7 @@ export type StateFunc = (
 
 export async function useRef<T>(
   ref: StateReference,
-  key: string,
+  key: string | symbol,
   init: () => Promise<T> | T,
 ): Promise<T> {
   if (ref[key] === undefined) {

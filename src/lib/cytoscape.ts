@@ -5,6 +5,8 @@ import type { Config } from "./config";
 import { getCurrentSnapshop, type Edge, type GraphElement, type Vertex } from "./graph";
 import { PROD } from "./constants";
 
+export const cytoscapeCoreRefKey = Symbol("cytoscape.Core");
+
 const style: cytoscape.Stylesheet[] = [
   {
     selector: "node",

@@ -11,25 +11,30 @@ export type KeyBinding = Record<string, KeyMap>;
 
 export function initKeybinding(d: KeyBinding) {
   const data = deepCopy(d);
-  const cache = new Map<string, string>();
   const l = logger("keybinding");
-  const updateCache = () => {
-    cache.clear();
-    for (const id in data) {
-      const e = encode(data[id]);
-      cache.set(e, id);
-    }
-    l.debug("cache", cache);
-  };
-  updateCache();
+  const cache = new Map<string, string>();
+  for (const id in data) {
+    const e = encode(data[id]);
+    cache.set(e, id);
+  }
+  l.debug(cache);
 
   const set = (id: string, k?: KeyMap) => {
     if (k === undefined) {
+      const encoded = encode(data[id]);
+      cache.delete(encoded);
       delete data[id];
     } else {
+      const encoded = encode(k);
+      const existing = cache.get(encoded);
+      if (existing !== undefined && existing !== id) {
+        throw new Error(
+          `keybinding conflict: ${id}<->${existing}: ${JSON.stringify(k)}`,
+        );
+      }
       data[id] = k;
+      cache.set(encoded, id);
     }
-    updateCache();
     return deepCopy(data);
   };
 

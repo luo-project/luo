@@ -108,6 +108,11 @@ export function initCytoscape(container: HTMLElement) {
       if (config.viewport.animation > 0) {
         cy.clearQueue();
         await new Promise<void>((r) => {
+          /**
+           * @todo animate에 ease 애니메이션 추가.
+           * https://js.cytoscape.org/#cy.animate
+           * 에서의 `easing` 파라메터 참조
+           */
           cy.animate(
             {
               zoom: state.viewport.zoom,

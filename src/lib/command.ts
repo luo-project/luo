@@ -2,7 +2,7 @@ import type { DeepReadonly } from "ts-essentials";
 import type { Config } from "./config";
 import type { HookDefinitionWithId } from "./hook";
 import { logger } from "./log";
-import type { State, StateFunc } from "./state";
+import type { State, StateFunc, StateReference } from "./state";
 import { deepCopy, loadEagerModules } from "./utils";
 
 /**
@@ -95,6 +95,6 @@ const stateReference = new Proxy(
   },
 );
 
-export function getCurrentCommand() {
-  return stateReference[currentCommandRef] as CommandDefinition;
+export function getCurrentCommand(ref: StateReference) {
+  return ref[currentCommandRef] as CommandDefinition;
 }

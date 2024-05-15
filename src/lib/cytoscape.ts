@@ -97,20 +97,22 @@ export async function render(cy: cytoscape.Core, state: State, config: Config) {
   cy.add(newEdges.map((e) => ({ group: "edges", data: makeEdgeData(e) })));
   cy.endBatch();
   l.timeEnd("batch");
-  l.time("layout");
-  await cy
-    .layout({
-      name: "grid",
-      rows: 5,
-      cols: 5,
-      fit: false,
-      animate: config.graph.animation > 0,
-      animationDuration: config.graph.animation,
-      animationEasing: "ease",
-    })
-    .run()
-    .promiseOn("layoutstop");
-  l.timeEnd("layout");
+  if (newVertices.length > 0 || newEdges.length > 0 || deletedElementIds.size > 0) {
+    l.time("layout");
+    await cy
+      .layout({
+        name: "grid",
+        rows: 5,
+        cols: 5,
+        fit: false,
+        animate: config.graph.animation > 0,
+        animationDuration: config.graph.animation,
+        animationEasing: "ease",
+      })
+      .run()
+      .promiseOn("layoutstop");
+    l.timeEnd("layout");
+  }
   cy.nodes().forEach((n) => {
     const pos = n.position();
     (sRefs.get(n.id()) as Vertex).position = {

@@ -51,19 +51,11 @@ export type History = {
   items: HistoryItem[];
 };
 
-export type StateHookFunc = (state: State) => Promise<void>;
-
-export type StateHook = {
-  id: string;
-  func: StateHookFunc;
-};
-
 export type CommandFunction = (state: State) => Promise<void>;
 export type CommandMetadata = {
   description?: string;
   history?: boolean;
 };
-
 export type CommandDefinition = {
   meta?: CommandMetadata;
   available?: (state: DeepReadonly<State>) =>
@@ -74,5 +66,10 @@ export type CommandDefinition = {
     | boolean;
   func: CommandFunction;
 };
-
 export type CommandDefinitionWithId = CommandDefinition & { id: string };
+
+export type HookFunc = (state: State) => Promise<void>;
+export type HookDefinition = {
+  func: HookFunc;
+};
+export type HookDefinitionWithId = HookDefinition & { id: string };

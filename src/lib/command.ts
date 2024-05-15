@@ -1,9 +1,12 @@
-import type { CommandDefinition, CommandDefinitionWithId } from "./types";
+import type { CommandDefinitionWithId, HookDefinitionWithId } from "./types";
 import { logger } from "./log";
-import { deepCopy } from "./utils";
-import type { State, StateHook } from "./types";
+import { deepCopy, loadEagerModules } from "./utils";
+import type { State } from "./types";
 
-export function initCommandLoop(initState: State, hooks: StateHook[]) {
+export function initCommandLoop(
+  initState: State,
+  hooks: HookDefinitionWithId[],
+) {
   let state = deepCopy(initState);
   const l = logger("commandLoop");
   const buffer: CommandDefinitionWithId[] = [];
@@ -32,19 +35,10 @@ export function initCommandLoop(initState: State, hooks: StateHook[]) {
 }
 
 export function loadCommands(): Record<string, CommandDefinitionWithId> {
-  const commands: Record<string, CommandDefinitionWithId> = {};
-  const modules = import.meta.glob("./commands/*.ts", { eager: true });
-  for (const path in modules) {
-    const id = pathToId(path);
-    const cmd = modules[path] as CommandDefinition;
-    if (typeof cmd.func !== "function") {
-      throw new Error(`failed to load command ${id}: no func`);
-    }
-    commands[id] = { id, ...cmd };
-  }
-  return commands;
-}
-
-function pathToId(path: string): string {
-  return path.split("/").pop()!.replace(".ts", "");
+  return loadEagerModules(
+    import.meta.glob("./commands/*.ts", { eager: true }),
+    (v) => {
+      return typeof v.func === "function";
+    },
+  );
 }

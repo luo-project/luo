@@ -1,27 +1,54 @@
-import type { CommandDefinitionWithId, HookDefinitionWithId } from "./types";
+import type { DeepReadonly } from "ts-essentials";
+import type { Config } from "./config";
+import type { HookDefinitionWithId } from "./hook";
 import { logger } from "./log";
+import type { State, StateFunc } from "./state";
 import { deepCopy, loadEagerModules } from "./utils";
-import type { State } from "./types";
+
+export type CommandDefinition = {
+  /**
+   * Description starts with lowercase thrid-person singular verb.
+   */
+  description?: string;
+
+  /**
+   * Available indicates whether the command can be executed in given state.
+   */
+  available?: (
+    state: DeepReadonly<State>,
+    config: Readonly<Config>,
+  ) => {
+    reason?: string;
+    result: boolean;
+  };
+
+  func: StateFunc;
+};
+
+export type CommandDefinitionWithId = CommandDefinition & { id: string };
 
 export function initCommandLoop(
   initState: State,
+  config: Config,
   hooks: HookDefinitionWithId[],
 ) {
+  const cfg = Object.freeze(config);
   let state = deepCopy(initState);
+  const ctx = {};
   const l = logger("commandLoop");
-  const buffer: CommandDefinitionWithId[] = [];
+  const queue: CommandDefinitionWithId[] = [];
   const cb = async () => {
-    const cmd = buffer.shift();
+    const cmd = queue.shift();
     if (cmd !== undefined) {
       l.time("total");
       state = deepCopy(state);
       l.debug("before", cmd.id, state);
-      await cmd.func(state);
+      await cmd.func(state, cfg, ctx);
       l.debug("after", cmd.id, state);
       for (const hook of hooks) {
         state = deepCopy(state);
         l.debug("before", hook.id, state);
-        await hook.func(state);
+        await hook.func(state, cfg, ctx);
         l.debug("after", hook.id, state);
       }
       l.timeEnd("total");
@@ -30,15 +57,19 @@ export function initCommandLoop(
   };
   cb();
   return (cmd: CommandDefinitionWithId) => {
-    buffer.push(cmd);
+    queue.push(cmd);
   };
 }
 
-export function loadCommands(): Record<string, CommandDefinitionWithId> {
+export function loadCommands() {
   return loadEagerModules(
     import.meta.glob("./commands/*.ts", { eager: true }),
-    (v) => {
-      return typeof v.func === "function";
+    (m, p) => {
+      const def = m.def as CommandDefinition;
+      if (typeof def !== "object" || typeof def.func !== "function") {
+        throw new Error(`invalid command module: ${p}`);
+      }
+      return def;
     },
   );
 }

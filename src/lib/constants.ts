@@ -1,5 +1,5 @@
-import type { KeyBinding } from "./keybinding";
-import type { State } from "./types";
+import type { Config } from "./config";
+import type { State } from "./state";
 
 export const DEFAULT_STATE: State = {
   graph: {
@@ -29,19 +29,35 @@ export const DEFAULT_STATE: State = {
   selections: [],
 };
 
-export const DEFAULT_KEYBINDING: KeyBinding = {
-  "no-op": { key: "1", ctrl: false, shift: false },
-  "camera-move-left": { key: "arrowleft", ctrl: false, shift: false },
-  "camera-move-right": { key: "arrowright", ctrl: false, shift: false },
-  "camera-move-up": { key: "arrowup", ctrl: false, shift: false },
-  "camera-move-down": { key: "arrowdown", ctrl: false, shift: false },
-  "camera-zoom-in": { key: "arrowup", ctrl: true, shift: false },
+export const DEFAULT_CONFIG: Config = {
+  graph: {
+    animation: 100,
+  },
+  viewport: {
+    animation: 0,
+    pan: {
+      amount: {
+        x: 200,
+        y: 200,
+      },
+    },
+    zoom: {
+      amount: 0.4,
+      min: 0.33,
+      max: 3,
+    },
+  },
+  command: {
+    keybinding: {
+      "1": "no-op",
+      arrowleft: "viewport-pan-left",
+      arrowright: "viewport-pan-right",
+      arrowup: "viewport-pan-up",
+      arrowdown: "viewport-pan-down",
+      "c-arrowup": "viewport-zoom-in",
+      "c-arrowdown": "viewport-zoom-out",
+    },
+  },
 };
 
 export const PROD = import.meta.env.MODE === "production";
-
-export const ANIMATION_DURATION = 20;
-export const VIEWPORT_PAN_AMOUNT = 200;
-export const VIEWPORT_ZOOM_AMOUNT = 0.4;
-export const MIN_ZOOM = 0.3;
-export const MAX_ZOOM = 3;

@@ -9,7 +9,6 @@ type KeyEvent = {
 type KeyEventListener = (e: KeyEvent) => boolean;
 
 export function initKeyboardEvent(listener: KeyEventListener) {
-  const l = logger("keydown");
   document.addEventListener("keydown", (e) => {
     if (e.repeat) {
       return;
@@ -18,9 +17,7 @@ export function initKeyboardEvent(listener: KeyEventListener) {
     if (ke.key === " ") {
       ke.key = "space";
     }
-    l.debug(ke);
     if (listener(ke)) {
-      l.debug("consume");
       e.preventDefault();
       e.stopPropagation();
     }

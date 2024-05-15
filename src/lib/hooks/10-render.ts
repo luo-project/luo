@@ -1,8 +1,8 @@
-import { makeCytoscape } from "../cytoscape/utils";
-import type { State } from "../types";
+import { initCytoscape } from "../cytoscape/utils";
+import type { HookDefinition } from "../hook";
 
-const cy = makeCytoscape(document.getElementById("cy")!);
+const cy = initCytoscape(document.getElementById("cy")!);
 
-export function func(state: State) {
-  return cy.render(state);
-}
+export const def: HookDefinition = {
+  func: cy.render,
+};

@@ -1,8 +1,6 @@
-import type { State } from "../types";
-import type { CommandMetadata } from "../types";
+import type { CommandDefinition } from "../command";
 
-export const meta: CommandMetadata = {
-  description: "Do nothing.",
+export const def: CommandDefinition = {
+  description: "does nothing.",
+  async func() {},
 };
-
-export function func(state: State) {}

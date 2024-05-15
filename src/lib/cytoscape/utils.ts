@@ -1,19 +1,12 @@
-import { ANIMATION_DURATION, PROD } from "../constants";
+import { PROD } from "../constants";
 import { logger } from "../log";
-import type { Edge, GraphElement, State, Vertex } from "../types";
+import type { Edge, GraphElement, Vertex } from "../graph";
 import style from "./style.css?raw";
 import cytoscape from "cytoscape";
+import type { State } from "../state";
+import type { Config } from "../config";
 
-const layoutOptions: cytoscape.LayoutOptions = {
-  name: "grid",
-  rows: 5,
-  cols: 5,
-  fit: false,
-  animate: true,
-  animationDuration: ANIMATION_DURATION,
-};
-
-export function makeCytoscape(container: HTMLElement) {
+export function initCytoscape(container: HTMLElement) {
   const cy = cytoscape({
     container,
     elements: {
@@ -33,7 +26,7 @@ export function makeCytoscape(container: HTMLElement) {
   const l = logger("cy-render");
 
   return {
-    render: async (state: State) => {
+    render: async (state: State, config: Config) => {
       l.time("categorize");
       const refs = new Map<number, GraphElement>();
       const sRefs = new Map<string, GraphElement>();
@@ -88,14 +81,22 @@ export function makeCytoscape(container: HTMLElement) {
       existingEdges.forEach((e) => {
         cy.getElementById(`${e.id}`).data(makeEdgeData(e));
       });
-      cy.add(
-        newVertices.map((v) => ({ group: "nodes", data: makeNodeData(v) })),
-      );
+      cy.add(newVertices.map((v) => ({ group: "nodes", data: makeNodeData(v) })));
       cy.add(newEdges.map((e) => ({ group: "edges", data: makeEdgeData(e) })));
       cy.endBatch();
       l.timeEnd("batch");
       l.time("layout");
-      await cy.layout(layoutOptions).run().promiseOn("layoutstop");
+      await cy
+        .layout({
+          name: "grid",
+          rows: 5,
+          cols: 5,
+          fit: false,
+          animate: config.graph.animation > 0,
+          animationDuration: config.graph.animation,
+        })
+        .run()
+        .promiseOn("layoutstop");
       l.timeEnd("layout");
       cy.nodes().forEach((n) => {
         const pos = n.position();
@@ -104,21 +105,28 @@ export function makeCytoscape(container: HTMLElement) {
           y: pos.y,
         };
       });
-      cy.clearQueue();
-      await new Promise<void>((r) => {
-        cy.animate(
-          {
-            zoom: state.viewport.zoom,
-            pan: { x: state.viewport.x, y: state.viewport.y },
-          },
-          {
-            duration: ANIMATION_DURATION,
-            complete: () => {
-              r();
+      if (config.viewport.animation > 0) {
+        cy.clearQueue();
+        await new Promise<void>((r) => {
+          cy.animate(
+            {
+              zoom: state.viewport.zoom,
+              pan: { x: state.viewport.x, y: state.viewport.y },
             },
-          },
-        );
-      });
+            {
+              duration: config.viewport.animation,
+              complete: () => {
+                r();
+              },
+            },
+          );
+        });
+      } else {
+        cy.viewport({
+          zoom: state.viewport.zoom,
+          pan: { x: state.viewport.x, y: state.viewport.y },
+        });
+      }
       if (!PROD) {
         l.debug(cy.json());
       }

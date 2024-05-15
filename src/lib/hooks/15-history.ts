@@ -4,9 +4,7 @@ import { deepCopy } from "../utils";
 
 export const def: HookDefinition = {
   func(state) {
-    if (getCurrentCommand().preventHistory === true) {
-      // preventHistory가 활성화되면 history를 저장하지 않는다.
-      // 예를들면 undo, redo 등의 기능을 사용할 때.
+    if (getCurrentCommand().dumpGraphSnapshot !== true) {
       return;
     }
 

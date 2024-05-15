@@ -1,4 +1,4 @@
-import { DEFAULT_STATE, PROD } from "./lib/constants";
+import { DEFAULT_KEYBINDING, DEFAULT_STATE, PROD } from "./lib/constants";
 import type { StateHook } from "./lib/types";
 import { loadCommands, initCommandLoop } from "./lib/command";
 import { makeCytoscape } from "./lib/cytoscape/utils";
@@ -30,17 +30,7 @@ const tempIndicatorHook: StateHook = {
 
 const runCommand = initCommandLoop(state, [renderHook, tempIndicatorHook]);
 
-// init
-runCommand(commands["no-op"]);
-
-const keybinding = initKeybinding(
-  `no-op 1
-camera-move-left arrowleft
-camera-move-right arrowright
-camera-move-up arrowup
-camera-move-down arrowdown
-camera-zoom-in c-arrowup`,
-);
+const keybinding = initKeybinding(DEFAULT_KEYBINDING);
 
 initKeyboardEvent((e) => {
   const cmdId = keybinding.find(e);
@@ -51,9 +41,12 @@ initKeyboardEvent((e) => {
   return true;
 });
 
+document.getElementById("temptemp")!.innerHTML =
+  `<pre>${JSON.stringify(keybinding.set("camera-zoom-out", { ctrl: true, shift: false, key: "arrowdown" }), null, 2)}</pre>`;
+
 if (PROD) {
   preventClose();
 }
 
-document.getElementById("temptemp")!.innerHTML =
-  `<pre>${keybinding.set("camera-zoom-out", { ctrl: true, shift: false, key: "arrowdown" })}</pre>`;
+// init
+runCommand(commands["no-op"]);

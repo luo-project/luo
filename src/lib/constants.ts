@@ -1,3 +1,4 @@
+import type { KeyBinding } from "./keybinding";
 import type { State } from "./types";
 
 export const DEFAULT_STATE: State = {
@@ -25,6 +26,15 @@ export const DEFAULT_STATE: State = {
     items: [],
   },
   selections: [],
+};
+
+export const DEFAULT_KEYBINDING: KeyBinding = {
+  "no-op": { key: "1", ctrl: false, shift: false },
+  "camera-move-left": { key: "arrowleft", ctrl: false, shift: false },
+  "camera-move-right": { key: "arrowright", ctrl: false, shift: false },
+  "camera-move-up": { key: "arrowup", ctrl: false, shift: false },
+  "camera-move-down": { key: "arrowdown", ctrl: false, shift: false },
+  "camera-zoom-in": { key: "arrowup", ctrl: true, shift: false },
 };
 
 export const PROD = import.meta.env.MODE === "production";

@@ -57,6 +57,8 @@ export const DEFAULT_CONFIG: Config = {
       arrowdown: "viewport-pan-down",
       "c-arrowup": "viewport-zoom-in",
       "c-arrowdown": "viewport-zoom-out",
+      "c-z": "graph-undo",
+      "c-s-z": "graph-redo",
     },
   },
 };

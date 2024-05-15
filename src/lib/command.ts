@@ -39,7 +39,6 @@ export function initCommandLoop(
 ) {
   const cfg = Object.freeze(config);
   let state = deepCopy(initState);
-  const ctx = {};
   const l = logger("commandLoop");
   const queue: CommandDefinitionWithId[] = [];
   const cb = async () => {
@@ -48,12 +47,12 @@ export function initCommandLoop(
       l.time("total");
       state = deepCopy(state);
       l.debug("before", cmd.id, state);
-      await cmd.func(state, cfg, ctx);
+      await cmd.func(state, cfg, stateReference);
       l.debug("after", cmd.id, state);
       for (const hook of hooks) {
         state = deepCopy(state);
         l.debug("before", hook.id, state);
-        await hook.func(state, cfg, ctx);
+        await hook.func(state, cfg, stateReference);
         l.debug("after", hook.id, state);
       }
       l.timeEnd("total");
@@ -78,3 +77,15 @@ export function loadCommands() {
     },
   );
 }
+
+const refLogger = logger("ref");
+const stateReference = new Proxy(
+  {},
+  {
+    set(target: any, p, v, r) {
+      refLogger.debug("new", p, v);
+      target[p] = v;
+      return true;
+    },
+  },
+);

@@ -16,6 +16,8 @@ export type CommandDefinition = {
    */
   description?: string;
 
+  preventHistory?: boolean;
+
   /**
    * Available indicates whether the command can be executed in given state.
    */
@@ -32,6 +34,8 @@ export type CommandDefinition = {
 
 export type CommandDefinitionWithId = CommandDefinition & { id: string };
 
+export const currentCommandRef = Symbol("currentCommand");
+
 export function initCommandLoop(
   initState: State,
   config: Config,
@@ -44,6 +48,7 @@ export function initCommandLoop(
   const cb = async () => {
     const cmd = queue.shift();
     if (cmd !== undefined) {
+      stateReference[currentCommandRef] = cmd;
       l.time("total");
       state = deepCopy(state);
       l.debug("before", cmd.id, state);

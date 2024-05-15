@@ -17,9 +17,6 @@ export type State = {
   viewport: Viewport;
 };
 
-/**
- * StateReference is volatile, mutable,non-serializable object: guarenteed single reference over entire application lifecycle.
- */
 export type StateReference = Record<string | symbol, any>;
 
 /**

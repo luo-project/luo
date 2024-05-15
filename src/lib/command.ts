@@ -94,3 +94,7 @@ const stateReference = new Proxy(
     },
   },
 );
+
+export function getCurrentCommand() {
+  return stateReference[currentCommandRef] as CommandDefinition;
+}

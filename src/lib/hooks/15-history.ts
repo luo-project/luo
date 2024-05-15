@@ -1,10 +1,9 @@
-import { getCurrentCommand } from "../command";
 import type { HookDefinition } from "../hook";
 import { deepCopy } from "../utils";
 
 export const def: HookDefinition = {
-  func(state, config, ref) {
-    if (getCurrentCommand(ref).dumpGraphSnapshot !== true) {
+  func(state, config, ctx) {
+    if (ctx.command.dumpGraphSnapshot !== true) {
       return;
     }
 

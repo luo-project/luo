@@ -4,9 +4,9 @@ export const def: CommandDefinition = {
   description: "redo for graph modification command",
   available: (state) => {
     if (state.graph.current < state.graph.snapshots.length - 1) {
-      return { result: true };
+      return true;
     }
-    return { reason: "There are no history for redo", result: false };
+    return "There are no history for redo";
   },
   async func(state) {
     if (state.graph.current < state.graph.snapshots.length - 1) {

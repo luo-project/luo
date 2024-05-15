@@ -4,13 +4,11 @@ export const def: CommandDefinition = {
   description: "undo for graph modification command",
   available: (state) => {
     if (state.graph.current > 0) {
-      return { result: true };
+      return true;
     }
-    return { reason: "There are no history for undo", result: false };
+    return "There are no history for undo";
   },
   async func(state) {
-    if (state.graph.current > 0) {
-      state.graph.current--;
-    }
+    state.graph.current--;
   },
 };

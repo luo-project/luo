@@ -16,7 +16,7 @@ export type CommandDefinition = {
    */
   description?: string;
 
-  preventHistory?: boolean;
+  dumpGraphSnapshot?: boolean;
 
   /**
    * Available indicates whether the command can be executed in given state.

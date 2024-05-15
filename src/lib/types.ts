@@ -23,7 +23,6 @@ export interface Edge extends GraphElement {
 export type Graph = {
   vertices: Vertex[];
   edges: Edge[];
-  nextId: GraphElementId;
 };
 
 export type Viewport = {
@@ -39,6 +38,7 @@ export type Cursor = GraphElementId;
 export type State = {
   graph: Graph;
   graphHistory: GraphHistory;
+  graphPallete: GraphPallete;
   viewport: Viewport;
   selections: Selection[];
   cursor?: Cursor;
@@ -47,6 +47,10 @@ export type State = {
 export type GraphHistory = {
   index?: number;
   graphs: Graph[];
+};
+
+export type GraphPallete = {
+  nextId: GraphElementId;
 };
 
 export type CommandFunction = (state: State) => Promise<void>;

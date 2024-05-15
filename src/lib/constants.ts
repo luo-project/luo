@@ -18,10 +18,12 @@ export const DEFAULT_STATE: State = {
         to: 2,
       },
     ],
-    nextId: 100,
   },
   graphHistory: {
     graphs: [],
+  },
+  graphPallete: {
+    nextId: 5,
   },
   viewport: { x: 0, y: 0, zoom: 1 },
   selections: [],

@@ -1,4 +1,5 @@
 import { logger } from "./log";
+import { deepCopy } from "./utils";
 
 type KeyMap = {
   key: string;
@@ -6,11 +7,10 @@ type KeyMap = {
   shift: boolean;
 };
 
-type Data = Record<string, KeyMap>;
-type EncodedData = string;
+export type KeyBinding = Record<string, KeyMap>;
 
-export function initKeybinding(d: EncodedData) {
-  const data = decodeData(d);
+export function initKeybinding(d: KeyBinding) {
+  const data = deepCopy(d);
   const cache = new Map<string, string>();
   const l = logger("keybinding");
   const updateCache = () => {
@@ -30,7 +30,7 @@ export function initKeybinding(d: EncodedData) {
       data[id] = k;
     }
     updateCache();
-    return encodeData(data);
+    return deepCopy(data);
   };
 
   const find = (k: KeyMap) => {
@@ -42,54 +42,12 @@ export function initKeybinding(d: EncodedData) {
     if (k === undefined) {
       return null;
     }
-    return encode(k);
+    return k;
   };
 
   return { set, get, find };
 }
 
-function encodeData(d: Data) {
-  let r: EncodedData = "";
-  for (const id in d) {
-    r += `${id} ${encode(d[id])}\n`;
-  }
-  return r;
-}
-
-function decodeData(d: EncodedData) {
-  const r: Data = {};
-  d.trim()
-    .replaceAll("\t", "")
-    .replaceAll("\r\n", "\n")
-    .replaceAll("   ", " ")
-    .replaceAll("  ", " ")
-    .split("\n")
-    .forEach((l) => {
-      if (l === "") {
-        return;
-      }
-      const [id, k] = l.split(" ");
-      r[id] = decode(k);
-    });
-  return r;
-}
-
 function encode(k: KeyMap) {
   return `${k.ctrl ? "c-" : ""}${k.shift ? "s-" : ""}${k.key}`;
-}
-
-function decode(v: string): KeyMap {
-  if (v.startsWith("c-s-")) {
-    const key = v.substring("c-s-".length);
-    return { key, ctrl: true, shift: true };
-  }
-  if (v.startsWith("c-")) {
-    const key = v.substring("c-".length);
-    return { key, ctrl: true, shift: false };
-  }
-  if (v.startsWith("s-")) {
-    const key = v.substring("s-".length);
-    return { key, ctrl: false, shift: true };
-  }
-  return { key: v, ctrl: false, shift: false };
 }

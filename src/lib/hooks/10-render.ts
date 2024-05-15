@@ -1,8 +1,10 @@
-import { initCytoscape } from "../cytoscape/utils";
+import { initCytoscapeCore, render } from "../cytoscape";
 import type { HookDefinition } from "../hook";
-
-const cy = initCytoscape(document.getElementById("cy")!);
+import { useRef } from "../state";
 
 export const def: HookDefinition = {
-  func: cy.render,
+  async func(state, config, ref) {
+    const cy = await useRef(ref, "cytoscapecore", initCytoscapeCore);
+    return render(cy, state, config);
+  },
 };

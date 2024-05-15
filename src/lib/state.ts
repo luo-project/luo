@@ -1,5 +1,5 @@
 import type { Config } from "./config";
-import type { Graph, GraphElementId, GraphHistory, GraphPallete } from "./graph";
+import type { GraphCursor, Graph, GraphPallete } from "./graph";
 
 export type Viewport = {
   x: number;
@@ -7,23 +7,38 @@ export type Viewport = {
   zoom: number;
 };
 
-export type Selection = GraphElementId[];
-
-export type Cursor = GraphElementId;
-
+/**
+ * State is serializable object for load/mutate/save entire application state.
+ */
 export type State = {
   graph: Graph;
-  graphHistory: GraphHistory;
   graphPallete: GraphPallete;
+  graphCursor?: GraphCursor;
   viewport: Viewport;
-  selections: Selection[];
-  cursor?: Cursor;
 };
 
-export type StateContext = Record<string, any>;
+/**
+ * StateReference is volatile, mutable,non-serializable object: guarenteed single reference over entire application lifecycle.
+ */
+export type StateReference = Record<string, any>;
 
+/**
+ * StateFunc is a middleware for state mutation flow.
+ * StateFunc can(should) mutate `state` argument.
+ */
 export type StateFunc = (
   state: State,
   config: Readonly<Config>,
-  ctx: StateContext,
+  ref: StateReference,
 ) => Promise<void> | void;
+
+export async function useRef<T>(
+  ref: StateReference,
+  key: string,
+  init: () => Promise<T> | T,
+): Promise<T> {
+  if (ref[key] === undefined) {
+    ref[key] = await init();
+  }
+  return ref[key];
+}

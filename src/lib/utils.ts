@@ -1,3 +1,5 @@
+import { PROD } from "./constants";
+
 export function deepCopy<T>(v: T): T {
   return structuredClone(v);
 }
@@ -18,4 +20,10 @@ export function loadEagerModules<T>(
 
 function pathToId(path: string): string {
   return path.split("/").pop()!.replace(".ts", "");
+}
+
+export function dev(cb: () => unknown) {
+  if (!PROD) {
+    cb();
+  }
 }

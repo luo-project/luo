@@ -3,7 +3,8 @@ import type { Config } from "./config";
 import { type HookDefinitionWithId } from "./hook";
 import { logger } from "./log";
 import type { State, StateFunc, StateFuncContext } from "./state";
-import { deepCopy, loadEagerModules } from "./utils";
+import { deepCopy, dev, loadEagerModules } from "./utils";
+import { PROD } from "./constants";
 
 /**
  * Command is a javascript modules located in `src/lib/commands/`.
@@ -38,7 +39,6 @@ export function initCommandLoop(
   let state = deepCopy(initState);
   const l = logger("commandLoop");
   const queue: CommandDefinitionWithId[] = [];
-  const ctx: StateFuncContext = { commands, command: null as any };
   const cb = async () => {
     const cmd = queue.shift();
     if (cmd === undefined) {
@@ -55,7 +55,10 @@ export function initCommandLoop(
       }
     }
 
-    ctx.command = cmd;
+    const ctx: DeepReadonly<StateFuncContext> = Object.freeze({
+      commands: Object.freeze(commands),
+      command: Object.freeze(cmd),
+    });
     l.time("total");
     state = deepCopy(state);
     l.debug("before", cmd.id, state);
@@ -68,6 +71,9 @@ export function initCommandLoop(
       l.debug("after", hook.id, state);
     }
     l.timeEnd("total");
+    dev(() => {
+      (window as any).state = state;
+    });
     setTimeout(cb, 0);
   };
   cb();

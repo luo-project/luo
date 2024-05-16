@@ -102,6 +102,7 @@ function batch(graph: GraphSnapshot) {
       data = edgeData(e as Edge);
     }
     const ee = cy.getElementById(id);
+    ee.classes([]);
     ee.data({ id, ...data, element: deepCopy(e) });
     if (v) {
       updateNode(ee, e);

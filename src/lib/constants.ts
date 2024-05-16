@@ -9,23 +9,65 @@ export const DEFAULT_STATE: State = {
         vertices: [
           {
             id: 1,
+            shape: "rectangle",
+            body: {
+              x: 60,
+              y: 60,
+              w: 80,
+              h: 150,
+            },
+            text: "askdjfalksdjf laksjdflas",
           },
           {
             id: 2,
+            shape: "triangle",
+          },
+          {
+            id: 3,
+            shape: "ellipse",
+            body: {
+              x: 3,
+              y: 3,
+              w: 80,
+              h: 30,
+            },
+          },
+          {
+            id: 4,
+            shape: "round-rectangle",
+          },
+          {
+            id: 5,
+            shape: "round-triangle",
+          },
+          {
+            id: 10,
+            shape: "diamond",
           },
         ],
         edges: [
           {
-            id: 3,
+            id: 6,
             from: 1,
             to: 2,
+          },
+          {
+            id: 7,
+            from: 2,
+            to: 3,
+          },
+          {
+            id: 8,
+            from: 3,
+            to: 4,
           },
         ],
       },
     ],
   },
   graphPallete: {
-    nextId: 5,
+    nextId: 10,
+    vertexShape: "rectangle",
   },
   viewport: { x: 0, y: 0, zoom: 1 },
 };

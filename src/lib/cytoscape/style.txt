@@ -1,0 +1,20 @@
+node {
+  background-color: green;
+  shape: data(element.shape);
+}
+
+node[element.body.w] {
+  width: data(element.body.w);
+}
+
+node[element.body.h] {
+  height: data(element.body.h);
+}
+
+node.cursor {
+  background-color: red;
+}
+
+edge.cursor {
+  line-color: red;
+}

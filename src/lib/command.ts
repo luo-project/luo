@@ -3,7 +3,8 @@ import type { Config } from "./config";
 import { type HookDefinitionWithId } from "./hook";
 import { logger } from "./log";
 import type { State, StateFunc, StateFuncContext } from "./state";
-import { deepCopy, loadEagerModules } from "./utils";
+import { deepCopy, dev, loadEagerModules } from "./utils";
+import { PROD } from "./constants";
 
 /**
  * Command is a javascript modules located in `src/lib/commands/`.
@@ -70,6 +71,9 @@ export function initCommandLoop(
       l.debug("after", hook.id, state);
     }
     l.timeEnd("total");
+    dev(() => {
+      (window as any).state = state;
+    });
     setTimeout(cb, 0);
   };
   cb();

@@ -29,13 +29,24 @@ export interface Vertex extends GraphElement {
   parent?: GraphElementId;
 
   /**
-   * Although position is a optional, A vertex always has position right after added to graph.
+   * Vertex always has well-defined body after being rendered.
    */
-  position?: {
+  body?: {
     x: number;
     y: number;
+    w: number;
+    h: number;
   };
+  shape: VertexShape;
 }
+
+export type VertexShape =
+  | "ellipse"
+  | "triangle"
+  | "round-triangle"
+  | "round-rectangle"
+  | "rectangle"
+  | "diamond";
 
 export interface Edge extends GraphElement {
   from: GraphElementId;
@@ -47,6 +58,7 @@ export interface Edge extends GraphElement {
  */
 export type GraphPallete = {
   nextId: GraphElementId;
+  vertexShape: VertexShape;
 };
 
 export type GraphCursor = GraphElementId;

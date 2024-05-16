@@ -1,6 +1,6 @@
 import type { CommandDefinition } from "../command";
 import { getCurrentSnapshop, isVertex } from "../graph";
-import { getGraphElement, holdedIds } from "../graph-index";
+import { getGraphElement } from "../graph-index";
 
 export const def: CommandDefinition = {
   description: "iterates cursor to next edge or vertex if cursor is the last edge",

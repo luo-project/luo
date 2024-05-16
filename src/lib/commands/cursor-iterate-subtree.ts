@@ -1,8 +1,9 @@
 import type { CommandDefinition } from "../command";
+import { getCurrentSnapshop, isVertex } from "../graph";
 import { getGraphElement, holdedIds } from "../graph-index";
 
 export const def: CommandDefinition = {
-  description: "iterate cursor to next edge or vertex if cursor is the last edge",
+  description: "iterates cursor to next edge or vertex if cursor is the last edge",
 
   available(state) {
     if (!state.graphCursor) {
@@ -12,16 +13,16 @@ export const def: CommandDefinition = {
   },
 
   func(state) {
-    const graph = state.graph.snapshots[state.graph.current];
+    const graph = getCurrentSnapshop(state.graph);
     const cursor = state.graphCursor!;
     const cursorElement = getGraphElement(cursor, graph);
 
-    const parent = "from" in cursorElement ? cursorElement.from : cursor;
+    const parent = isVertex(cursorElement) ? cursor : cursorElement.from;
 
     const children = [];
     for (const id in holdedIds) {
       const element = getGraphElement(id, graph);
-      if ("from" in element && element.from === parent) {
+      if (!isVertex(element) && element.from === parent) {
         children.push(+id);
       }
     }

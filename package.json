@@ -19,6 +19,7 @@
     "vitest": "^1.6.0"
   },
   "dependencies": {
-    "cytoscape": "^3.29.2"
+    "cytoscape": "^3.29.2",
+    "cytoscape-dagre": "^2.5.0"
   }
 }

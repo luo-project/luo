@@ -4,7 +4,6 @@ import {
   getCurrentSnapshop,
   isVertex,
   type Edge,
-  type GraphElement,
   type GraphSnapshot,
   type Vertex,
 } from "../graph";

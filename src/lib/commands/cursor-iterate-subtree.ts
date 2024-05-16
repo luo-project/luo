@@ -18,14 +18,7 @@ export const def: CommandDefinition = {
     const cursorElement = getGraphElement(cursor, graph);
 
     const parent = isVertex(cursorElement) ? cursor : cursorElement.from;
-
-    const children = [];
-    for (const id in holdedIds) {
-      const element = getGraphElement(id, graph);
-      if (!isVertex(element) && element.from === parent) {
-        children.push(+id);
-      }
-    }
+    const children = graph.edges.filter((e) => e.from === parent).map((e) => e.id);
 
     const candidate = [parent, ...children];
     state.graphCursor = candidate[(candidate.indexOf(cursor) + 1) % candidate.length];

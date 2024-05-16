@@ -10,17 +10,24 @@ export const DEFAULT_STATE: State = {
           {
             id: 1,
             shape: "rectangle",
+            text: "Vertex no.1",
             body: {
-              x: 60,
-              y: 60,
-              w: 80,
-              h: 150,
+              x: 0,
+              y: 0,
+              w: 200,
+              h: 200,
             },
-            text: "askdjfalksdjf laksjdflas",
           },
           {
             id: 2,
             shape: "triangle",
+            text: "2",
+            body: {
+              x: 0,
+              y: 0,
+              w: 100,
+              h: 100,
+            },
           },
           {
             id: 3,
@@ -31,10 +38,12 @@ export const DEFAULT_STATE: State = {
               w: 80,
               h: 30,
             },
+            text: "3",
           },
           {
             id: 4,
             shape: "round-rectangle",
+            text: "I have a very very very very very very very very very very very very long single line text.",
           },
           {
             id: 5,
@@ -43,6 +52,7 @@ export const DEFAULT_STATE: State = {
           {
             id: 10,
             shape: "diamond",
+            text: "First line.\nSecond line\nLine 3\n444444444444444444444444",
           },
         ],
         edges: [
@@ -50,18 +60,22 @@ export const DEFAULT_STATE: State = {
             id: 6,
             from: 1,
             to: 2,
+            text: "1-2",
           },
           {
             id: 7,
             from: 2,
             to: 3,
+            text: "2-3",
           },
           {
             id: 8,
             from: 3,
             to: 4,
+            text: "3-4",
           },
         ],
+        layout: "dagre",
       },
     ],
   },
@@ -70,6 +84,7 @@ export const DEFAULT_STATE: State = {
     vertexShape: "rectangle",
   },
   viewport: { x: 0, y: 0, zoom: 1 },
+  graphCursor: 3,
 };
 
 export const DEFAULT_CONFIG: Config = {
@@ -101,6 +116,7 @@ export const DEFAULT_CONFIG: Config = {
       "c-arrowdown": "viewport-zoom-out",
       "c-z": "graph-undo",
       "c-s-z": "graph-redo",
+      q: "cursor-iterate-subtree",
     },
   },
 };

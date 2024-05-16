@@ -1,18 +1,21 @@
 import cytoscape from "cytoscape";
 import style from "./style.txt?raw";
 import { dev } from "../utils";
+// @ts-ignore
+import dagre from "cytoscape-dagre";
 
 function initCytoscapeCore() {
+  cytoscape.use(dagre);
   const container = document.getElementById("cy")!;
   const cy = cytoscape({
     container,
-    style: style as any,
     boxSelectionEnabled: false,
     autounselectify: true,
     autoungrabify: true,
     userZoomingEnabled: false,
     userPanningEnabled: false,
   });
+  cy.style().clear().fromString(style);
   cy.addListener("click", () => false);
   return cy;
 }

@@ -2,6 +2,7 @@ import type { EdgeSingular, NodeSingular } from "cytoscape";
 import type { Config } from "../config";
 import {
   getCurrentSnapshop,
+  isVertex,
   type Edge,
   type GraphElement,
   type GraphSnapshot,
@@ -23,7 +24,7 @@ export async function cyRender(state: State, config: Config) {
   l.timeEnd("batch");
 
   l.time("layout");
-  await layout(config);
+  await layout(graph, config);
   l.timeEnd("layout");
 
   updateNodesBody(graph);
@@ -39,13 +40,6 @@ function deleteDeletedIds() {
   deletedIds.forEach((id) => {
     cy.getElementById(id).remove();
   });
-}
-
-function isVertex(e: GraphElement): e is Vertex {
-  if (typeof (e as Vertex).shape === "string") {
-    return true;
-  }
-  return false;
 }
 
 function updateNode(a: NodeSingular, b: Vertex) {
@@ -82,7 +76,7 @@ function batch(graph: GraphSnapshot) {
     if (v) {
       data = nodeData(e);
     } else {
-      data = edgeData(e as Edge);
+      data = edgeData(e);
     }
     const ee = cy.add({
       group: v ? "nodes" : "edges",
@@ -118,17 +112,34 @@ function batch(graph: GraphSnapshot) {
   cy.endBatch();
 }
 
-async function layout(config: Config) {
+async function layout(graph: GraphSnapshot, config: Config) {
   if (createdIds.size > 0) {
+    const common = {
+      fit: false,
+      animate: config.graph.animation > 0,
+      animationDuration: config.graph.animation,
+      animationEasing: "ease",
+      nodeDimensionsIncludeLabels: true,
+    };
+    let l: any;
+    switch (graph.layout) {
+      case "grid":
+        l = {
+          cols: 3,
+          rows: 3,
+        };
+        break;
+      case "dagre":
+        l = {};
+        break;
+      default:
+        throw new Error(`invalid layout ${graph.layout}`);
+    }
     await cy
       .layout({
-        name: "grid",
-        rows: 10,
-        cols: 2,
-        fit: false,
-        animate: config.graph.animation > 0,
-        animationDuration: config.graph.animation,
-        animationEasing: "ease",
+        name: graph.layout,
+        ...l,
+        ...common,
       })
       .run()
       .promiseOn("layoutstop");

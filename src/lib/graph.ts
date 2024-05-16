@@ -13,7 +13,10 @@ export type Graph = {
 export type GraphSnapshot = {
   vertices: Vertex[];
   edges: Edge[];
+  layout: GraphLayout;
 };
+
+export type GraphLayout = "dagre" | "grid";
 
 /**
  * All GraphElements have an unique id regardless of type(Vertex or Edge).
@@ -65,4 +68,11 @@ export type GraphCursor = GraphElementId;
 
 export function getCurrentSnapshop(g: Graph): GraphSnapshot {
   return g.snapshots[g.current];
+}
+
+export function isVertex(e: Vertex | Edge): e is Vertex {
+  if (typeof (e as Vertex).shape === "string") {
+    return true;
+  }
+  return false;
 }

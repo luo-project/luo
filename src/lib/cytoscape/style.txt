@@ -1,5 +1,15 @@
+*[element.text] {
+  label: data(element.text);
+  text-halign: center;
+  text-valign: center;
+  text-wrap: wrap;
+  text-max-width: 300px;
+}
+
 node {
-  background-color: green;
+  background-color: white;
+  border-color: black;
+  border-width: 1;
   shape: data(element.shape);
 }
 

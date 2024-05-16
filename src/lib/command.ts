@@ -38,7 +38,6 @@ export function initCommandLoop(
   let state = deepCopy(initState);
   const l = logger("commandLoop");
   const queue: CommandDefinitionWithId[] = [];
-  const ctx: StateFuncContext = { commands, command: null as any };
   const cb = async () => {
     const cmd = queue.shift();
     if (cmd === undefined) {
@@ -55,7 +54,10 @@ export function initCommandLoop(
       }
     }
 
-    ctx.command = cmd;
+    const ctx: DeepReadonly<StateFuncContext> = Object.freeze({
+      commands: Object.freeze(commands),
+      command: Object.freeze(cmd),
+    });
     l.time("total");
     state = deepCopy(state);
     l.debug("before", cmd.id, state);

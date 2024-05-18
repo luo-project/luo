@@ -34,4 +34,12 @@ export type GlobalContext = {
   command: CommandDefinitionWithId;
   commands: CommandDefinitionWithId[];
   graphIndex: GraphIndex;
+  graphRenderInfo: GraphRenderInfo;
+};
+
+export type GraphRenderInfo = {
+  width: number;
+  height: number;
+  vertex: (id: string) => { x: number; y: number; width: number; height: number };
+  edge: (id: string) => {};
 };

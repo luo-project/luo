@@ -1,7 +1,7 @@
 import * as dagred3 from "dagre-d3-es";
 import * as d3 from "d3";
 import { isVertex, type GraphSnapshot } from "./graph";
-import type { Viewport } from "./state";
+import type { GraphRenderInfo, Viewport } from "./state";
 import svgPanZoom from "svg-pan-zoom";
 import { logger } from "./log";
 import type { Config } from "./config";
@@ -53,7 +53,7 @@ export function renderViewport(v: Viewport) {
   }
 }
 
-export function renderD3(p: { gs: GraphSnapshot; cursor?: string }) {
+export function renderD3(p: { gs: GraphSnapshot; cursor?: string }): GraphRenderInfo {
   const g = new dagred3.graphlib.Graph({
     directed: true,
     multigraph: true,
@@ -72,6 +72,7 @@ export function renderD3(p: { gs: GraphSnapshot; cursor?: string }) {
     ranker: "tight-tree",
   });
   removeClass("cursor");
+  const edgeIds = new Map<string, [string, string]>();
   for (const e of p.gs.elements) {
     const classes: string[] = ["luo"];
     if (p.cursor && e.id === p.cursor) {
@@ -82,8 +83,28 @@ export function renderD3(p: { gs: GraphSnapshot; cursor?: string }) {
       continue;
     }
     g.setEdge(e.source, e.target, { label: e.label, class: classes.join(" ") }, e.id);
+    edgeIds.set(e.id, [e.source, e.target]);
   }
   render(d3Inner, g);
+  const gg = g.graph();
+
+  return {
+    width: gg.width,
+    height: gg.height,
+    edge: (id) => {
+      const [source, from] = edgeIds.get(id)!;
+      const e = g.edge(source, from, id);
+      return e;
+    },
+    vertex: (id) => {
+      const n = g.node(id);
+      const e = n.elem as SVGRectElement;
+      const rect = e.querySelector("rect")!;
+      const width = parseInt(rect.getAttribute("width")!, 10);
+      const height = parseInt(rect.getAttribute("height")!, 10);
+      return { x: n.x, y: n.y, width, height };
+    },
+  };
 }
 
 function removeClass(name: string) {

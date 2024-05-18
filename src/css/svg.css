@@ -1,0 +1,26 @@
+#svg {
+  border: 1px solid red;
+  margin: 8px;
+  flex: 2;
+}
+
+#svg .node {
+  stroke: black;
+  fill: #ccc;
+  stroke-width: 1px;
+}
+
+#svg .edgePath {
+  stroke: black;
+  fill: #ccc;
+  stroke-width: 1.5px;
+}
+
+#svg .node.cursor {
+  fill: red;
+}
+
+#svg .edgePath.cursor {
+  stroke: red;
+  fill: red;
+}

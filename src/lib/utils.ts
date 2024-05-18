@@ -19,7 +19,7 @@ export function loadEagerModules<T>(
 }
 
 function pathToId(path: string): string {
-  return path.split("/").pop()!.replace(".ts", "");
+  return path.split("/").pop()!.replace(".ts", "").replace(".js", "");
 }
 
 export function dev(cb: () => unknown) {

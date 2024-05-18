@@ -19,12 +19,6 @@ body {
   padding: 0;
 }
 
-#cy {
-  border: 1px solid red;
-  margin: 8px;
-  flex: 2;
-}
-
 #temp {
   display: flex;
   flex-direction: row;

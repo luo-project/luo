@@ -54,6 +54,7 @@ export type VertexShape =
 export interface Edge extends GraphElement {
   from: GraphElementId;
   to: GraphElementId;
+  weight?: number;
 }
 
 /**

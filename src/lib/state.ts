@@ -2,6 +2,7 @@ import type { DeepReadonly } from "ts-essentials";
 import type { CommandDefinitionWithId } from "./command";
 import type { Config } from "./config";
 import type { GraphCursor, Graph, GraphPallete } from "./graph";
+import type { GraphIndex } from "./graph-index";
 
 export type Viewport = {
   x: number;
@@ -26,10 +27,11 @@ export type State = {
 export type StateFunc = (
   state: State,
   config: DeepReadonly<Config>,
-  ctx: DeepReadonly<StateFuncContext>,
+  ctx: GlobalContext,
 ) => Promise<void> | void;
 
-export type StateFuncContext = {
+export type GlobalContext = {
   command: CommandDefinitionWithId;
   commands: CommandDefinitionWithId[];
+  graphIndex: GraphIndex;
 };

@@ -2,9 +2,8 @@ import type { DeepReadonly } from "ts-essentials";
 import type { Config } from "./config";
 import { type HookDefinitionWithId } from "./hook";
 import { logger } from "./log";
-import type { State, StateFunc, StateFuncContext } from "./state";
+import type { State, StateFunc, GlobalContext } from "./state";
 import { deepCopy, dev, loadEagerModules } from "./utils";
-import { PROD } from "./constants";
 
 /**
  * Command is a javascript modules located in `src/lib/commands/`.
@@ -39,6 +38,11 @@ export function initCommandLoop(
   let state = deepCopy(initState);
   const l = logger("commandLoop");
   const queue: CommandDefinitionWithId[] = [];
+  const ctx: GlobalContext = {
+    commands: commands,
+    command: null as any,
+    graphIndex: null as any,
+  };
   const cb = async () => {
     const cmd = queue.shift();
     if (cmd === undefined) {
@@ -55,11 +59,8 @@ export function initCommandLoop(
       }
     }
 
-    const ctx: DeepReadonly<StateFuncContext> = Object.freeze({
-      commands: Object.freeze(commands),
-      command: Object.freeze(cmd),
-    });
     l.time("total");
+    ctx.command = cmd;
     state = deepCopy(state);
     l.debug("before", cmd.id, state);
     await cmd.func(state, cfg, ctx);

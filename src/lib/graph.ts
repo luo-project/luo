@@ -11,69 +11,54 @@ export type Graph = {
 };
 
 export type GraphSnapshot = {
-  vertices: Vertex[];
-  edges: Edge[];
-  layout: GraphLayout;
+  elements: GraphElement[];
 };
-
-export type GraphLayout = "dagre" | "grid";
 
 /**
  * All GraphElements have an unique id regardless of type(Vertex or Edge).
  */
-export type GraphElementId = number;
+export type GraphElementId = string;
 
-export interface GraphElement {
+export type GraphElementBase = {
   id: GraphElementId;
-  text?: string;
-}
+  label?: string;
+};
 
-export interface Vertex extends GraphElement {
-  parent?: GraphElementId;
+export type GraphElement = Vertex | Edge;
 
-  /**
-   * Vertex always has well-defined body after being rendered.
-   */
-  body?: {
-    x: number;
-    y: number;
-    w: number;
-    h: number;
-  };
+export type Vertex = GraphElementBase & {
+  t: "v";
   shape: VertexShape;
-}
+};
 
-export type VertexShape =
-  | "ellipse"
-  | "triangle"
-  | "round-triangle"
-  | "round-rectangle"
-  | "rectangle"
-  | "diamond";
+export type VertexShape = "rect" | "circle" | "ellipse" | "diamond";
 
-export interface Edge extends GraphElement {
-  from: GraphElementId;
-  to: GraphElementId;
-  weight?: number;
-}
+export type Edge = GraphElementBase & {
+  t: "e";
+  source: GraphElementId;
+  target: GraphElementId;
+};
 
 /**
  * GraphPallete stores information of GraphElement will be created next time.
  */
 export type GraphPallete = {
-  nextId: GraphElementId;
+  nextId: number;
   vertexShape: VertexShape;
 };
 
 export type GraphCursor = GraphElementId;
 
 export function getCurrentSnapshop(g: Graph): GraphSnapshot {
-  return g.snapshots[g.current];
+  const s = g.snapshots[g.current];
+  if (s === undefined) {
+    throw new Error(
+      `GraphSnapshot undefined: current=${g.current} snapshopts.length=${g.snapshots.length}`,
+    );
+  }
+  return s;
 }
 
-export function isVertex(e: Vertex | Edge): e is Vertex {
-  if (typeof (e as Vertex).shape === "string") {
-    return true;
-  }
-  return false;
+export function isVertex(e: GraphElement): e is Vertex {
+  return e.t === "v";
 }

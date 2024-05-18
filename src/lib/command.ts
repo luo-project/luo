@@ -42,6 +42,7 @@ export function initCommandLoop(
     commands: commands,
     command: null as any,
     graphIndex: null as any,
+    graphRenderInfo: null as any,
   };
   const cb = async () => {
     const cmd = queue.shift();

@@ -24,3 +24,11 @@
   stroke: red;
   fill: red;
 }
+
+#svg .node.choice > :nth-child(1) {
+  stroke: blue;
+}
+
+#svg .edgePath.choice {
+  stroke: blue;
+}

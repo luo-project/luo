@@ -181,8 +181,8 @@ export const DEFAULT_CONFIG: Config = {
   graph: {
     animation: 200,
     timelineSize: 20,
-    focusTimelineSize: 50,
-    choiceTimelineSize: 50,
+    focusTimelineSize: 10,
+    choiceTimelineSize: 10,
   },
   viewport: {
     animation: 200,
@@ -217,8 +217,12 @@ export const DEFAULT_CONFIG: Config = {
       k: "focus-move-up",
       l: "focus-move-right",
       c: "choice-add-focus",
+      "c-c": "choice-delete-focus",
+      d: "choice-redo",
+      "c-d": "choice-undo",
       z: "focus-prev",
       x: "focus-next",
+      delete: "choice-clear",
     },
   },
 };

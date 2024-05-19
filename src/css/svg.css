@@ -16,11 +16,11 @@
   stroke-width: 1.5px;
 }
 
-#svg .node.cursor {
+#svg .node.focus {
   fill: red;
 }
 
-#svg .edgePath.cursor {
+#svg .edgePath.focus {
   stroke: red;
   fill: red;
 }

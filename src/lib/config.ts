@@ -4,6 +4,8 @@ export type Config = {
      * 0=disable
      */
     animation: number;
+    timelineSize: number;
+    focusTimelineSize: number;
   };
   viewport: {
     /**

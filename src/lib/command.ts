@@ -16,7 +16,8 @@ export type CommandDefinition = {
    */
   description?: string;
 
-  dumpGraphSnapshot?: boolean;
+  modifyGraph?: boolean;
+  modifyGraphFocus?: boolean;
 
   /**
    * Available indicates whether the command can be executed in given state.
@@ -36,6 +37,7 @@ export function initCommandLoop(
 ) {
   const cfg = Object.freeze(config);
   let state = deepCopy(initState);
+  let previousState = null as any;
   const l = logger("commandLoop");
   const queue: CommandDefinitionWithId[] = [];
   const ctx: GlobalContext = {
@@ -43,6 +45,7 @@ export function initCommandLoop(
     command: null as any,
     graphIndex: null as any,
     graphRenderInfo: null as any,
+    previousState,
   };
   const cb = async () => {
     const cmd = queue.shift();
@@ -62,6 +65,7 @@ export function initCommandLoop(
 
     l.time("total");
     ctx.command = cmd;
+    ctx.previousState = previousState;
     state = deepCopy(state);
     l.debug("before", cmd.id, state);
     await cmd.func(state, cfg, ctx);
@@ -72,6 +76,7 @@ export function initCommandLoop(
       await hook.func(state, cfg, ctx);
       l.debug("after", hook.id, state);
     }
+    previousState = deepCopy(state);
     l.timeEnd("total");
     dev(() => {
       (window as any).state = state;

@@ -44,6 +44,7 @@ export type GlobalContext = {
   graphIndex: GraphIndex;
   graphRenderInfo: GraphRenderInfo;
   previousState: DeepReadonly<State>;
+  availableCommands: Record<string, string | true>;
 };
 
 export type GraphRenderInfo = {

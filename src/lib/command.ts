@@ -22,7 +22,11 @@ export type CommandDefinition = {
   /**
    * Available indicates whether the command can be executed in given state.
    */
-  available?: (state: DeepReadonly<State>, config: Readonly<Config>) => true | string;
+  available?: (
+    state: DeepReadonly<State>,
+    config: Readonly<Config>,
+    ctx: GlobalContext,
+  ) => true | string;
 
   func: StateFunc;
 };
@@ -46,6 +50,7 @@ export function initCommandLoop(
     graphIndex: null as any,
     graphRenderInfo: null as any,
     previousState,
+    availableCommands: {},
   };
   const cb = async () => {
     const cmd = queue.shift();
@@ -53,9 +58,10 @@ export function initCommandLoop(
       setTimeout(cb, 0);
       return;
     }
-
+    ctx.command = cmd;
+    ctx.previousState = previousState;
     if (cmd.available) {
-      const a = cmd.available(state, config);
+      const a = ctx.availableCommands[cmd.id];
       if (typeof a === "string") {
         l.warn(`unavailable '${cmd.id}': ${a}`);
         setTimeout(cb, 0);
@@ -64,8 +70,6 @@ export function initCommandLoop(
     }
 
     l.time("total");
-    ctx.command = cmd;
-    ctx.previousState = previousState;
     state = deepCopy(state);
     l.debug("before", cmd.id, state);
     await cmd.func(state, cfg, ctx);

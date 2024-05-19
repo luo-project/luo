@@ -30,7 +30,10 @@ export const def: CommandDefinition = {
   },
 
   func(state, config, ctx) {
-    let elements = sortGraphElementsByPosition(state.graph.elements, ctx);
+    let elements = sortGraphElementsByPosition(
+      state.choice.map((id) => ctx.graphIndex(state.graph).any(id)),
+      ctx,
+    );
     let focus = state.graphFocus!;
     let focusIndex = elements.findIndex((element) => element.id === focus);
     if (focusIndex === -1) {

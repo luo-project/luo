@@ -1,4 +1,4 @@
-import { enableKeyEvent } from "./keyevent";
+import { enableKeyEvent } from "./dom";
 import { logger } from "./log";
 
 export type UserInputType = "string" | "number" | "int";

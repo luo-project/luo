@@ -1,5 +1,5 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,26 +13,88 @@
 
 html,
 body {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   margin: 0;
   padding: 0;
 }
 
-#temp {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: stretch;
-  width: 100%;
-  height: 100%;
+span {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  vertical-align: baseline;
 }
 
-#tempindicator {
-  display: inline;
-  overflow-y: auto;
-  font-size: 10px;
+#container {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-items: stretch;
+  width: 99%;
+  height: 99%;
+}
+
+#graph-box {
   flex: 1;
+}
+
+#info-box {
+  display: flex;
+  flex-direction: column;
+  font-size: 11px;
+  line-height: 1.1;
+  flex: 0 0 400px;
+  height: 100%;
+  overflow: auto;
+  border: 1px solid black;
+  border-left-width: 0;
+}
+
+#key-box {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid black;
+  font-size: 10px;
+  line-height: 1;
+}
+
+#current-key {
+  border-bottom: 1px solid black;
+}
+
+#possible-keys {
+  flex: 0 0 auto;
+  height: 150px;
+  overflow-y: auto;
+}
+
+#possible-keys .km {
+  width: 100px;
+  margin-left: 10px;
+}
+
+#logs {
+  flex: 0 0 auto;
+  height: 200px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+  border-top: 1px solid black;
+  font-size: 12px;
+  line-height: 1.2;
+  padding: 2px;
+}
+
+#logs .log.warn {
+  color: #755100;
+}
+
+#logs .log.error {
+  color: #8a2424;
 }
 
 #user-input {

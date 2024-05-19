@@ -35,6 +35,7 @@ export function initCommandLoop(
   config: Config,
   commands: CommandDefinitionWithId[],
   hooks: HookDefinitionWithId[],
+  onRun: (command: CommandDefinitionWithId) => void,
 ) {
   const cfg = Object.freeze(config);
   let state = deepCopy(initState);
@@ -60,12 +61,13 @@ export function initCommandLoop(
     if (cmd.available) {
       const a = ctx.availableCommands[cmd.id];
       if (typeof a === "string") {
-        l.warn(`unavailable '${cmd.id}': ${a}`);
+        l.warn(`'${cmd.id}' is unavailable: ${a}`);
         setTimeout(cb, 0);
         return;
       }
     }
 
+    onRun(cmd);
     l.time("total");
     state = deepCopy(state);
     l.debug("before", cmd.id, state);

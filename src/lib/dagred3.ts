@@ -16,18 +16,6 @@ const pl = logger("panzoom");
 let panZoom: SvgPanZoom.Instance = null as any;
 let realZoom = 0;
 
-export function setAnimation(cfg: Config) {
-  // TODO
-  // separate viewport/graph animations
-  if (cfg.graph.animation > 0) {
-  }
-  if (cfg.viewport.animation > 0) {
-    inner.style.transitionDuration = `${cfg.viewport.animation}ms`;
-    inner.style.transitionTimingFunction = "ease";
-    inner.style.transitionProperty = "transform";
-  }
-}
-
 export function renderViewport(v: Viewport) {
   if (panZoom === null) {
     panZoom = svgPanZoom("#svg", {
@@ -44,12 +32,30 @@ export function renderViewport(v: Viewport) {
     pl.debug(sizes);
     realZoom = sizes.realZoom;
   }
-  panZoom.zoom(v.zoom / realZoom);
-  panZoom.pan({ x: v.x, y: v.y });
 
-  const sizes = panZoom.getSizes();
+  let sizes = panZoom.getSizes();
+  panZoom.zoom(1);
+  panZoom.center();
+  panZoom.pan({ x: v.x, y: v.y });
+  panZoom.zoomAtPoint(v.zoom / realZoom, {
+    x: v.x + sizes.width / 2,
+    y: v.y + sizes.height / 2,
+  });
+  sizes = panZoom.getSizes();
   if (Math.abs(sizes.realZoom - v.zoom) > 0.001) {
     pl.error("FALLACY");
+  }
+}
+
+export function setAnimation(cfg: Config) {
+  // TODO
+  // separate viewport/graph animations
+  if (cfg.graph.animation > 0) {
+  }
+  if (cfg.viewport.animation > 0) {
+    inner.style.transitionDuration = `${cfg.viewport.animation}ms`;
+    inner.style.transitionTimingFunction = "ease";
+    inner.style.transitionProperty = "transform";
   }
 }
 

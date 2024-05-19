@@ -212,6 +212,10 @@ export const DEFAULT_CONFIG: Config = {
       q: "focus-iterate-subtree",
       w: "focus-undo",
       e: "focus-redo",
+      h: "focus-move-left",
+      j: "focus-move-down",
+      k: "focus-move-up",
+      l: "focus-move-right",
     },
   },
 };

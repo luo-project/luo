@@ -4,7 +4,6 @@ import { deepCopy } from "../utils";
 
 export const def: CommandDefinition = {
   description: "Move focus to the next element in the choice list.",
-  modifyGraphFocus: true,
 
   available(state, config, ctx) {
     let graph = deepCopy(state.graph) as any;

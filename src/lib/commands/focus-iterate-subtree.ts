@@ -3,7 +3,6 @@ import { isVertex } from "../graph";
 
 export const def: CommandDefinition = {
   description: "iterates focus to next edge or vertex if focus is the last edge",
-  modifyGraphFocus: true,
 
   available(state) {
     if (!state.graphFocus) {

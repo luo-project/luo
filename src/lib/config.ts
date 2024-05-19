@@ -6,6 +6,7 @@ export type Config = {
     animation: number;
     timelineSize: number;
     focusTimelineSize: number;
+    choiceTimelineSize: number;
   };
   viewport: {
     /**

@@ -166,6 +166,7 @@ export const DEFAULT_STATE: State = {
   timeline: {
     graph: [[], []],
     graphFocus: [[], []],
+    choice: [[], []],
   },
   graphPallete: {
     nextId: 10,
@@ -173,6 +174,7 @@ export const DEFAULT_STATE: State = {
   },
   viewport: { x: 100, y: 50, zoom: 0.5 },
   graphFocus: "5",
+  choice: [],
 };
 
 export const DEFAULT_CONFIG: Config = {
@@ -180,6 +182,7 @@ export const DEFAULT_CONFIG: Config = {
     animation: 200,
     timelineSize: 20,
     focusTimelineSize: 50,
+    choiceTimelineSize: 50,
   },
   viewport: {
     animation: 200,

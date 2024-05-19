@@ -4,6 +4,7 @@ import type { Config } from "./config";
 import type { GraphFocus, Graph, GraphPallete } from "./graph";
 import type { GraphIndex } from "./graph-index";
 import type { Timeline } from "./timeline";
+import { Choice } from "./choice";
 
 export type Viewport = {
   x: number;
@@ -18,10 +19,12 @@ export type State = {
   graph: Graph;
   graphPallete: GraphPallete;
   graphFocus?: GraphFocus;
+  choice: Choice;
   viewport: Viewport;
   timeline: {
     graph: Timeline<Graph>;
     graphFocus: Timeline<GraphFocus>;
+    choice: Timeline<Choice>;
   };
 };
 

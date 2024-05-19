@@ -1,7 +1,7 @@
 import type { HookDefinition } from "../hook";
 import { pushTimeline } from "../timeline";
 // @ts-ignore
-import { _ } from 'lodash-es';
+import _ from 'lodash-es';
 
 export const def: HookDefinition = {
   func(state, config, ctx) {

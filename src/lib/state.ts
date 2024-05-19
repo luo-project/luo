@@ -4,7 +4,7 @@ import type { Config } from "./config";
 import type { GraphFocus, Graph, GraphPallete } from "./graph";
 import type { GraphIndex } from "./graph-index";
 import type { Timeline } from "./timeline";
-import { Choice } from "./choice";
+import type { Choice } from "./choice";
 
 export type Viewport = {
   x: number;

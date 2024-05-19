@@ -37,7 +37,7 @@ export function initCommandLoop(
 ) {
   const cfg = Object.freeze(config);
   let state = deepCopy(initState);
-  let previousState = null as any;
+  let previousState = deepCopy(state);
   const l = logger("commandLoop");
   const queue: CommandDefinitionWithId[] = [];
   const ctx: GlobalContext = {

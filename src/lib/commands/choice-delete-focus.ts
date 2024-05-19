@@ -1,5 +1,4 @@
 import type { CommandDefinition } from "../command";
-import { isVertex } from "../graph";
 
 export const def: CommandDefinition = {
   description: "add focus to choice list.",

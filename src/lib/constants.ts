@@ -178,8 +178,8 @@ export const DEFAULT_STATE: State = {
 export const DEFAULT_CONFIG: Config = {
   graph: {
     animation: 200,
-    timelineSize: 100,
-    focusTimelineSize: 100,
+    timelineSize: 20,
+    focusTimelineSize: 50,
   },
   viewport: {
     animation: 200,

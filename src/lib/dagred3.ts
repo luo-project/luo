@@ -105,9 +105,9 @@ export function renderD3(p: { graph: Graph; focus?: string }): GraphRenderInfo {
     vertex: (id) => {
       const n = g.node(id);
       const e = n.elem as SVGRectElement;
-      const rect = e.querySelector("rect")!;
-      const width = parseInt(rect.getAttribute("width")!, 10);
-      const height = parseInt(rect.getAttribute("height")!, 10);
+      const group = e.parentElement!;
+      const width = parseInt(group.getAttribute("width")!, 10);
+      const height = parseInt(group.getAttribute("height")!, 10);
       return { x: n.x, y: n.y, width, height };
     },
   };

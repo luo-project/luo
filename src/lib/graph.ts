@@ -55,8 +55,8 @@ export function sortGraphElementsByPosition(
   });
 
   vertexRenderInfos = vertexRenderInfos.sort((a, b) => {
-    let a_score = Math.floor(a.y / 100) * 10000 + a.x;
-    let b_score = Math.floor(b.y / 100) * 10000 + b.x;
+    let a_score = Math.floor(a.y / 80) * 10000 + a.x;
+    let b_score = Math.floor(b.y / 80) * 10000 + b.x;
     return a_score - b_score;
   });
   return vertexRenderInfos.map((v) => elements.find((e) => e.id === v.id)!);

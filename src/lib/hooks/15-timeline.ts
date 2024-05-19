@@ -5,6 +5,9 @@ import _ from "lodash-es";
 
 export const def: HookDefinition = {
   func(state, config, ctx) {
+    if (ctx.command.skipTimeline) {
+      return;
+    }
     if (!_.isEqual(state.graph, ctx.previousState.graph)) {
       pushTimeline(ctx.previousState.graph, state.timeline.graph, true);
     }

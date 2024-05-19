@@ -7,6 +7,7 @@ export const def: HookDefinition = {
     ctx.graphRenderInfo = renderD3({
       graph: state.graph,
       focus: state.graphFocus,
+      choices: state.choice,
     });
     renderViewport(state.viewport);
   },

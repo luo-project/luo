@@ -15,10 +15,7 @@ export type CommandDefinition = {
    * Description starts with lowercase thrid-person singular verb.
    */
   description?: string;
-
-  modifyGraph?: boolean;
-  modifyGraphFocus?: boolean;
-
+  skipTimeline?: boolean;
   /**
    * Available indicates whether the command can be executed in given state.
    */

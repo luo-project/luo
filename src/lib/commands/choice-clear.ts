@@ -2,7 +2,6 @@ import type { CommandDefinition } from "../command";
 
 export const def: CommandDefinition = {
   description: "clear choice list.",
-  modifyGraphFocus: true,
 
   available(state) {
     if (state.choice.length === 0) {

@@ -59,7 +59,11 @@ export function setAnimation(cfg: Config) {
   }
 }
 
-export function renderD3(p: { graph: Graph; focus?: string }): GraphRenderInfo {
+export function renderD3(p: {
+  graph: Graph;
+  focus?: string;
+  choices?: string[];
+}): GraphRenderInfo {
   const g = new dagred3.graphlib.Graph({
     directed: true,
     multigraph: true,
@@ -78,11 +82,15 @@ export function renderD3(p: { graph: Graph; focus?: string }): GraphRenderInfo {
     ranker: "tight-tree",
   });
   removeClass("focus");
+  removeClass("choice");
   const edgeIds = new Map<string, [string, string]>();
   for (const e of p.graph.elements) {
     const classes: string[] = ["luo"];
     if (p.focus && e.id === p.focus) {
       classes.push("focus");
+    }
+    if (p.choices && p.choices.includes(e.id)) {
+      classes.push("choice");
     }
     if (isVertex(e)) {
       g.setNode(e.id, { label: e.label, shape: e.shape, class: classes.join(" ") });

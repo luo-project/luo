@@ -25,14 +25,14 @@ export function logger(name: string): Logger {
   return {
     trace: prodNoop(varargs(console.trace, name)),
     debug: prodNoop(varargs(console.debug, name)),
-    info: varargs(console.info, name),
-    warn: varargs(console.warn, name),
-    error: varargs(console.error, name),
+    info: wrapOnLog("info", varargs(console.info, name)),
+    warn: wrapOnLog("warn", varargs(console.warn, name)),
+    error: wrapOnLog("error", varargs(console.error, name)),
     time: prodNoop(single(console.time, name)),
     timeEnd: prodNoop(single(console.timeEnd, name)),
     timeLog: prodNoop(first(console.timeLog, name)),
     prodTime: single(console.time, name),
-    prodTimeEnd: single(console.timeEnd, name),
+    prodTimeEnd: wrapOnLog("time", single(console.timeEnd, name)),
   };
 }
 
@@ -42,6 +42,21 @@ function prodNoop(v: any) {
     return noop;
   }
   return v;
+}
+
+export type OnLog = (level: string, args: any[]) => void;
+let onLog: OnLog | null = null;
+export function setOnLog(l: OnLog) {
+  onLog = l;
+}
+
+function wrapOnLog(level: string, cb: any) {
+  return (...args: any[]) => {
+    if (onLog) {
+      onLog(level, args);
+    }
+    cb(...args);
+  };
 }
 
 function varargs(m: any, name: string) {

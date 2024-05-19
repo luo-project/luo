@@ -7,7 +7,7 @@ export const def: HookDefinition = {
       if (!cmd.available) {
         return;
       }
-      const result = cmd.available(state, config);
+      const result = ctx.availableCommands[cmd.id];
       if (result === true) {
         return;
       }

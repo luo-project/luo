@@ -216,6 +216,9 @@ export const DEFAULT_CONFIG: Config = {
       j: "focus-move-down",
       k: "focus-move-up",
       l: "focus-move-right",
+      c: "choice-add-focus",
+      z: "focus-prev",
+      x: "focus-next",
     },
   },
 };

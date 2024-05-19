@@ -17,8 +17,21 @@ const patch = new Map<string, string | null>([
 ]);
 
 const l = logger("keyevent");
+let enabled = true;
+
+export function enableKeyEvent(e: boolean) {
+  if (e === enabled) {
+    l.error("before===after", e);
+  }
+  l.debug(e ? "ENABLED" : "DIABLED");
+  enabled = e;
+}
+
 export function initKeyboardEvent(listener: KeyEventListener) {
   document.addEventListener("keydown", (e) => {
+    if (!enabled) {
+      return;
+    }
     if (e.repeat) {
       return;
     }

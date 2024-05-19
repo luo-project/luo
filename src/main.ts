@@ -1,6 +1,6 @@
 import { DEFAULT_CONFIG, DEFAULT_STATE, PROD } from "./lib/constants";
 import { initCommandLoop, loadCommands } from "./lib/command";
-import { initKeyboardEvent, preventClose } from "./lib/dom";
+import { initKeyboardEvent, preventClose } from "./lib/keyevent";
 import "./css/main.css";
 import "./css/svg.css";
 import { makeFindKeybinding } from "./lib/keybinding";

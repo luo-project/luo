@@ -89,6 +89,10 @@ span {
   padding: 2px;
 }
 
+#logs .log {
+  transition: font 0.2s ease-out;
+}
+
 #logs .log.warn {
   color: #755100;
 }

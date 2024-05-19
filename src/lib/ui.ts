@@ -19,11 +19,26 @@ export function resetCurrentKey(kb: Keybinding) {
     .join("<br/>");
 }
 
+const fontSizeMap = {
+  info: 12,
+  warn: 14,
+  error: 16,
+} as any;
+const fontWeightMap = {
+  info: "normal",
+  warn: "bold",
+  error: "bold",
+} as any;
+
 export function appendLog(level: string, args: any[]) {
   const msg = args.join(" ");
   const l = document.createElement("span");
   l.classList.add("log", level);
   l.textContent = msg;
+  l.style.fontSize = `${fontSizeMap[level]}px`;
+  l.style.fontWeight = `${fontWeightMap[level]}`;
   logs.append(l);
   logs.scrollBy({ behavior: "smooth", left: 0, top: 9999999999 });
+  l.style.removeProperty("font-size");
+  l.style.removeProperty("font-weight");
 }

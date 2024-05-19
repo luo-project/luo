@@ -8,6 +8,9 @@ export const def: CommandDefinition = {
     if (!state.graphFocus) {
       return "No focus.";
     }
+    if (state.choice.indexOf(state.graphFocus!) !== -1) {
+      return "Already added to the choice list.";
+    }
     return true;
   },
 

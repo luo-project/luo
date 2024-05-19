@@ -3,12 +3,12 @@ import { hasTimeline, popTimeline } from "../timeline";
 
 export const def: CommandDefinition = {
   available(state) {
-    if (hasTimeline(state.timeline.graph, false)) {
+    if (state.graphFocus !== undefined && hasTimeline(state.timeline.graphFocus, false)) {
       return true;
     }
     return "No history.";
   },
   func(state) {
-    state.graph = popTimeline(state.graph, state.timeline.graph, false);
+    state.graphFocus = popTimeline(state.graphFocus, state.timeline.graphFocus, false);
   },
 };

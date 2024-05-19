@@ -1,14 +1,14 @@
 import type { CommandDefinition } from "../command";
+import { hasTimeline, popTimeline } from "../timeline";
 
 export const def: CommandDefinition = {
-  description: "undo for graph modification command",
-  available: (state) => {
-    if (state.graph.current > 0) {
+  available(state) {
+    if (hasTimeline(state.timeline.graph, true)) {
       return true;
     }
-    return "There are no history for undo";
+    return "No history.";
   },
-  async func(state) {
-    state.graph.current--;
+  func(state) {
+    state.graph = popTimeline(state.graph, state.timeline.graph, true);
   },
 };

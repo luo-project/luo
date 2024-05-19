@@ -1,6 +1,6 @@
 import * as dagred3 from "dagre-d3-es";
 import * as d3 from "d3";
-import { isVertex, type GraphSnapshot } from "./graph";
+import { isVertex, type Graph } from "./graph";
 import type { GraphRenderInfo, Viewport } from "./state";
 import svgPanZoom from "svg-pan-zoom";
 import { logger } from "./log";
@@ -59,7 +59,7 @@ export function setAnimation(cfg: Config) {
   }
 }
 
-export function renderD3(p: { gs: GraphSnapshot; cursor?: string }): GraphRenderInfo {
+export function renderD3(p: { graph: Graph; focus?: string }): GraphRenderInfo {
   const g = new dagred3.graphlib.Graph({
     directed: true,
     multigraph: true,
@@ -77,12 +77,12 @@ export function renderD3(p: { gs: GraphSnapshot; cursor?: string }): GraphRender
     acyclicer: undefined,
     ranker: "tight-tree",
   });
-  removeClass("cursor");
+  removeClass("focus");
   const edgeIds = new Map<string, [string, string]>();
-  for (const e of p.gs.elements) {
+  for (const e of p.graph.elements) {
     const classes: string[] = ["luo"];
-    if (p.cursor && e.id === p.cursor) {
-      classes.push("cursor");
+    if (p.focus && e.id === p.focus) {
+      classes.push("focus");
     }
     if (isVertex(e)) {
       g.setNode(e.id, { label: e.label, shape: e.shape, class: classes.join(" ") });

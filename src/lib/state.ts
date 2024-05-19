@@ -1,8 +1,9 @@
 import type { DeepReadonly } from "ts-essentials";
 import type { CommandDefinitionWithId } from "./command";
 import type { Config } from "./config";
-import type { GraphCursor, Graph, GraphPallete } from "./graph";
+import type { GraphFocus, Graph, GraphPallete } from "./graph";
 import type { GraphIndex } from "./graph-index";
+import type { Timeline } from "./timeline";
 
 export type Viewport = {
   x: number;
@@ -16,8 +17,12 @@ export type Viewport = {
 export type State = {
   graph: Graph;
   graphPallete: GraphPallete;
-  graphCursor?: GraphCursor;
+  graphFocus?: GraphFocus;
   viewport: Viewport;
+  timeline: {
+    graph: Timeline<Graph>;
+    graphFocus: Timeline<GraphFocus>;
+  };
 };
 
 /**
@@ -35,6 +40,7 @@ export type GlobalContext = {
   commands: CommandDefinitionWithId[];
   graphIndex: GraphIndex;
   graphRenderInfo: GraphRenderInfo;
+  previousState: DeepReadonly<State>;
 };
 
 export type GraphRenderInfo = {

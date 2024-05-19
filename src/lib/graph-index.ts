@@ -1,27 +1,27 @@
-import type { Edge, GraphElement, GraphSnapshot, Vertex } from "./graph";
+import type { Edge, GraphElement, Graph, Vertex } from "./graph";
 
-export type GraphIndex = (s: GraphSnapshot) => {
+export type GraphIndex = (graph: Graph) => {
   any: (id: string) => GraphElement;
   vertex: (id: string) => Vertex;
   edge: (id: string) => Edge;
 };
 
-export function makeGraphIndex(gs: GraphSnapshot): GraphIndex {
+export function makeGraphIndex(g: Graph): GraphIndex {
   const m = new Map<string, number>();
-  for (let i = 0; i < gs.elements.length; i += 1) {
-    const e = gs.elements[i];
+  for (let i = 0; i < g.elements.length; i += 1) {
+    const e = g.elements[i];
     if (m.has(e.id)) {
       throw new Error(`GraphIndex conflcit: ${e.id}`);
     }
     m.set(e.id, i);
   }
-  return (snapshot: GraphSnapshot) => {
+  return (graph: Graph) => {
     const any = (id: string, typeAssert?: string) => {
       const i = m.get(id);
       if (i === undefined) {
         throw new Error(`GraphIndex not found: ${id}`);
       }
-      const e = snapshot.elements[i];
+      const e = graph.elements[i];
       if (e === undefined) {
         throw new Error(`GraphIndex invalid: ${id}`);
       }

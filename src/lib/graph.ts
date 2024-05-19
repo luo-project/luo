@@ -1,16 +1,4 @@
-/**
- * Graph stores recent changes as snapshots.
- */
 export type Graph = {
-  /**
-   * Index of current version.
-   */
-  current: number;
-
-  snapshots: GraphSnapshot[];
-};
-
-export type GraphSnapshot = {
   elements: GraphElement[];
 };
 
@@ -47,17 +35,7 @@ export type GraphPallete = {
   vertexShape: VertexShape;
 };
 
-export type GraphCursor = GraphElementId;
-
-export function getCurrentSnapshop(g: Graph): GraphSnapshot {
-  const s = g.snapshots[g.current];
-  if (s === undefined) {
-    throw new Error(
-      `GraphSnapshot undefined: current=${g.current} snapshopts.length=${g.snapshots.length}`,
-    );
-  }
-  return s;
-}
+export type GraphFocus = GraphElementId;
 
 export function isVertex(e: GraphElement): e is Vertex {
   return e.t === "v";

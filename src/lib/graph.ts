@@ -35,6 +35,7 @@ export type Edge = GraphElementBase & {
 export type GraphPallete = {
   nextId: number;
   vertexShape: VertexShape;
+  vertexLabel: string;
 };
 
 export type GraphFocus = GraphElementId;
@@ -42,7 +43,9 @@ export type GraphFocus = GraphElementId;
 export function isVertex(e: GraphElement): e is Vertex {
   return e.t === "v";
 }
-
+export function isEdge(e: GraphElement): e is Edge {
+  return e.t === "e";
+}
 // @TODO: 현재는 RenderInfo에 vertex만 좌표 정보가 있으므로, edge 처리는 나중에 추가.
 // edge는 좌표들의 무게중심을 구해서 x, y 좌표를 정하면 될 것 같다.
 export function sortGraphElementsByPosition(

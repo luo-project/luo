@@ -3,7 +3,8 @@ import type { Config } from "./config";
 import { type HookDefinitionWithId } from "./hook";
 import { logger } from "./log";
 import type { State, StateFunc, GlobalContext } from "./state";
-import { deepCopy, dev, getMaxIdFromState, loadEagerModules, newCounter } from "./utils";
+import { deepCopy, dev, loadEagerModules, newCounter } from "./utils";
+import { getMaxIdFromState } from "./graph";
 
 /**
  * Command is a javascript modules located in `src/lib/commands/`.

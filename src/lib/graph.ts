@@ -1,4 +1,4 @@
-import type { GlobalContext } from "./state";
+import type { GlobalContext, State } from "./state";
 
 export type Graph = {
   elements: GraphElement[];
@@ -62,4 +62,12 @@ export function sortGraphElementsByPosition(
     return a_score - b_score;
   });
   return vertexRenderInfos.map((v) => elements.find((e) => e.id === v.id)!);
+}
+
+export function getMaxIdFromState(state: State): number {
+  let allElements = state.graph.elements.concat(
+    ...state.timeline.graph[0].map((e) => e.elements),
+    ...state.timeline.graph[1].map((e) => e.elements),
+  );
+  return Math.max(...allElements.map((e) => parseInt(e.id, 10)));
 }

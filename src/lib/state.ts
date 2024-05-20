@@ -42,6 +42,7 @@ export type GlobalContext = {
   command: CommandDefinitionWithId;
   commands: CommandDefinitionWithId[];
   graphIndex: GraphIndex;
+  nextId: () => number;
   graphRenderInfo: GraphRenderInfo;
   previousState: DeepReadonly<State>;
   availableCommands: Record<string, string | true>;

@@ -1,4 +1,5 @@
 import { PROD } from "./constants";
+import { State } from "./state";
 
 export function deepCopy<T>(v: T): T {
   return structuredClone(v);
@@ -26,4 +27,14 @@ export function dev(cb: () => unknown) {
   if (!PROD) {
     cb();
   }
+}
+export function getMaxIdFromState(state: State): number {
+  let allElements = state.graph.elements.concat(
+    ...state.timeline.graph[0].map((e) => e.elements),
+    ...state.timeline.graph[1].map((e) => e.elements),
+  );
+  return Math.max(...allElements.map((e) => parseInt(e.id, 10)));
+}
+export function newCounter(number: number): () => number {
+  return () => ++number;
 }

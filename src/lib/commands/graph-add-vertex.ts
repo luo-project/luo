@@ -8,34 +8,37 @@ export const def: CommandDefinition = {
     return true;
   },
   func(state, config, ctx) {
-    const nextId = state.graphPallete.nextId;
     const focus = state.graphFocus!;
     const focusElement = ctx.graphIndex(state.graph).any(focus);
 
     if (isVertex(focusElement)) {
+      const newEdgeId = ctx.nextId().toString();
+      const newVertexId = ctx.nextId().toString();
       state.graph.elements.push({
         t: "e",
-        id: nextId.toString(),
+        id: newEdgeId,
         source: focus,
-        target: (nextId + 1).toString(),
+        target: newVertexId,
       });
       state.graph.elements.push({
         t: "v",
-        id: (nextId + 1).toString(),
+        id: newVertexId,
         shape: state.graphPallete.vertexShape,
         label: state.graphPallete.vertexLabel,
       });
     } else if (isEdge(focusElement)) {
+      const newVertexId = ctx.nextId().toString();
+      const newEdgeId = ctx.nextId().toString();
       state.graph.elements.push({
         t: "e",
-        id: nextId.toString(),
-        source: (nextId + 1).toString(),
+        id: newEdgeId,
+        source: newVertexId,
         target: focusElement.target,
       });
-      focusElement.target = (nextId + 1).toString();
+      focusElement.target = newVertexId.toString();
       state.graph.elements.push({
         t: "v",
-        id: (nextId + 1).toString(),
+        id: newVertexId.toString(),
         shape: state.graphPallete.vertexShape,
         label: state.graphPallete.vertexLabel,
       });

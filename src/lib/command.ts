@@ -3,7 +3,7 @@ import type { Config } from "./config";
 import { type HookDefinitionWithId } from "./hook";
 import { logger } from "./log";
 import type { State, StateFunc, GlobalContext } from "./state";
-import { deepCopy, dev, loadEagerModules } from "./utils";
+import { deepCopy, dev, getMaxIdFromState, loadEagerModules, newCounter } from "./utils";
 
 /**
  * Command is a javascript modules located in `src/lib/commands/`.
@@ -46,6 +46,7 @@ export function initCommandLoop(
     commands: commands,
     command: null as any,
     graphIndex: null as any,
+    nextId: newCounter(getMaxIdFromState(state)),
     graphRenderInfo: null as any,
     previousState,
     availableCommands: {},

@@ -253,6 +253,7 @@ export const DEFAULT_KEYBINDING: Keybinding = {
   "c Z": "choice-redo",
   "c d": "choice-clear",
   "g a": "graph-add-vertex",
+  "ctrl-a": "choice-all",
 };
 
 export const PROD = import.meta.env.MODE === "production";

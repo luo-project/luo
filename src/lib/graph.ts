@@ -33,7 +33,6 @@ export type Edge = GraphElementBase & {
  * GraphPallete stores information of GraphElement will be created next time.
  */
 export type GraphPallete = {
-  nextId: number;
   vertexShape: VertexShape;
   vertexLabel: string;
 };

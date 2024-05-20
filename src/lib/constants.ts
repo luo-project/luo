@@ -170,7 +170,6 @@ export const DEFAULT_STATE: State = {
     choice: [[], []],
   },
   graphPallete: {
-    nextId: 10,
     vertexShape: "rect",
     vertexLabel: "New Vertex",
   },
@@ -253,6 +252,7 @@ export const DEFAULT_KEYBINDING: Keybinding = {
   "c z": "choice-undo",
   "c Z": "choice-redo",
   "c d": "choice-clear",
+  "g a": "graph-add-vertex",
 };
 
 export const PROD = import.meta.env.MODE === "production";

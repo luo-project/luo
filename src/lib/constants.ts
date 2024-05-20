@@ -172,6 +172,7 @@ export const DEFAULT_STATE: State = {
   graphPallete: {
     nextId: 10,
     vertexShape: "rect",
+    vertexLabel: "New Vertex",
   },
   viewport: { x: 100, y: 50, zoom: 0.5 },
   graphFocus: "5",
@@ -224,6 +225,7 @@ export const DEFAULT_CONFIG: Config = {
       z: "focus-prev",
       x: "focus-next",
       delete: "choice-clear",
+      g: "graph-add-vertex",
     },
   },
 };

@@ -71,3 +71,21 @@ export function getMaxIdFromState(state: State): number {
   );
   return Math.max(...allElements.map((e) => parseInt(e.id, 10)));
 }
+
+export function sortByDistance(
+  state: State,
+  ctx: GlobalContext,
+  vertex: Vertex,
+): Vertex[] {
+  const vertexRenderInfo = ctx.graphRenderInfo.vertex(vertex.id);
+  const allVertex = state.graph.elements.filter(isVertex);
+  const vertexWithDistance = allVertex.map((v) => {
+    const renderInfo = ctx.graphRenderInfo.vertex(v.id);
+    const distance = Math.sqrt(
+      Math.pow(vertexRenderInfo.x - renderInfo.x, 2) +
+        Math.pow(vertexRenderInfo.y - renderInfo.y, 2),
+    );
+    return { vertex: v, distance };
+  });
+  return vertexWithDistance.sort((a, b) => a.distance - b.distance).map((v) => v.vertex);
+}

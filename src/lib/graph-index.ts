@@ -35,3 +35,7 @@ export function makeGraphIndex(g: Graph): GraphIndex {
     return { any, vertex, edge };
   };
 }
+
+export function isExistsId(graph: Graph, id: string): boolean {
+  return graph.elements.some((e) => e.id === id);
+}

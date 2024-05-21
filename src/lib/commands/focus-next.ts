@@ -16,9 +16,9 @@ export const def: CommandDefinition = {
     ) {
       return "No element to move focus to. because the choice list is empty.";
     }
-    if (state.graphFocus === undefined) {
-      return "No focus.";
-    }
+    // if (state.graphFocus === undefined) {
+    //   return "No focus.";
+    // }
 
     const focus = state.graphFocus!;
     const focusElement = ctx.graphIndex(graph).any(focus);

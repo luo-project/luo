@@ -1,4 +1,5 @@
 import type { CommandDefinition } from "../command";
+import { isExistsId } from "../graph-index";
 import { hasTimeline, popTimeline } from "../timeline";
 
 export const def: CommandDefinition = {
@@ -10,6 +11,16 @@ export const def: CommandDefinition = {
     return "No history.";
   },
   func(state) {
-    state.graphFocus = popTimeline(state.graphFocus, state.timeline.graphFocus, true);
+    let result = popTimeline(state.graphFocus, state.timeline.graphFocus, true);
+    while (
+      hasTimeline(state.timeline.graphFocus, true) ||
+      isExistsId(state.graph, result)
+    ) {
+      //delete last element of redo history
+      state.timeline.graphFocus[1].pop();
+
+      result = popTimeline(state.graphFocus, state.timeline.graphFocus, true);
+    }
+    state.graphFocus = result;
   },
 };

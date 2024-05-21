@@ -254,6 +254,7 @@ export const DEFAULT_KEYBINDING: Keybinding = {
   "c d": "choice-clear",
   "g a": "graph-add-vertex",
   "ctrl-a": "choice-all",
+  Delete: "graph-delete",
 };
 
 export const PROD = import.meta.env.MODE === "production";
@@ -324,6 +325,7 @@ export const VALID_KEYS = new Set([
   "Space",
   "Enter",
   "Tab",
+  "Delete",
   ":",
   ";",
   "'",

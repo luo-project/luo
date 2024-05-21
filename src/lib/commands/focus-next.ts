@@ -1,5 +1,6 @@
 import type { CommandDefinition } from "../command";
 import { sortGraphElementsByPosition, GraphElement, isVertex } from "../graph";
+import { isExistsId } from "../graph-index";
 import { deepCopy } from "../utils";
 
 export const def: CommandDefinition = {
@@ -16,11 +17,11 @@ export const def: CommandDefinition = {
     ) {
       return "No element to move focus to. because the choice list is empty.";
     }
-    if (state.graphFocus === undefined) {
-      return "No focus.";
-    }
 
-    const focus = state.graphFocus!;
+    const focus = state.graphFocus;
+    if (focus === undefined || isExistsId(graph, focus) === false) {
+      return true;
+    }
     const focusElement = ctx.graphIndex(graph).any(focus);
     if (!isVertex(focusElement)) {
       return "Edge is not supported Temporary.";
@@ -29,6 +30,13 @@ export const def: CommandDefinition = {
   },
 
   func(state, config, ctx) {
+    if (
+      state.graphFocus === undefined ||
+      isExistsId(state.graph, state.graphFocus) === false
+    ) {
+      state.graphFocus = state.choice[0];
+      return;
+    }
     let elements = sortGraphElementsByPosition(
       state.choice.map((id) => ctx.graphIndex(state.graph).any(id)),
       ctx,

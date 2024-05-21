@@ -22,5 +22,8 @@ export const def: CommandDefinition = {
       result = popTimeline(state.graphFocus, state.timeline.graphFocus, false);
     }
     state.graphFocus = result;
+    if (state.graphFocus === undefined) {
+      state.graphFocus = state.graph.elements[0].id;
+    }
   },
 };

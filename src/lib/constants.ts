@@ -174,7 +174,7 @@ export const DEFAULT_STATE: State = {
     vertexLabel: "New Vertex",
   },
   viewport: { x: 100, y: 50, zoom: 0.5 },
-  graphFocus: "5",
+  graphFocus: "",
   choice: [],
 };
 

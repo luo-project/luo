@@ -51,6 +51,10 @@ export const def: CommandDefinition = {
         state.graphFocus = sortByDistance(state, ctx, focusElement)[0].id;
       }
     } else if (isEdge(focusElement)) {
+      // delete focus edge.
+      state.graph.elements = state.graph.elements.filter((e) => e.id !== focus);
+      const nextElement = ctx.graphIndex(state.graph).any(focusElement.source);
+      state.graphFocus = nextElement.id;
     }
   },
 };

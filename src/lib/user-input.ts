@@ -1,4 +1,4 @@
-import { enableKeyEvent } from "./dom";
+import { enableKeymap } from "./keymap";
 import { logger } from "./log";
 
 export type UserInputType = "string" | "number" | "int";
@@ -21,7 +21,7 @@ export async function userInput(p: {
   let cbKeydown: (e: KeyboardEvent) => any = null as any;
   try {
     message.textContent = p.message ?? null;
-    enableKeyEvent(false);
+    enableKeymap(false);
     container.style.display = "block";
     input.focus();
     const text = await new Promise<string>((resolve, reject) => {
@@ -72,6 +72,6 @@ export async function userInput(p: {
     input.value = "";
     input.removeEventListener("keydown", cbKeydown);
     input.removeEventListener("input", cbInput);
-    enableKeyEvent(true);
+    enableKeymap(true);
   }
 }

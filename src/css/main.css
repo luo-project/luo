@@ -109,27 +109,39 @@ span {
   bottom: 0;
 }
 
-#user-input > #background {
-  position: absolute;
+#user-input .background {
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background-color: black;
-  opacity: 0.5;
-  z-index: -99;
+  opacity: 0.3;
 }
 
-#user-input > #message {
-  background-color: #ccc;
+#user-input .container {
+  position: relative;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+}
+
+#user-input .message {
   color: black;
   font-size: 20px;
 }
 
-#user-input > #input {
-  position: absolute;
+#user-input .input {
   font-size: 20px;
   outline: none;
   border: none;
+  margin: 12px;
   padding: 12px;
 }

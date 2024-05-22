@@ -53,40 +53,44 @@ export function initCommandLoop(
     availableCommands: {},
   };
   const cb = async () => {
-    const cmd = queue.shift();
-    if (cmd === undefined) {
-      setTimeout(cb, 0);
-      return;
-    }
-    ctx.command = cmd;
-    ctx.previousState = previousState;
-    if (cmd.available) {
-      const a = ctx.availableCommands[cmd.id];
-      if (typeof a === "string") {
-        l.warn(`'${cmd.id}' is unavailable: ${a}`);
-        setTimeout(cb, 0);
+    try {
+      const cmd = queue.shift();
+      if (cmd === undefined) {
         return;
       }
-    }
+      ctx.command = cmd;
+      ctx.previousState = previousState;
+      if (cmd.available) {
+        const a = ctx.availableCommands[cmd.id];
+        if (typeof a === "string") {
+          l.warn(`'${cmd.id}' is unavailable: ${a}`);
+          setTimeout(cb, 0);
+          return;
+        }
+      }
 
-    onRun(cmd);
-    l.time("total");
-    state = deepCopy(state);
-    l.debug("before", cmd.id, state);
-    await cmd.func(state, cfg, ctx);
-    l.debug("after", cmd.id, state);
-    for (const hook of hooks) {
+      onRun(cmd);
+      l.time("total");
       state = deepCopy(state);
-      l.debug("before", hook.id, state);
-      await hook.func(state, cfg, ctx);
-      l.debug("after", hook.id, state);
+      l.debug("before", cmd.id, state);
+      await cmd.func(state, cfg, ctx);
+      l.debug("after", cmd.id, state);
+      for (const hook of hooks) {
+        state = deepCopy(state);
+        l.debug("before", hook.id, state);
+        await hook.func(state, cfg, ctx);
+        l.debug("after", hook.id, state);
+      }
+      previousState = deepCopy(state);
+      l.timeEnd("total");
+      dev(() => {
+        (window as any).state = state;
+      });
+    } catch (e) {
+      l.error(e);
+    } finally {
+      setTimeout(cb, 0);
     }
-    previousState = deepCopy(state);
-    l.timeEnd("total");
-    dev(() => {
-      (window as any).state = state;
-    });
-    setTimeout(cb, 0);
   };
   cb();
   return (cmd: CommandDefinitionWithId) => {

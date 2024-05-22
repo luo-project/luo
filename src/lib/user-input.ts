@@ -4,8 +4,8 @@ import { logger } from "./log";
 export type UserInputType = "string" | "number" | "int";
 
 const container = document.getElementById("user-input")!;
-const input = document.querySelector("#user-input > #input")! as HTMLInputElement;
-const message = document.querySelector("#user-input > #message")!;
+const input = document.querySelector("#user-input .input")! as HTMLInputElement;
+const message = document.querySelector("#user-input .message")!;
 const l = logger("userinput");
 
 export async function userInput(p: { message?: string; type: "string" }): Promise<string>;
@@ -19,6 +19,7 @@ export async function userInput(p: {
 }): Promise<any> {
   let cbInput: (e: Event) => any = null as any;
   let cbKeydown: (e: KeyboardEvent) => any = null as any;
+  let cbBlur: (e: Event) => any = null as any;
   try {
     message.textContent = p.message ?? null;
     enableKeymap(false);
@@ -47,9 +48,13 @@ export async function userInput(p: {
           return;
         }
       };
+      cbBlur = () => {
+        input.focus();
+      };
 
       input.addEventListener("keydown", cbKeydown);
       input.addEventListener("input", cbInput);
+      input.addEventListener("blur", cbBlur);
     });
     if (p.type === "string") {
       return text;
@@ -72,6 +77,9 @@ export async function userInput(p: {
     input.value = "";
     input.removeEventListener("keydown", cbKeydown);
     input.removeEventListener("input", cbInput);
-    enableKeymap(true);
+    input.removeEventListener("blur", cbBlur);
+    setTimeout(() => {
+      enableKeymap(true);
+    });
   }
 }

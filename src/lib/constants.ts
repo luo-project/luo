@@ -255,6 +255,7 @@ export const DEFAULT_KEYBINDING: Keybinding = {
   "g a": "graph-add-vertex",
   "ctrl-a": "choice-all",
   Delete: "graph-delete",
+  "ctrl-Enter": "graph-edit-label",
 };
 
 export const PROD = import.meta.env.MODE === "production";

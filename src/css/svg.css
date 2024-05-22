@@ -4,31 +4,41 @@
   border: 1px solid black;
 }
 
-#svg .node {
+#svg .node-component {
   stroke: black;
   fill: #ccc;
   stroke-width: 1px;
 }
+#svg .label-component {
+  dominant-baseline: hanging;
+}
 
-#svg .edgePath {
+#svg .edge-line {
   stroke: black;
-  fill: #ccc;
+  fill: none;
   stroke-width: 1.5px;
 }
 
-#svg .node.focus {
-  fill: red;
+#svg .edge-arrow {
+  stroke: black;
+  fill: none;
+  stroke-width: 1px;
 }
 
-#svg .edgePath.focus {
+#svg .node-group.focus > .node-component {
+  fill: red;
+  fill-opacity: 0.5;
+}
+
+#svg .edge-group.focus > .edge-line {
   stroke: red;
-  fill: red;
 }
 
-#svg .node.choice > :nth-child(1) {
+#svg .node-group.choice > .node-component {
   stroke: blue;
 }
 
-#svg .edgePath.choice {
+#svg .edge-group.choice > .edge-line,
+#svg .edge-group.choice > .edge-arrow {
   stroke: blue;
 }

@@ -1,14 +1,15 @@
-import { renderD3, renderViewport, setAnimation } from "../dagred3";
+import { render } from "../elk";
 import type { HookDefinition } from "../hook";
+import { setSvgAnimation, setSvgViewport } from "../svg";
 
 export const def: HookDefinition = {
   async func(state, cfg, ctx) {
-    setAnimation(cfg);
-    ctx.graphRenderInfo = renderD3({
-      graph: state.graph,
-      focus: state.graphFocus,
-      choices: state.choice,
-    });
-    renderViewport(state.viewport);
+    setSvgAnimation(cfg);
+    ctx.graphRenderInfo = await render(
+      state.graph,
+      state.graphFocus,
+      new Set(state.choice),
+    );
+    setSvgViewport(state.viewport);
   },
 };

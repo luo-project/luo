@@ -51,6 +51,19 @@ export type GlobalContext = {
 export type GraphRenderInfo = {
   width: number;
   height: number;
-  vertex: (id: string) => { x: number; y: number; width: number; height: number };
-  edge: (id: string) => {};
+
+  vertex: (id: string) => VertexRenderInfo;
+  vertices: () => Map<string, VertexRenderInfo>;
+
+  edge: (id: string) => EdgeRenderInfo;
+  edges: () => Map<string, EdgeRenderInfo>;
 };
+
+export type VertexRenderInfo = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};
+
+export type EdgeRenderInfo = {};

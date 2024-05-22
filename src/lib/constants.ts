@@ -175,7 +175,7 @@ export const DEFAULT_STATE: State = {
   },
   viewport: { x: 100, y: 50, zoom: 0.5 },
   graphFocus: "5",
-  choice: [],
+  choice: ["1"],
 };
 
 export const DEFAULT_CONFIG: Config = {
@@ -256,6 +256,7 @@ export const DEFAULT_KEYBINDING: Keybinding = {
   "ctrl-a": "choice-all",
   Delete: "graph-delete",
   "ctrl-Enter": "graph-edit-label",
+  "ctrl-Insert": "graph-add-edge",
 };
 
 export const PROD = import.meta.env.MODE === "production";
@@ -327,6 +328,7 @@ export const VALID_KEYS = new Set([
   "Enter",
   "Tab",
   "Delete",
+  "Insert",
   ":",
   ";",
   "'",

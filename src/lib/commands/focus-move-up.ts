@@ -23,12 +23,17 @@ export const def: CommandDefinition = {
     const { vertex } = ctx.graphIndex(state.graph);
 
     const here = vertex(focus);
-    const nearest = nearestVertex(
-      state.graph,
-      ctx.graphRenderInfo,
-      here,
-      (x1, y1, x2, y2) => y2 < x2 - x1 + y1 && y2 <= -(x2 - x1) + y1,
-    );
+    const gap = cfg.command["focus-move"].gap;
+    const { x: xm1, y: ym1 } = ctx.graphRenderInfo.vertex(focus);
+
+    const ray: [number, number, number, number] = [
+      xm1 - gap,
+      Number.NEGATIVE_INFINITY,
+      xm1 + gap,
+      ym1,
+    ];
+
+    const nearest = nearestVertex(state.graph, ctx.graphRenderInfo, here, ray);
 
     if (nearest) {
       state.graphFocus = nearest.id;

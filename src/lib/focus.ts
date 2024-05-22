@@ -6,28 +6,52 @@ function dist(x1: number, y1: number, x2: number, y2: number) {
   return (x1 - x2) ** 2 + (y1 - y2) ** 2;
 }
 
+// return upper left corner and lower right corner
+function rectangle(x: number, y: number, width: number, height: number) {
+  return [
+    [x - width / 2, y - height / 2],
+    [x + width / 2, y + height / 2],
+  ];
+}
+
+function intersects(
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number,
+  x3: number,
+  y3: number,
+  x4: number,
+  y4: number,
+) {
+  return x1 <= x4 && x2 >= x3 && y1 <= y4 && y2 >= y3;
+}
+
 export function nearestVertex(
   graph: Graph,
   graphRenderInfo: GraphRenderInfo,
   here: Vertex,
-  condition: (x1: number, y1: number, x2: number, y2: number) => boolean,
+  ray: [number, number, number, number],
 ): Vertex | undefined {
   const vertex = graphRenderInfo.vertex;
-  const { x: x1, y: y1 } = vertex(here.id);
+  const { x: xm1, y: ym1 } = vertex(here.id);
+  const [x1, y1, x2, y2] = ray;
 
   const [nearest, ...rest] = graph.elements
     .filter(isVertex)
     .filter((v) => v.id !== here.id)
     .filter((v) => {
-      const { x: x2, y: y2 } = vertex(v.id);
-      return condition(x1, y1, x2, y2);
+      const { x: xm2, y: ym2, width, height } = vertex(v.id);
+      const [[x3, y3], [x4, y4]] = rectangle(xm2, ym2, width, height);
+
+      return intersects(x1, y1, x2, y2, x3, y3, x4, y4);
     })
     .sort((a, b) => {
-      const { x: x2, y: y2 } = vertex(a.id);
-      const { x: x3, y: y3 } = vertex(b.id);
+      const { x: x1, y: y1 } = vertex(a.id);
+      const { x: x2, y: y2 } = vertex(b.id);
 
-      const distA = dist(x1, y1, x2, y2);
-      const distB = dist(x1, y1, x3, y3);
+      const distA = dist(xm1, ym1, x1, y1);
+      const distB = dist(xm1, ym1, x2, y2);
 
       return distA - distB;
     });

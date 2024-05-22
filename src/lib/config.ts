@@ -27,5 +27,8 @@ export type Config = {
   };
   command: {
     keybinding: Record<string, string>;
+    "focus-move": {
+      gap: number;
+    };
   };
 };

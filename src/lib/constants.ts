@@ -226,6 +226,9 @@ export const DEFAULT_CONFIG: Config = {
       delete: "choice-clear",
       g: "graph-add-vertex",
     },
+    "focus-move": {
+      gap: 100,
+    },
   },
 };
 

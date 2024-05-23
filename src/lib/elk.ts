@@ -1,16 +1,10 @@
-import {
-  ElkSvg,
-  type ElkSvgEdge,
-  type ElkSvgElement,
-  type ElkSvgLabel,
-  type ElkSvgNode,
-} from "elk-svg";
+import { ElkSvg, type ElkSvgInputEdge, type ElkSvgInputNode } from "elk-svg";
 import ElkConstructor from "elkjs";
+import { calcTextSize } from "./dom";
 import { type Graph, type GraphElement } from "./graph";
 import { logger } from "./log";
 import type { EdgeRenderInfo, GraphRenderInfo, VertexRenderInfo } from "./state";
 import { deepCopy } from "./utils";
-import { calcTextSize } from "./dom";
 
 const MIN_W = 100;
 const MIN_H = 100;
@@ -33,32 +27,19 @@ const elk = new ElkConstructor({
 const elkSvg = new ElkSvg({
   container: document.getElementById("svg")!,
   logger: logger("elk-svg"),
-  classnames: {
-    topLevelGroup: "top-level-group",
-    group: "group",
-    nodeGroup: "node-group",
-    nodeComponent: "node-component",
-    edgeGroup: "edge-group",
-    edgeComponent: "edge-component",
-    edgeLine: "edge-line",
-    edgeArrow: "edge-arrow",
-    portGroup: "port-group",
-    portComponent: "port-component",
-    labelGroup: "label-group",
-    labelComponent: "label-component",
-  },
+  classPrefix: "",
 });
 
 const ROOT = "root";
 const LABEL = "label";
 
 type T = {
-  v: ElkSvgNode;
-  e: ElkSvgEdge;
+  v: ElkSvgInputNode;
+  e: ElkSvgInputEdge;
 };
 
 function convertGraph(g: Graph, cb: <K extends keyof T>(e: T[K], n: K) => void) {
-  const rootNode: ElkSvgNode = {
+  const rootNode: ElkSvgInputNode = {
     id: ROOT,
     children: [],
     edges: [],
@@ -76,7 +57,7 @@ function convertGraph(g: Graph, cb: <K extends keyof T>(e: T[K], n: K) => void) 
     if (e.t === "v") {
       const width = Math.max(label ? label.width : 0, MIN_W);
       const height = Math.max(label ? label.height : 0, MIN_H);
-      const node: ElkSvgNode = {
+      const node: ElkSvgInputNode = {
         id: e.id,
         svg: {
           shape: e.shape,
@@ -93,13 +74,16 @@ function convertGraph(g: Graph, cb: <K extends keyof T>(e: T[K], n: K) => void) 
       return;
     }
 
-    const edge = {
+    const edge: ElkSvgInputEdge = {
       id: e.id,
       sources: [e.source],
       targets: [e.target],
       svg: {
-        arrow: "normal",
-        arrowSize: 6,
+        arrow: {
+          shape: "arrow-normal",
+          size: 10,
+          thickness: 1,
+        },
       },
       labels,
     };
@@ -128,8 +112,8 @@ export async function render(
   });
   l.debug("classesMap", classesMap);
 
-  const nRef = new Set<ElkSvgNode>();
-  const eRef = new Set<ElkSvgEdge>();
+  const nRef = new Set<ElkSvgInputNode>();
+  const eRef = new Set<ElkSvgInputEdge>();
 
   const node = convertGraph(g, (e, n) => {
     e.svg!.classes = classesMap.get(e.id);

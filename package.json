@@ -18,7 +18,7 @@
     "vitest": "^1.6.0"
   },
   "dependencies": {
-    "elk-svg": "^2.4.0",
+    "elk-svg": "^2.4.1",
     "elkjs": "^0.9.3",
     "lodash-es": "^4.17.21",
     "svg-pan-zoom": "^3.6.1",

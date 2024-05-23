@@ -5,6 +5,8 @@ import { logger } from "./log";
 import type { State, StateFunc, GlobalContext } from "./state";
 import { deepCopy, dev, loadEagerModules, newCounter } from "./utils";
 import { getMaxIdFromState } from "./graph";
+import { PROD } from "./constants";
+import { makeRecord } from "./debug";
 
 /**
  * Command is a javascript modules located in `src/lib/commands/`.
@@ -38,6 +40,7 @@ export function initCommandLoop(
   hooks: HookDefinitionWithId[],
   onRun: (command: CommandDefinitionWithId) => void,
 ) {
+  const record = makeRecord("commandLoop", !PROD);
   const cfg = Object.freeze(config);
   let state = deepCopy(initState);
   let previousState = deepCopy(state);
@@ -52,6 +55,7 @@ export function initCommandLoop(
     previousState,
     availableCommands: {},
   };
+
   const cb = async () => {
     try {
       const cmd = queue.shift();
@@ -72,20 +76,16 @@ export function initCommandLoop(
       onRun(cmd);
       l.time("total");
       state = deepCopy(state);
-      l.debug("before", cmd.id, state);
+      record(`before command '${cmd.id}'`, state);
       await cmd.func(state, cfg, ctx);
-      l.debug("after", cmd.id, state);
       for (const hook of hooks) {
         state = deepCopy(state);
-        l.debug("before", hook.id, state);
+        record(`before hook '${hook.id}'`, state);
         await hook.func(state, cfg, ctx);
-        l.debug("after", hook.id, state);
       }
       previousState = deepCopy(state);
+      record("after all", state);
       l.timeEnd("total");
-      dev(() => {
-        (window as any).state = state;
-      });
     } catch (e) {
       l.error(e);
     } finally {

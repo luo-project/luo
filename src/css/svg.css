@@ -4,12 +4,13 @@
   border: 1px solid black;
 }
 
-#svg .node-component {
+#svg .node {
   stroke: black;
   fill: #ccc;
   stroke-width: 1px;
 }
-#svg .label-component {
+
+#svg .label {
   dominant-baseline: hanging;
 }
 
@@ -25,20 +26,20 @@
   stroke-width: 1px;
 }
 
-#svg .node-group.focus > .node-component {
+#svg .node.focus {
   fill: red;
   fill-opacity: 0.5;
 }
 
-#svg .edge-group.focus > .edge-line {
+#svg .edge.focus > .edge-line {
   stroke: red;
 }
 
-#svg .node-group.choice > .node-component {
+#svg .node.choice {
   stroke: blue;
 }
 
-#svg .edge-group.choice > .edge-line,
-#svg .edge-group.choice > .edge-arrow {
+#svg .edge.choice > .edge-line,
+#svg .edge.choice > .edge-arrow {
   stroke: blue;
 }

@@ -1,8 +1,46 @@
 import { PROD } from "./constants";
-import { State } from "./state";
 
 export function deepCopy<T>(v: T): T {
   return structuredClone(v);
+}
+
+export function deepEquals<T>(a: T, b: T): boolean {
+  if (a === b) return true;
+
+  if (a && b && typeof a == "object" && typeof b == "object") {
+    if (a.constructor !== b.constructor) return false;
+
+    var length, i, keys;
+    if (Array.isArray(a)) {
+      length = a.length;
+      // @ts-ignore
+      if (length != b.length) return false;
+      // @ts-ignore
+      for (i = length; i-- !== 0; ) if (!deepEquals(a[i], b[i])) return false;
+      return true;
+    }
+
+    if (a.valueOf !== Object.prototype.valueOf) return a.valueOf() === b.valueOf();
+    if (a.toString !== Object.prototype.toString) return a.toString() === b.toString();
+
+    keys = Object.keys(a);
+    length = keys.length;
+    if (length !== Object.keys(b).length) return false;
+
+    for (i = length; i-- !== 0; )
+      if (!Object.prototype.hasOwnProperty.call(b, keys[i])) return false;
+
+    for (i = length; i-- !== 0; ) {
+      var key = keys[i];
+
+      // @ts-ignore
+      if (!deepEquals(a[key], b[key])) return false;
+    }
+
+    return true;
+  }
+
+  return a !== a && b !== b;
 }
 
 export function loadEagerModules<T>(

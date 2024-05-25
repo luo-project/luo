@@ -6,11 +6,11 @@ export const def: CommandDefinition = {
   description: "moves focus to the nearest vertex below the current focus",
 
   available(state, cfg, ctx) {
-    if (!state.graphFocus) {
+    if (!state.focus) {
       return "No focus.";
     }
     const { any } = ctx.graphIndex(state.graph as Graph);
-    if (!isVertex(any(state.graphFocus))) {
+    if (!isVertex(any(state.focus))) {
       return "Focus is not a vertex.";
     }
 
@@ -19,7 +19,7 @@ export const def: CommandDefinition = {
 
   func(state, cfg, ctx) {
     // TODO: if there is no graphFocus, set focus to top-left vertex
-    const focus = state.graphFocus!;
+    const focus = state.focus!;
     const { vertex } = ctx.graphIndex(state.graph);
 
     const here = vertex(focus);
@@ -36,7 +36,7 @@ export const def: CommandDefinition = {
     const nearest = nearestVertex(state.graph, ctx.graphRenderInfo, here, ray);
 
     if (nearest) {
-      state.graphFocus = nearest.id;
+      state.focus = nearest.id;
     }
   },
 };

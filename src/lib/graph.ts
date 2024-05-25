@@ -11,7 +11,7 @@ export type GraphElementId = string;
 
 export type GraphElementBase = {
   id: GraphElementId;
-  label?: string;
+  label: Label;
 };
 
 export type GraphElement = Vertex | Edge;
@@ -21,7 +21,11 @@ export type Vertex = GraphElementBase & {
   shape: VertexShape;
 };
 
-export type VertexShape = "rect" | "circle" | "ellipse" | "diamond";
+export type VertexShape = "rectangle" | "circle" | "ellipse" | "diamond";
+
+export type DefaultVertex = {
+  shape: VertexShape;
+};
 
 export type Edge = GraphElementBase & {
   t: "e";
@@ -29,15 +33,17 @@ export type Edge = GraphElementBase & {
   target: GraphElementId;
 };
 
-/**
- * GraphPallete stores information of GraphElement will be created next time.
- */
-export type GraphPallete = {
-  vertexShape: VertexShape;
-  vertexLabel: string;
+export type Label = {
+  text: string;
 };
 
-export type GraphFocus = GraphElementId;
+export type DefaultEdge = {};
+
+export type DefaultLabel = {
+  text: string;
+};
+
+export type Focus = GraphElementId;
 
 export function isVertex(e: GraphElement): e is Vertex {
   return e.t === "v";

@@ -4,16 +4,16 @@ export const def: CommandDefinition = {
   description: "add focus to choice list.",
 
   available(state) {
-    if (!state.graphFocus) {
+    if (!state.focus) {
       return "No focus.";
     }
-    if (state.choice.indexOf(state.graphFocus!) !== -1) {
+    if (state.choices.indexOf(state.focus!) !== -1) {
       return "Already added to the choice list.";
     }
     return true;
   },
 
   func(state) {
-    state.choice.push(state.graphFocus!);
+    state.choices.push(state.focus!);
   },
 };

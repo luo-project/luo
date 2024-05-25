@@ -8,6 +8,6 @@ export const def: CommandDefinition = {
   },
 
   func(state) {
-    state.choice = state.graph.elements.map((e) => e.id);
+    state.choices = state.graph.elements.map((e) => e.id);
   },
 };

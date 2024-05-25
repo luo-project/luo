@@ -2,8 +2,7 @@ import svgPanZoom from "svg-pan-zoom";
 import type { Config } from "./config";
 import { logger } from "./log";
 import type { Viewport } from "./state";
-import { deepCopy } from "./utils";
-import _ from "lodash-es";
+import { deepCopy, deepEquals } from "./utils";
 
 const svgContainer = document.getElementById("svg")! as any as SVGElement;
 const style = document.createElement("style");
@@ -37,7 +36,7 @@ const l = logger("panzoom");
 let lastViewport: Viewport | null = null;
 export function setSvgViewport(v: Viewport) {
   if (lastViewport !== null) {
-    if (_.isEqual(lastViewport, v)) {
+    if (deepEquals(lastViewport, v)) {
       return;
     }
   }

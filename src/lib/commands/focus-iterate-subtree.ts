@@ -5,14 +5,14 @@ export const def: CommandDefinition = {
   description: "iterates focus to next edge or vertex if focus is the last edge",
 
   available(state) {
-    if (!state.graphFocus) {
+    if (!state.focus) {
       return "No focus.";
     }
     return true;
   },
 
   func(state, cfg, ctx) {
-    const focus = state.graphFocus!;
+    const focus = state.focus!;
     const focusElement = ctx.graphIndex(state.graph).any(focus);
 
     const parent = isVertex(focusElement) ? focus : focusElement.source;
@@ -21,6 +21,6 @@ export const def: CommandDefinition = {
       .map((e) => e.id);
 
     const candidate = [parent, ...children];
-    state.graphFocus = candidate[(candidate.indexOf(focus) + 1) % candidate.length];
+    state.focus = candidate[(candidate.indexOf(focus) + 1) % candidate.length];
   },
 };

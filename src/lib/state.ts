@@ -1,10 +1,11 @@
 import type { DeepReadonly } from "ts-essentials";
 import type { CommandDefinitionWithId } from "./command";
 import type { Config } from "./config";
-import type { GraphFocus, Graph, GraphPallete } from "./graph";
+import type { Focus, Graph, DefaultVertex, DefaultEdge, DefaultLabel } from "./graph";
 import type { GraphIndex } from "./graph-index";
 import type { Timeline } from "./timeline";
-import type { Choice } from "./choice";
+import type { Choices } from "./choices";
+import type { Register } from "./register";
 
 export type Viewport = {
   x: number;
@@ -17,14 +18,26 @@ export type Viewport = {
  */
 export type State = {
   graph: Graph;
-  graphPallete: GraphPallete;
-  graphFocus?: GraphFocus;
-  choice: Choice;
+  focus?: Focus;
+  choices: Choices;
   viewport: Viewport;
+
+  defaultVertex: DefaultVertex;
+  defaultEdge: DefaultEdge;
+  defaultLabel: DefaultLabel;
+
+  register: {
+    focus: Register<Focus>;
+    choices: Register<Choices>;
+    defaultVertex: Register<DefaultVertex>;
+    defaultEdge: Register<DefaultEdge>;
+    defaultLabel: Register<DefaultLabel>;
+  };
+
   timeline: {
     graph: Timeline<Graph>;
-    graphFocus: Timeline<GraphFocus>;
-    choice: Timeline<Choice>;
+    focus: Timeline<Focus>;
+    choices: Timeline<Choices>;
   };
 };
 

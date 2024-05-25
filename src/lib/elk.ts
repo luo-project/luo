@@ -188,9 +188,9 @@ export async function render(
 }
 
 function makeLabel(e: GraphElement) {
-  if (!e.label) {
-    return undefined;
+  if (e.label.text === "") {
+    return;
   }
-  const [width, height] = calcTextSize(e.label);
-  return { id: LABEL + e.id, text: e.label, width, height };
+  const [width, height] = calcTextSize(e.label.text);
+  return { id: LABEL + e.id, text: e.label.text, width, height };
 }

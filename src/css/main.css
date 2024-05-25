@@ -46,7 +46,7 @@ span {
   flex-direction: column;
   font-size: 11px;
   line-height: 1.1;
-  flex: 0 0 400px;
+  flex: 0 0 300px;
   height: 100%;
   overflow: auto;
   border: 1px solid black;

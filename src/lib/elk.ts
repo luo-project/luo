@@ -14,14 +14,19 @@ const l = logger("elk");
 const elk = new ElkConstructor({
   defaultLayoutOptions: {
     "elk.algorithm": "layered",
-    "elk.direction": "RIGHT",
-    "spacing.nodeNode": 50,
-    "layered.spacing.nodeNodeBetweenLayers": 80,
+    "elk.direction": "DOWN",
     "elk.edgeLabels.inline": true,
     "elk.edgeRouting": "ORTHOGONAL",
+    "spacing.nodeNode": 50,
+    "spacing.edgeNode": 50,
+    "layered.spacing.nodeNodeBetweenLayers": 50,
+    "elk.layered.spacing.edgeEdgeBetweenLayers": 25,
+    "elk.layered.spacing.edgeNodeBetweenLayers": 25,
+    "elk.layered.unnecessaryBendpoints": true,
     "elk.nodeLabels.placement": "H_CENTER V_CENTER INSIDE",
     "spacing.portPort": "100",
     "nodeSize.constraints": "PORTS  NODE_LABELS MINIMUM_SIZE",
+    "elk.layered.directionCongruency": "ROTATION",
   } as any,
 });
 const elkSvg = new ElkSvg({
@@ -44,10 +49,7 @@ function convertGraph(g: Graph, cb: <K extends keyof T>(e: T[K], n: K) => void) 
     children: [],
     edges: [],
     svg: {},
-    layoutOptions: {
-      "elk.direction": "DOWN",
-      "elk.layered.crossingMinimization.strategy": "INTERACTIVE",
-    },
+    layoutOptions: {},
   };
 
   const minSize = `${MIN_W},${MIN_H}`;
@@ -71,9 +73,14 @@ function convertGraph(g: Graph, cb: <K extends keyof T>(e: T[K], n: K) => void) 
       };
       rootNode.children!.push(node);
       cb(node, e.t);
+
+      if (e.id === "8") {
+        node.layoutOptions = {
+          ...node.layoutOptions,
+        };
+      }
       return;
     }
-
     const edge: ElkSvgInputEdge = {
       id: e.id,
       sources: [e.source],
@@ -87,6 +94,10 @@ function convertGraph(g: Graph, cb: <K extends keyof T>(e: T[K], n: K) => void) 
       },
       labels,
     };
+    if (e.id === "26") {
+      edge.layoutOptions = {};
+    }
+
     rootNode.edges!.push(edge);
     cb(edge, e.t);
   });

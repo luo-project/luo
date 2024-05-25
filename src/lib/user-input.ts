@@ -8,15 +8,24 @@ const input = document.querySelector("#user-input .input")! as HTMLInputElement;
 const message = document.querySelector("#user-input .message")!;
 const l = logger("userinput");
 
-export async function userInput(p: { message?: string; type: "string" }): Promise<string>;
+export async function userInput(p: {
+  message?: string;
+  type: "string";
+  length?: number;
+}): Promise<string>;
 export async function userInput(p: {
   message?: string;
   type: "number" | "int";
+  length?: number;
 }): Promise<number>;
 export async function userInput(p: {
   message?: string;
   type: UserInputType;
+  length?: number;
 }): Promise<any> {
+  if (p.length === 0) {
+    throw new Error("invalid length: 0");
+  }
   let cbInput: (e: Event) => any = null as any;
   let cbKeydown: (e: KeyboardEvent) => any = null as any;
   let cbBlur: (e: Event) => any = null as any;
@@ -37,13 +46,18 @@ export async function userInput(p: {
           e.stopPropagation();
           return;
         }
+        if (typeof p.length === "number" && input.value.length === p.length) {
+          l.debug("by length:", input.value);
+          resolve(input.value);
+          return;
+        }
         if (key === "enter") {
-          l.debug("enter:", input.value);
+          l.debug("by enter:", input.value);
           resolve(input.value);
           return;
         }
         if (key === "escape") {
-          l.debug("cancelled");
+          l.debug("by escape cancelled");
           reject(new Error("user cancelled"));
           return;
         }

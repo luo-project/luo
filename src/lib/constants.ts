@@ -173,20 +173,20 @@ export const DEFAULT_STATE: State = {
     vertexShape: "rect",
     vertexLabel: "New Vertex",
   },
-  viewport: { x: 100, y: 50, zoom: 0.5 },
+  viewport: { x: 0, y: 0, zoom: 0.3 },
   graphFocus: "5",
   choice: ["1"],
 };
 
 export const DEFAULT_CONFIG: Config = {
   graph: {
-    animation: 200,
+    animation: 0,
     timelineSize: 20,
     focusTimelineSize: 10,
     choiceTimelineSize: 10,
   },
   viewport: {
-    animation: 200,
+    animation: 0,
     pan: {
       amount: {
         x: 200,
@@ -194,7 +194,7 @@ export const DEFAULT_CONFIG: Config = {
       },
     },
     zoom: {
-      amount: 0.4,
+      amount: 0.2,
       min: 0.33,
       max: 3,
     },

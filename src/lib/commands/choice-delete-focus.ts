@@ -4,16 +4,16 @@ export const def: CommandDefinition = {
   description: "add focus to choice list.",
 
   available(state) {
-    if (!state.graphFocus) {
+    if (!state.focus) {
       return "No focus.";
     }
-    if (state.choice.indexOf(state.graphFocus!) === -1) {
+    if (state.choices.indexOf(state.focus!) === -1) {
       return "There's no element to delete in the choice list.";
     }
     return true;
   },
 
   func(state) {
-    state.choice = state.choice.filter((id) => id !== state.graphFocus);
+    state.choices = state.choices.filter((id) => id !== state.focus);
   },
 };

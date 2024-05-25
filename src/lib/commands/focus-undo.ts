@@ -5,25 +5,22 @@ import { hasTimeline, popTimeline } from "../timeline";
 export const def: CommandDefinition = {
   skipTimeline: true,
   available(state) {
-    if (state.graphFocus !== undefined && hasTimeline(state.timeline.graphFocus, true)) {
+    if (state.focus !== undefined && hasTimeline(state.timeline.focus, true)) {
       return true;
     }
     return "No history.";
   },
   func(state) {
-    let result = popTimeline(state.graphFocus, state.timeline.graphFocus, true);
-    while (
-      hasTimeline(state.timeline.graphFocus, true) ||
-      isExistsId(state.graph, result)
-    ) {
+    let result = popTimeline(state.focus, state.timeline.focus, true);
+    while (hasTimeline(state.timeline.focus, true) || isExistsId(state.graph, result)) {
       //delete last element of redo history
-      state.timeline.graphFocus[1].pop();
+      state.timeline.focus[1].pop();
 
-      result = popTimeline(state.graphFocus, state.timeline.graphFocus, true);
+      result = popTimeline(state.focus, state.timeline.focus, true);
     }
-    state.graphFocus = result;
-    if (state.graphFocus === undefined) {
-      state.graphFocus = state.graph.elements[0].id;
+    state.focus = result;
+    if (state.focus === undefined) {
+      state.focus = state.graph.elements[0].id;
     }
   },
 };

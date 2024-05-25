@@ -4,12 +4,12 @@ import { hasTimeline, popTimeline } from "../timeline";
 export const def: CommandDefinition = {
   skipTimeline: true,
   available(state) {
-    if (hasTimeline(state.timeline.choice, true)) {
+    if (hasTimeline(state.timeline.choices, true)) {
       return true;
     }
     return "No history.";
   },
   func(state) {
-    state.choice = popTimeline(state.choice, state.timeline.choice, true);
+    state.choices = popTimeline(state.choices, state.timeline.choices, true);
   },
 };

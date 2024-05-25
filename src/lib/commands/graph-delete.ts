@@ -6,7 +6,7 @@ import { def as focus_undo } from "./focus-undo";
 export const def: CommandDefinition = {
   description: "Add vertex to graph.",
   available(state) {
-    if (!state.graphFocus) {
+    if (!state.focus) {
       return "No focus.";
     }
     if (state.graph.elements.filter(isVertex).length === 1) {
@@ -15,7 +15,7 @@ export const def: CommandDefinition = {
     return true;
   },
   func(state, config, ctx) {
-    const focus = state.graphFocus!;
+    const focus = state.focus!;
     const focusElement = ctx.graphIndex(state.graph).any(focus);
     if (isVertex(focusElement)) {
       const renderInfo = ctx.graphRenderInfo.vertex(focusElement.id);
@@ -47,14 +47,14 @@ export const def: CommandDefinition = {
       state.graph.elements = state.graph.elements.filter((e) => e.id !== focus);
 
       focus_undo.func(state, config, ctx);
-      if (state.graphFocus === undefined || !isExistsId(state.graph, state.graphFocus)) {
-        state.graphFocus = sortByDistance(state, ctx, focusElement)[0].id;
+      if (state.focus === undefined || !isExistsId(state.graph, state.focus)) {
+        state.focus = sortByDistance(state, ctx, focusElement)[0].id;
       }
     } else if (isEdge(focusElement)) {
       // delete focus edge.
       state.graph.elements = state.graph.elements.filter((e) => e.id !== focus);
       const nextElement = ctx.graphIndex(state.graph).any(focusElement.source);
-      state.graphFocus = nextElement.id;
+      state.focus = nextElement.id;
     }
   },
 };

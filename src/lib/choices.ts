@@ -1,3 +1,3 @@
 import { GraphElementId } from "./graph";
 
-export type Choice = GraphElementId[];
+export type Choices = GraphElementId[];

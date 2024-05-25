@@ -1,10 +1,10 @@
-import { ElkSvg, type ElkSvgInputEdge, type ElkSvgInputNode } from "elk-svg";
 import ElkConstructor from "elkjs";
 import { calcTextSize } from "./dom";
 import { type Graph, type GraphElement } from "./graph";
 import { logger } from "./log";
 import type { EdgeRenderInfo, GraphRenderInfo, VertexRenderInfo } from "./state";
 import { deepCopy } from "./utils";
+import { initElkSvg, type InputEdge, type InputNode } from "elk-svg";
 
 const MIN_W = 100;
 const MIN_H = 100;
@@ -29,7 +29,7 @@ const elk = new ElkConstructor({
     "elk.layered.directionCongruency": "ROTATION",
   } as any,
 });
-const elkSvg = new ElkSvg({
+const elkSvg = initElkSvg({
   container: document.getElementById("svg")!,
   logger: logger("elk-svg"),
   classPrefix: "",
@@ -39,12 +39,12 @@ const ROOT = "root";
 const LABEL = "label";
 
 type T = {
-  v: ElkSvgInputNode;
-  e: ElkSvgInputEdge;
+  v: InputNode;
+  e: InputEdge;
 };
 
 function convertGraph(g: Graph, cb: <K extends keyof T>(e: T[K], n: K) => void) {
-  const rootNode: ElkSvgInputNode = {
+  const rootNode: InputNode = {
     id: ROOT,
     children: [],
     edges: [],
@@ -59,7 +59,7 @@ function convertGraph(g: Graph, cb: <K extends keyof T>(e: T[K], n: K) => void) 
     if (e.t === "v") {
       const width = Math.max(label ? label.width : 0, MIN_W);
       const height = Math.max(label ? label.height : 0, MIN_H);
-      const node: ElkSvgInputNode = {
+      const node: InputNode = {
         id: e.id,
         svg: {
           shape: e.shape,
@@ -81,7 +81,7 @@ function convertGraph(g: Graph, cb: <K extends keyof T>(e: T[K], n: K) => void) 
       }
       return;
     }
-    const edge: ElkSvgInputEdge = {
+    const edge: InputEdge = {
       id: e.id,
       sources: [e.source],
       targets: [e.target],
@@ -123,8 +123,8 @@ export async function render(
   });
   l.debug("classesMap", classesMap);
 
-  const nRef = new Set<ElkSvgInputNode>();
-  const eRef = new Set<ElkSvgInputEdge>();
+  const nRef = new Set<InputNode>();
+  const eRef = new Set<InputEdge>();
 
   const node = convertGraph(g, (e, n) => {
     e.svg!.classes = classesMap.get(e.id);

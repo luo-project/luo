@@ -5,5 +5,5 @@ export function yank<T>(register: Register<T>, key: string, target: T) {
 }
 
 export function unyank<T>(register: Register<T>, key: string) {
-  delete register[key];
+  return register[key];
 }

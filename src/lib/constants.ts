@@ -190,6 +190,7 @@ export const DEFAULT_STATE: State = {
   register: {
     focus: {},
     choices: {},
+    viewport: {},
     defaultVertex: {},
     defaultEdge: {},
     defaultLabel: {},

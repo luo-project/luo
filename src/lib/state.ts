@@ -29,6 +29,7 @@ export type State = {
   register: {
     focus: Register<Focus>;
     choices: Register<Choices>;
+    viewport: Register<Viewport>;
     defaultVertex: Register<DefaultVertex>;
     defaultEdge: Register<DefaultEdge>;
     defaultLabel: Register<DefaultLabel>;

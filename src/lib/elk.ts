@@ -164,7 +164,6 @@ export async function render(
     });
     return eInfo;
   };
-
   return {
     width: node.width!,
     height: node.height!,

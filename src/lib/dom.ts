@@ -13,6 +13,12 @@ export function select(s: string) {
   return e;
 }
 
+export function createChild(parent: Element, tagName: string) {
+  const t = document.createElement(tagName);
+  parent.append(t);
+  return t;
+}
+
 const fontRenderDiv = document.createElement("div");
 fontRenderDiv.setAttribute("id", "font-render-div");
 fontRenderDiv.style.position = "absolute";

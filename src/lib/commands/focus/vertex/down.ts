@@ -3,7 +3,7 @@ import { nearestVertex } from "../../../focus";
 import { isVertex, type Graph } from "../../../graph";
 
 export const def: CommandDefinition = {
-  description: "moves focus to the nearest vertex below the current focus",
+  description: "focus to the nearest vertex below the current focus",
 
   available(state, cfg, ctx) {
     if (!state.focus) {

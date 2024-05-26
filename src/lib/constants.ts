@@ -178,6 +178,7 @@ export const DEFAULT_STATE: State = {
     graph: [[], []],
     focus: [[], []],
     choices: [[], []],
+    pallete: [[], []],
   },
   viewport: { x: 0, y: 0, zoom: 0.3 },
   focus: "5",

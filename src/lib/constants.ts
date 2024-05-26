@@ -1,4 +1,5 @@
 import type { Config } from "./config";
+import type { VertexShape } from "./graph";
 import type { Keybinding } from "./keymap";
 import type { State } from "./state";
 
@@ -248,6 +249,7 @@ export const DEFAULT_CONFIG: Config = {
     },
   },
 };
+export const VERTEX_SHAPES: VertexShape[] = ["rectangle", "circle", "ellipse", "diamond"];
 
 export const DEFAULT_KEYBINDING: Keybinding = {
   H: "viewport-pan-left",

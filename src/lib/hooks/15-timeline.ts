@@ -1,4 +1,5 @@
 import type { HookDefinition } from "../hook";
+import type { Pallete } from "../state";
 import { pushTimeline } from "../timeline";
 import { deepEquals } from "../utils";
 
@@ -15,6 +16,10 @@ export const def: HookDefinition = {
     }
     if (!deepEquals(state.choices, ctx.previousState.choices)) {
       pushTimeline(ctx.previousState.choices, state.timeline.choices, true);
+    }
+
+    if (!deepEquals(state.pallete, ctx.previousState.pallete)) {
+      pushTimeline(ctx.previousState.pallete, state.timeline.pallete, true);
     }
   },
 };

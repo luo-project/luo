@@ -27,7 +27,7 @@ export const def: CommandDefinition = {
       id: ctx.nextId().toString(),
       source: state.choices[0],
       target: focus,
-      label: deepCopy(state.defaultLabel),
+      label: deepCopy(state.pallete.defaultLabel),
     };
     state.graph.elements.push(edge);
   },

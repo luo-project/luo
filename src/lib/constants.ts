@@ -178,15 +178,18 @@ export const DEFAULT_STATE: State = {
     graph: [[], []],
     focus: [[], []],
     choices: [[], []],
+    pallete: [[], []],
   },
   viewport: { x: 0, y: 0, zoom: 0.3 },
   focus: "5",
   choices: ["1"],
-  defaultEdge: {},
-  defaultLabel: {
-    text: "",
+  pallete: {
+    defaultVertex: { shape: "rectangle" },
+    defaultEdge: {},
+    defaultLabel: {
+      text: "",
+    },
   },
-  defaultVertex: { shape: "rectangle" },
   register: {
     focus: {},
     choices: {},

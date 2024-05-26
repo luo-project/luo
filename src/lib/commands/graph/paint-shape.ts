@@ -3,25 +3,27 @@ import { VERTEX_SHAPES } from "../../constants";
 import { Edge, GraphElement, isEdge, isVertex } from "../../graph";
 
 export const def: CommandDefinition = {
-  description: "Apply vertex shape from Default Vertex.",
   available(state, config, ctx) {
-    const focus = state.focus!;
+    if (!state.focus) {
+      return "No focus.";
+    }
     const graph = state.graph as any;
-    const focusElement = ctx.graphIndex(graph).any(focus);
-
-    if (!isVertex(focusElement)) {
-      return "Focus is must be a vertex.";
+    try {
+      const focusElement = ctx.graphIndex(graph).any(state.focus);
+    } catch (e) {
+      return "No focus.";
     }
     return true;
   },
   func(state, config, ctx) {
     const focus = state.focus!;
     const graph = state.graph as any;
-    const focusElement = ctx.graphIndex(graph).any(focus) as GraphElement;
+    const focusElement: GraphElement = ctx.graphIndex(graph).any(focus);
 
-    if (!isVertex(focusElement)) {
-      return;
+    if (isVertex(focusElement)) {
+      focusElement.shape = state.pallete.defaultVertex.shape;
+    } else if (isEdge(focusElement)) {
+      // TODO: implement edge shape
     }
-    focusElement.shape = state.defaultVertex.shape;
   },
 };

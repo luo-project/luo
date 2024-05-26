@@ -13,6 +13,11 @@ export type Viewport = {
   zoom: number;
 };
 
+export type Pallete = {
+  defaultVertex: DefaultVertex;
+  defaultEdge: DefaultEdge;
+  defaultLabel: DefaultLabel;
+};
 /**
  * State is serializable object for load/mutate/save entire application state.
  */
@@ -21,10 +26,7 @@ export type State = {
   focus?: Focus;
   choices: Choices;
   viewport: Viewport;
-
-  defaultVertex: DefaultVertex;
-  defaultEdge: DefaultEdge;
-  defaultLabel: DefaultLabel;
+  pallete: Pallete;
 
   register: {
     focus: Register<Focus>;
@@ -39,6 +41,7 @@ export type State = {
     graph: Timeline<Graph>;
     focus: Timeline<Focus>;
     choices: Timeline<Choices>;
+    pallete: Timeline<Pallete>;
   };
 };
 

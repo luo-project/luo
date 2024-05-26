@@ -36,11 +36,14 @@ export function startKeymap(
   let waitingTimeout: any = undefined;
   let waitingId: string | null = null;
   const matchAndReset = (id: string, msg: string) => {
-    l.debug(`match(${msg}) '${id}'`);
-    onMatch(id);
-    currentKeys.length = 0;
-    waitingId = null;
-    clearTimeout(waitingTimeout);
+    try {
+      l.debug(`match(${msg}) '${id}'`);
+      onMatch(id);
+    } finally {
+      currentKeys.length = 0;
+      waitingId = null;
+      clearTimeout(waitingTimeout);
+    }
   };
   const onEncodedKey = (encodedKey: string) => {
     clearTimeout(waitingTimeout);
@@ -59,22 +62,25 @@ export function startKeymap(
       onEncodedKey(encodedKey);
       return;
     }
-    onKey([...currentKeys], possibles);
-    if (matchedId) {
-      if (possibles.length === 1) {
-        matchAndReset(matchedId, "exactly");
+    try {
+      onKey([...currentKeys], possibles);
+    } finally {
+      if (matchedId) {
+        if (possibles.length === 1) {
+          matchAndReset(matchedId, "exactly");
+          return;
+        }
+        l.debug("waiting", matchedId);
+        waitingId = matchedId;
+        waitingTimeout = setTimeout(() => {
+          matchAndReset(matchedId, "timeouted");
+        }, timeout);
         return;
       }
-      l.debug("waiting", matchedId);
-      waitingId = matchedId;
-      waitingTimeout = setTimeout(() => {
-        matchAndReset(matchedId, "timeouted");
-      }, timeout);
-      return;
-    }
-    if (possibles.length === 0) {
-      l.debug("no possibles", currentKey);
-      currentKeys.length = 0;
+      if (possibles.length === 0) {
+        l.debug("no possibles", currentKey);
+        currentKeys.length = 0;
+      }
     }
   };
 

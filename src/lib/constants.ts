@@ -202,14 +202,14 @@ export const DEFAULT_STATE: State = {
 
 export const DEFAULT_CONFIG: Config = {
   graph: {
-    animation: 200,
+    animation: 300,
     timelineSize: 20,
     focusTimelineSize: 10,
     choiceTimelineSize: 10,
     collisionSize: 50,
   },
   viewport: {
-    animation: 0,
+    animation: 200,
     pan: {
       amount: {
         x: 200,
@@ -217,8 +217,8 @@ export const DEFAULT_CONFIG: Config = {
       },
     },
     zoom: {
-      amount: 0.2,
-      min: 0.33,
+      amount: 0.5,
+      min: 0.1,
       max: 3,
     },
   },

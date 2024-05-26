@@ -1,0 +1,51 @@
+#side-panel {
+  display: flex;
+  flex-direction: column;
+  font-size: 11px;
+  line-height: 1.1;
+  flex: 0 0 350px;
+  height: 100%;
+  overflow: auto;
+  border: 1px solid black;
+  border-left-width: 0;
+}
+
+#side-panel > .section {
+  border-top: 1px solid black;
+  flex: 0 0 auto;
+  padding: 2px;
+}
+
+#commands {
+  height: 300px;
+  overflow: auto;
+}
+
+#commands > .wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+#commands > .wrapper > .id {
+  width: 200px;
+}
+
+#commands > .wrapper > .kb {
+}
+
+#logs {
+  height: 80px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+  line-height: 1.2;
+}
+
+#logs > .log.warn {
+  color: #755100;
+}
+
+#logs > .log.error {
+  color: #8a2424;
+}

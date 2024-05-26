@@ -1,3 +1,3 @@
 # luo
 
-#### lib/state/utils.ts
+Don't mutate state.graph in hooks except 0-graph-index.

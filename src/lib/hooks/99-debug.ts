@@ -8,6 +8,7 @@ export const def: HookDefinition = {
     if (!g) {
       g = document.createElementNS("http://www.w3.org/2000/svg", "g");
       document.querySelector("g.top-level-group")!.append(g);
+      g.setAttribute("id", id);
     }
     ctx.graphRenderInfo.vertices().forEach((v) => {
       const t = document.createElementNS("http://www.w3.org/2000/svg", "text");

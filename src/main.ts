@@ -37,7 +37,7 @@ window.addEventListener("error", (e) => {
   e.preventDefault();
 });
 
-const sidePanel = initSidePanel(Object.values(commands), keybinding);
+const sidePanel = initSidePanel(commands, keybinding);
 setOnLog(sidePanel.onLog);
 
 startKeymap(

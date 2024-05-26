@@ -100,7 +100,8 @@ export function initCommandLoop(
 
 export function loadCommands() {
   return loadEagerModules(
-    import.meta.glob("./commands/*.ts", { eager: true }),
+    "./commands/",
+    import.meta.glob("./commands/**/*.ts", { eager: true }),
     (m, p) => {
       const def = m.def as CommandDefinition;
       if (typeof def !== "object" || typeof def.func !== "function") {

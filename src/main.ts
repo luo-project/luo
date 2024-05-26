@@ -15,7 +15,7 @@ const keybinding = DEFAULT_KEYBINDING;
 const l = logger("main");
 
 const commands = loadCommands();
-const hooks = loadHooks();
+const hooks = loadHooks().filter((v) => (PROD ? !v.dev : true));
 
 const runCommand = initCommandLoop(
   state,

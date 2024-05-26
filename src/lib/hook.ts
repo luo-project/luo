@@ -3,6 +3,7 @@ import { loadEagerModules } from "./utils";
 
 export type HookDefinition = {
   func: StateFunc;
+  dev?: boolean;
 };
 
 export type HookDefinitionWithId = HookDefinition & { id: string };

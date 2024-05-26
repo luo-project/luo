@@ -2,12 +2,12 @@ import { DEFAULT_CONFIG, DEFAULT_KEYBINDING, DEFAULT_STATE, PROD } from "./lib/c
 import { initCommandLoop, loadCommands } from "./lib/command";
 import { preventClose } from "./lib/dom";
 import "./css/main.css";
+import "./css/side-panel.css";
 import "./css/svg.css";
 import { loadHooks } from "./lib/hook";
 import { startKeymap } from "./lib/keymap";
-import { renderCurrentKey, appendLog, resetCurrentKey } from "./lib/ui";
 import { logger, setOnLog } from "./lib/log";
-setOnLog(appendLog);
+import { initSidePanel } from "./lib/side-panel";
 
 const state = DEFAULT_STATE;
 const config = DEFAULT_CONFIG;
@@ -34,12 +34,16 @@ window.addEventListener("unhandledrejection", (e) => {
 
 window.addEventListener("error", (e) => {
   l.error("error", e.error);
+  e.preventDefault();
 });
+
+const sidePanel = initSidePanel(Object.values(commands), keybinding);
+setOnLog(sidePanel.onLog);
 
 startKeymap(
   keybinding,
   (id) => {
-    resetCurrentKey(keybinding);
+    sidePanel.onMatch(id);
     const cmd = commands[id];
     if (cmd === undefined) {
       throw new Error(`invalid command ${id} is in keybinding`);
@@ -47,16 +51,14 @@ startKeymap(
     runCommand(cmd);
   },
   (current, possibles) => {
-    renderCurrentKey(current, possibles);
+    sidePanel.onKey(current, possibles);
     if (possibles.length === 0) {
-      resetCurrentKey(keybinding);
       l.error(`no keybinding for [${current}]`);
     }
   },
   1000,
 );
 
-resetCurrentKey(keybinding);
 runCommand(commands["no-op"]);
 
 if (PROD) preventClose();

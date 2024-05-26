@@ -46,9 +46,8 @@ export function nearestVertex(
     .filter(isVertex)
     .filter((v) => v.id !== here.id)
     .filter((v) => {
-      const { x, y, width, height } = vertex(v.id);
-      const xm2 = x + width / 2;
-      const ym2 = y + height / 2;
+      const { width, height } = vertex(v.id);
+      const [xm2, ym2] = center(vertex(v.id));
 
       const [[x3, y3], [x4, y4]] = rectangle(xm2, ym2, width, height);
 
@@ -58,8 +57,8 @@ export function nearestVertex(
       const [x1, y1] = center(vertex(a.id));
       const [x2, y2] = center(vertex(b.id));
 
-      const distA = dist(sy, sx, x1, y1);
-      const distB = dist(sy, sx, x2, y2);
+      const distA = dist(sx, sy, x1, y1);
+      const distB = dist(sx, sy, x2, y2);
 
       return distA - distB;
     });

@@ -12,14 +12,6 @@ export const def: CommandDefinition = {
     return "No history.";
   },
   func(state) {
-    let pallete: Pallete = {
-      DefaultVertex: state.defaultVertex,
-      DefaultEdge: state.defaultEdge,
-      DefaultLabel: state.defaultLabel,
-    };
-    let result = popTimeline(pallete, state.timeline.pallete, true);
-    state.defaultVertex = result.DefaultVertex;
-    state.defaultEdge = result.DefaultEdge;
-    state.defaultLabel = result.DefaultLabel;
+    state.pallete = popTimeline(state.pallete, state.timeline.pallete, true);
   },
 };

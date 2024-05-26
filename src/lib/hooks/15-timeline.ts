@@ -18,17 +18,8 @@ export const def: HookDefinition = {
       pushTimeline(ctx.previousState.choices, state.timeline.choices, true);
     }
 
-    if (
-      !deepEquals(state.defaultLabel, ctx.previousState.defaultLabel) ||
-      !deepEquals(state.defaultVertex, ctx.previousState.defaultVertex) ||
-      !deepEquals(state.defaultEdge, ctx.previousState.defaultEdge)
-    ) {
-      const pallete: Pallete = {
-        DefaultVertex: ctx.previousState.defaultVertex,
-        DefaultEdge: ctx.previousState.defaultEdge,
-        DefaultLabel: ctx.previousState.defaultLabel,
-      };
-      pushTimeline(pallete, state.timeline.pallete, true);
+    if (!deepEquals(state.pallete, ctx.previousState.pallete)) {
+      pushTimeline(ctx.previousState.pallete, state.timeline.pallete, true);
     }
   },
 };

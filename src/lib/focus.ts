@@ -1,6 +1,5 @@
 import type { Graph, Vertex } from "./graph";
 import { isVertex } from "./graph";
-import { logger } from "./log";
 import type { GraphRenderInfo } from "./state";
 
 function dist(x1: number, y1: number, x2: number, y2: number) {

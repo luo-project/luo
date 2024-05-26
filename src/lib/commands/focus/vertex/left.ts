@@ -23,7 +23,7 @@ export const def: CommandDefinition = {
     const { vertex } = ctx.graphIndex(state.graph);
 
     const here = vertex(focus);
-    const gap = cfg.command["focus-move"].gap;
+    const gap = cfg.graph.collisionSize;
     const { x, y, width, height } = ctx.graphRenderInfo.vertex(focus);
     const xm1 = x + width / 2;
     const ym1 = y + height / 2;

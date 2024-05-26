@@ -7,6 +7,7 @@ export type Config = {
     timelineSize: number;
     focusTimelineSize: number;
     choiceTimelineSize: number;
+    collisionSize: number;
   };
   viewport: {
     /**
@@ -23,12 +24,6 @@ export type Config = {
       amount: number;
       min: number;
       max: number;
-    };
-  };
-  command: {
-    keybinding: Record<string, string>;
-    "focus-move": {
-      gap: number;
     };
   };
 };

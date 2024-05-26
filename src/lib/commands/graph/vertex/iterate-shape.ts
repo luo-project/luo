@@ -6,6 +6,9 @@ export const def: CommandDefinition = {
   description: "Change focused vertex's shape.",
   available(state, config, ctx) {
     const focus = state.focus!;
+    if (!focus) {
+      return "No focus.";
+    }
     const graph = state.graph as any;
     const focusElement = ctx.graphIndex(graph).any(focus);
 

@@ -6,8 +6,15 @@ export const def: CommandDefinition = {
   description: "Add edge to graph.",
   available(state, config, ctx) {
     const focus = state.focus!;
+    if (!focus) {
+      return "No focus.";
+    }
     const graph = state.graph as any;
     const focusElement = ctx.graphIndex(graph).any(focus);
+
+    if (state.choices.length !== 1) {
+      return "Choices must be 1.";
+    }
     const choiceElement = ctx.graphIndex(graph).any(state.choices[0]);
 
     if (state.choices.length !== 1 && !isVertex(choiceElement)) {

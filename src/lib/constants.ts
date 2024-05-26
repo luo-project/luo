@@ -245,7 +245,7 @@ export const DEFAULT_CONFIG: Config = {
       g: "graph-add-vertex",
     },
     "focus-move": {
-      gap: 100,
+      gap: 50,
     },
   },
 };

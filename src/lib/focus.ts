@@ -1,5 +1,6 @@
 import type { Graph, Vertex } from "./graph";
 import { isVertex } from "./graph";
+import { logger } from "./log";
 import type { GraphRenderInfo } from "./state";
 
 function dist(x1: number, y1: number, x2: number, y2: number) {
@@ -34,14 +35,20 @@ export function nearestVertex(
   ray: [number, number, number, number],
 ): Vertex | undefined {
   const vertex = graphRenderInfo.vertex;
-  const { x: xm1, y: ym1 } = vertex(here.id);
+  const { x, y, width, height } = vertex(here.id);
+  const xm1 = x + width / 2;
+  const ym1 = y + height / 2;
+
   const [x1, y1, x2, y2] = ray;
 
   const [nearest, ...rest] = graph.elements
     .filter(isVertex)
     .filter((v) => v.id !== here.id)
     .filter((v) => {
-      const { x: xm2, y: ym2, width, height } = vertex(v.id);
+      const { x, y, width, height } = vertex(v.id);
+      const xm2 = x + width / 2;
+      const ym2 = y + height / 2;
+
       const [[x3, y3], [x4, y4]] = rectangle(xm2, ym2, width, height);
 
       return intersects(x1, y1, x2, y2, x3, y3, x4, y4);

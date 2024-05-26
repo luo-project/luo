@@ -1,6 +1,7 @@
 import type { CommandDefinition } from "../command";
 import { nearestVertex } from "../focus";
 import { isVertex, type Graph } from "../graph";
+import { logger } from "../log";
 
 export const def: CommandDefinition = {
   description: "moves focus to the nearest vertex above the current focus",
@@ -24,7 +25,9 @@ export const def: CommandDefinition = {
 
     const here = vertex(focus);
     const gap = cfg.command["focus-move"].gap;
-    const { x: xm1, y: ym1 } = ctx.graphRenderInfo.vertex(focus);
+    const { x, y, width, height } = ctx.graphRenderInfo.vertex(focus);
+    const xm1 = x + width / 2;
+    const ym1 = y + height / 2;
 
     const ray: [number, number, number, number] = [
       xm1 - gap,

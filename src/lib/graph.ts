@@ -1,4 +1,5 @@
-import type { GlobalContext, State } from "./state";
+import { isExistsId } from "./graph-index";
+import type { GlobalContext, State, VertexRenderInfo } from "./state";
 
 export type Graph = {
   elements: GraphElement[];
@@ -79,19 +80,57 @@ export function getMaxIdFromState(state: State): number {
 }
 
 export function sortByDistance(
-  state: State,
+  graph: Graph,
   ctx: GlobalContext,
-  vertex: Vertex,
+  vertexRenderInfo: VertexRenderInfo,
 ): Vertex[] {
-  const vertexRenderInfo = ctx.graphRenderInfo.vertex(vertex.id);
-  const allVertex = state.graph.elements.filter(isVertex);
+  const allVertex = graph.elements.filter(isVertex);
   const vertexWithDistance = allVertex.map((v) => {
     const renderInfo = ctx.graphRenderInfo.vertex(v.id);
-    const distance = Math.sqrt(
+    const distance =
       Math.pow(vertexRenderInfo.x - renderInfo.x, 2) +
-        Math.pow(vertexRenderInfo.y - renderInfo.y, 2),
-    );
+      Math.pow(vertexRenderInfo.y - renderInfo.y, 2);
+
     return { vertex: v, distance };
   });
   return vertexWithDistance.sort((a, b) => a.distance - b.distance).map((v) => v.vertex);
+}
+
+export function findElementById(
+  graph: Graph,
+  id: GraphElementId,
+): GraphElement | undefined {
+  return graph.elements.find((e) => e.id === id);
+}
+
+export function deleteElement(graph: Graph, element: GraphElement) {
+  const targetId = element.id;
+  const targetElement = element;
+  if (isVertex(targetElement)) {
+    const inboundEdges = graph.elements.filter((e) => isEdge(e) && e.target === targetId);
+    const outboundEdges = graph.elements.filter(
+      (e) => isEdge(e) && e.source === targetId,
+    );
+    if (inboundEdges.length == 1 && outboundEdges.length == 1) {
+      // Current Focus is Single Bridge Vertex.
+      // So Connect existing edges for convenience.
+      const inboundEdge = inboundEdges[0];
+      const outboundEdge = outboundEdges[0];
+      if (isEdge(inboundEdge) && isEdge(outboundEdge)) {
+        inboundEdge.target = outboundEdge.target;
+        graph.elements = graph.elements.filter((e) => e.id !== outboundEdge.id);
+      }
+    } else {
+      // delete all edges connected to focus vertex.
+      graph.elements = graph.elements.filter(
+        (e) => !(isEdge(e) && (e.source === targetId || e.target === targetId)),
+      );
+    }
+
+    // delete focus vertex.
+    graph.elements = graph.elements.filter((e) => e.id !== targetId);
+  } else if (isEdge(targetElement)) {
+    // delete focus edge.
+    graph.elements = graph.elements.filter((e) => e.id !== targetId);
+  }
 }

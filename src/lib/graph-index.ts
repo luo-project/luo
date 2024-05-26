@@ -4,6 +4,7 @@ export type GraphIndex = (graph: Graph) => {
   any: (id: string) => GraphElement;
   vertex: (id: string) => Vertex;
   edge: (id: string) => Edge;
+  has: (id: string) => boolean;
 };
 
 export function makeGraphIndex(g: Graph): GraphIndex {
@@ -32,7 +33,8 @@ export function makeGraphIndex(g: Graph): GraphIndex {
     };
     const vertex = (id: string) => any(id, "v") as Vertex;
     const edge = (id: string) => any(id, "e") as Edge;
-    return { any, vertex, edge };
+    const has = (id: string) => m.has(id);
+    return { any, vertex, edge, has };
   };
 }
 

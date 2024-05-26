@@ -242,6 +242,7 @@ export const DEFAULT_KEYBINDING: Keybinding = {
   g: "choices/add-all",
   G: "choices/delete-all",
   t: "graph/delete-focus",
+  T: "graph/delete-choices",
   a: "graph/vertex/add",
   A: "graph/edge/add",
   s: "graph/iterate-subtree",

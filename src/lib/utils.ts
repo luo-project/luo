@@ -44,21 +44,21 @@ export function deepEquals<T>(a: T, b: T): boolean {
 }
 
 export function loadEagerModules<T>(
+  prefix: string,
   modules: Record<string, unknown>,
   selector: (v: any, path: string) => T,
 ): Record<string, T & { id: string }> {
   const result: Record<string, T & { id: string }> = {};
   for (const path in modules) {
-    const id = pathToId(path);
+    if (!path.startsWith(prefix)) {
+      throw new Error(`invalid module path: ${path}`);
+    }
+    const id = path.substring(prefix.length).replace(".ts", "");
     const module = modules[path] as T;
     const d = selector(module, path);
     result[id] = { id, ...d };
   }
   return result;
-}
-
-function pathToId(path: string): string {
-  return path.split("/").pop()!.replace(".ts", "").replace(".js", "");
 }
 
 export function dev(cb: () => unknown) {

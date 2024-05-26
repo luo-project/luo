@@ -11,6 +11,7 @@ export type HookDefinitionWithId = HookDefinition & { id: string };
 export function loadHooks() {
   const hooks = Object.values(
     loadEagerModules<HookDefinition>(
+      "./hooks/",
       import.meta.glob("./hooks/*.ts", { eager: true }),
       (h, p) => {
         const def = h.def as HookDefinition;

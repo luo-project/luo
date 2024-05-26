@@ -1,6 +1,6 @@
 import type { Graph, Vertex } from "./graph";
 import { isVertex } from "./graph";
-import type { GraphRenderInfo } from "./state";
+import type { GraphRenderInfo, VertexRenderInfo } from "./state";
 
 function dist(x1: number, y1: number, x2: number, y2: number) {
   return (x1 - x2) ** 2 + (y1 - y2) ** 2;
@@ -27,6 +27,10 @@ function intersects(
   return x1 <= x4 && x2 >= x3 && y1 <= y4 && y2 >= y3;
 }
 
+function center({ x, y, width, height }: VertexRenderInfo) {
+  return [x + width / 2, y + height / 2];
+}
+
 export function nearestVertex(
   graph: Graph,
   graphRenderInfo: GraphRenderInfo,
@@ -34,9 +38,7 @@ export function nearestVertex(
   ray: [number, number, number, number],
 ): Vertex | undefined {
   const vertex = graphRenderInfo.vertex;
-  const { x, y, width, height } = vertex(here.id);
-  const xm1 = x + width / 2;
-  const ym1 = y + height / 2;
+  const [sx, sy] = center(vertex(here.id));
 
   const [x1, y1, x2, y2] = ray;
 
@@ -44,20 +46,19 @@ export function nearestVertex(
     .filter(isVertex)
     .filter((v) => v.id !== here.id)
     .filter((v) => {
-      const { x, y, width, height } = vertex(v.id);
-      const xm2 = x + width / 2;
-      const ym2 = y + height / 2;
+      const { width, height } = vertex(v.id);
+      const [xm2, ym2] = center(vertex(v.id));
 
       const [[x3, y3], [x4, y4]] = rectangle(xm2, ym2, width, height);
 
       return intersects(x1, y1, x2, y2, x3, y3, x4, y4);
     })
     .sort((a, b) => {
-      const { x: x1, y: y1 } = vertex(a.id);
-      const { x: x2, y: y2 } = vertex(b.id);
+      const [x1, y1] = center(vertex(a.id));
+      const [x2, y2] = center(vertex(b.id));
 
-      const distA = dist(xm1, ym1, x1, y1);
-      const distB = dist(xm1, ym1, x2, y2);
+      const distA = dist(sx, sy, x1, y1);
+      const distB = dist(sx, sy, x2, y2);
 
       return distA - distB;
     });

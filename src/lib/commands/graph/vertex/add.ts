@@ -5,7 +5,16 @@ import { deepCopy } from "../../../utils";
 export const def: CommandDefinition = {
   description: "Add vertex to graph.",
   func(state, config, ctx) {
-    const focus = state.focus!;
+    const focus = state.focus;
+    if (!focus) {
+      state.graph.elements.push({
+        ...deepCopy(state.pallete.defaultVertex),
+        t: "v",
+        id: ctx.nextId().toString(),
+        label: deepCopy(state.pallete.defaultLabel),
+      });
+      return;
+    }
     const focusElement = ctx.graphIndex(state.graph).any(focus);
 
     if (isVertex(focusElement)) {

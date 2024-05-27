@@ -1,12 +1,11 @@
 import type { DeepReadonly } from "ts-essentials";
 import type { Config } from "./config";
-import { type HookDefinitionWithId } from "./hook";
-import { logger } from "./log";
-import type { State, StateFunc, GlobalContext } from "./state";
-import { deepCopy, dev, loadEagerModules, newCounter } from "./utils";
-import { getMaxIdFromState } from "./graph";
 import { PROD } from "./constants";
 import { makeRecord } from "./debug";
+import { type HookDefinitionWithId } from "./hook";
+import { logger } from "./log";
+import type { GlobalContext, State, StateFunc } from "./state";
+import { deepCopy, loadEagerModules } from "./utils";
 
 /**
  * Command is a javascript modules located in `src/lib/commands/`.
@@ -33,28 +32,25 @@ export type CommandDefinition = {
 
 export type CommandDefinitionWithId = CommandDefinition & { id: string };
 
-export function initCommandLoop(
-  initState: State,
-  config: Config,
-  commands: CommandDefinitionWithId[],
-  hooks: HookDefinitionWithId[],
-  onRun: (command: CommandDefinitionWithId) => void,
-) {
+export function initCommandLoop({
+  initState,
+  config,
+  hooks,
+  onRun,
+  globalContext,
+}: {
+  initState: State;
+  config: Config;
+  hooks: HookDefinitionWithId[];
+  onRun: (command: CommandDefinitionWithId) => void;
+  globalContext: GlobalContext;
+}) {
   const record = makeRecord("commandLoop", !PROD);
   const cfg = Object.freeze(config);
   let state = deepCopy(initState);
   let previousState = deepCopy(state);
   const l = logger("commandLoop");
   const queue: CommandDefinitionWithId[] = [];
-  const ctx: GlobalContext = {
-    commands: commands,
-    command: null as any,
-    graphIndex: null as any,
-    nextId: newCounter(getMaxIdFromState(state)),
-    graphRenderInfo: null as any,
-    previousState,
-    availableCommands: {},
-  };
 
   const cb = async () => {
     try {
@@ -62,26 +58,24 @@ export function initCommandLoop(
       if (cmd === undefined) {
         return;
       }
-      ctx.command = cmd;
-      ctx.previousState = previousState;
-      if (cmd.available) {
-        const a = ctx.availableCommands[cmd.id];
-        if (typeof a === "string") {
-          l.warn(`'${cmd.id}' is unavailable: ${a}`);
-          setTimeout(cb, 0);
-          return;
-        }
+      globalContext.command = cmd;
+      globalContext.previousState = previousState;
+      const available = globalContext.availableCommands[cmd.id];
+      if (typeof available === "string") {
+        l.warn(`'${cmd.id}' is unavailable: ${available}`);
+        setTimeout(cb, 0);
+        return;
       }
 
       onRun(cmd);
       l.time("total");
       state = deepCopy(state);
       record(`before command '${cmd.id}'`, state);
-      await cmd.func(state, cfg, ctx);
+      await cmd.func(state, cfg, globalContext);
       for (const hook of hooks) {
         state = deepCopy(state);
         record(`before hook '${hook.id}'`, state);
-        await hook.func(state, cfg, ctx);
+        await hook.func(state, cfg, globalContext);
       }
       previousState = deepCopy(state);
       record("after all", state);

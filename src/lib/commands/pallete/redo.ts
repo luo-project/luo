@@ -1,3 +1,3 @@
 import { makeRedoCommand } from "../../timeline";
 
-export const def = makeRedoCommand("choices");
+export const def = makeRedoCommand("pallete");

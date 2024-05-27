@@ -6,6 +6,7 @@ import type { GraphIndex } from "./graph-index";
 import type { Timeline } from "./timeline";
 import type { Choices } from "./choices";
 import type { Register } from "./register";
+import type { UserInput } from "./user-input";
 
 export type Viewport = {
   x: number;
@@ -28,16 +29,14 @@ export type State = {
   viewport: Viewport;
   pallete: Pallete;
 
-  register: {
+  registers: {
     focus: Register<Focus>;
     choices: Register<Choices>;
     viewport: Register<Viewport>;
-    defaultVertex: Register<DefaultVertex>;
-    defaultEdge: Register<DefaultEdge>;
-    defaultLabel: Register<DefaultLabel>;
+    pallete: Register<Pallete>;
   };
 
-  timeline: {
+  timelines: {
     graph: Timeline<Graph>;
     focus: Timeline<Focus>;
     choices: Timeline<Choices>;
@@ -63,6 +62,7 @@ export type GlobalContext = {
   graphRenderInfo: GraphRenderInfo;
   previousState: DeepReadonly<State>;
   availableCommands: Record<string, string | true>;
+  userInput: UserInput;
 };
 
 export type GraphRenderInfo = {

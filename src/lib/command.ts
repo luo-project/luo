@@ -33,12 +33,14 @@ export type CommandDefinition = {
 export type CommandDefinitionWithId = CommandDefinition & { id: string };
 
 export function initCommandLoop({
+  commands,
   initState,
   config,
   hooks,
   onRun,
   globalContext,
 }: {
+  commands: Record<string, CommandDefinitionWithId>;
   initState: State;
   config: Config;
   hooks: HookDefinitionWithId[];
@@ -87,7 +89,11 @@ export function initCommandLoop({
     }
   };
   cb();
-  return (cmd: CommandDefinitionWithId) => {
+  return (id: string) => {
+    const cmd = commands[id];
+    if (!cmd) {
+      throw new Error(`command '${id}' not found`);
+    }
     queue.push(cmd);
   };
 }

@@ -2,7 +2,9 @@ import { VALID_KEYS } from "./constants";
 import { logger } from "./log";
 
 export type Keybinding = Record<string, string>;
+
 export type OnMatch = (id: string) => void;
+
 export type OnKey = (
   currentKeys: string[],
   possibles: [keymap: string, id: string][],

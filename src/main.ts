@@ -28,15 +28,6 @@ const runCommand = initCommandLoop(
   },
 );
 
-window.addEventListener("unhandledrejection", (e) => {
-  l.error("unhandled:", e.reason);
-});
-
-window.addEventListener("error", (e) => {
-  l.error("error", e.error);
-  e.preventDefault();
-});
-
 const sidePanel = initSidePanel(commands, keybinding);
 setOnLog(sidePanel.onLog);
 
@@ -62,3 +53,12 @@ startKeymap(
 runCommand(commands["no-op"]);
 
 if (PROD) preventClose();
+
+window.addEventListener("unhandledrejection", (e) => {
+  l.error("unhandled:", e.reason);
+});
+
+window.addEventListener("error", (e) => {
+  l.error("error", e.error);
+  e.preventDefault();
+});

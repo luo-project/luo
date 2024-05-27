@@ -1,3 +1,3 @@
 # luo
 
-Don't mutate state.graph in hooks except 0-graph-index.
+Don't add, delete or change order of `state.graph.elements` by hook.

@@ -74,11 +74,6 @@ function convertGraph(g: Graph, cb: <K extends keyof T>(e: T[K], n: K) => void) 
       rootNode.children!.push(node);
       cb(node, e.t);
 
-      if (e.id === "8") {
-        node.layoutOptions = {
-          ...node.layoutOptions,
-        };
-      }
       return;
     }
     const edge: InputEdge = {
@@ -94,9 +89,6 @@ function convertGraph(g: Graph, cb: <K extends keyof T>(e: T[K], n: K) => void) 
       },
       labels,
     };
-    if (e.id === "26") {
-      edge.layoutOptions = {};
-    }
 
     rootNode.edges!.push(edge);
     cb(edge, e.t);

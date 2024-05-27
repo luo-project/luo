@@ -40,6 +40,7 @@ const globalContext: GlobalContext = {
 };
 
 const runCommand = initCommandLoop({
+  commands,
   initState: state,
   config,
   hooks,
@@ -58,13 +59,18 @@ const keybinding = initKeybinding({
     l.debug("keybinding", enabled ? "enabled" : "disabled");
   },
   onMatch: (matched) => {
+    sidePanel.onMatch(matched);
     if (matched) {
       l.info(`run ${matched.id}: [${formatKeys(matched.keys)}]`);
-      runCommand(commands[matched.id]);
+      runCommand(matched.id);
     }
   },
-  onWait: (waited) => {},
-  onKey: (currentKeys, possibles) => {},
+  onWait: (waited) => {
+    sidePanel.onWait(waited);
+  },
+  onKey: (currentKeys, possibles) => {
+    sidePanel.onKey(currentKeys, possibles);
+  },
 });
 
 globalContext.userInput = initUserInput({
@@ -73,7 +79,7 @@ globalContext.userInput = initUserInput({
   },
 });
 
-runCommand(commands["no-op"]);
+runCommand("no-op");
 
 if (PROD) preventClose();
 

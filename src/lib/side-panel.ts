@@ -1,6 +1,6 @@
 import type { CommandDefinitionWithId } from "./command";
 import { select } from "./dom";
-import type { KeybindingData } from "./keybinding";
+import { formatKeys, type IdAndKeys, type Key, type KeybindingData } from "./keybinding";
 
 export function initSidePanel(options: {
   commands: CommandDefinitionWithId[];
@@ -10,6 +10,28 @@ export function initSidePanel(options: {
   const divRegisters = select("#registers");
   const divPalletes = select("#palletes");
   const divLogs = select("#logs");
+  const root: NestedCommand = { categoryName: "", children: [], commands: [] };
+
+  options.commands.forEach((cmd) => {
+    const arr = cmd.id.split("/");
+    const categories = arr.length === 1 ? [] : arr.slice(0, -1);
+    const baseName = arr[arr.length - 1];
+
+    let parent = root;
+    categories.forEach((c) => {
+      let nc = parent.children.find((v) => v.categoryName === c);
+      if (!nc) {
+        nc = { categoryName: c, children: [], commands: [] };
+        parent.children.push(nc);
+      }
+      parent = nc;
+    });
+    parent.commands.push({
+      id: cmd.id,
+      name: baseName,
+      keys: options.keybindingData.find((v) => v.id === cmd.id)?.keys,
+    });
+  });
 
   const onLog = (level: string, args: any[]) => {
     const msg = args.join(" ");
@@ -25,14 +47,56 @@ export function initSidePanel(options: {
     divLogs.scrollBy({ behavior: "smooth", left: 0, top: 9999999999 });
   };
 
-  const listAllCommands = () => {};
+  const createNestedCommandDiv = (nc: NestedCommand) => {
+    const container = document.createElement("div");
+    container.classList.add("container");
+    const category = document.createElement("div");
+    category.classList.add("category");
+    category.textContent = nc.categoryName;
+
+    container.append(
+      category,
+      ...nc.commands.map((c) => {
+        const row = document.createElement("row");
+        row.classList.add("row");
+
+        const cmd = document.createElement("div");
+        cmd.classList.add("command");
+        cmd.textContent = c.name;
+
+        const key = document.createElement("div");
+        key.classList.add("key");
+        if (c.keys) {
+          key.textContent = formatKeys(c.keys);
+        }
+
+        row.append(cmd, key);
+        return row;
+      }),
+      ...nc.children.map(createNestedCommandDiv),
+    );
+    return container;
+  };
+
+  const listAllCommands = () => {
+    divCommands.replaceChildren(createNestedCommandDiv(root));
+  };
+
   listAllCommands();
 
-  const onKey = (currentKeys: string[], possibles: [string, string][]) => {};
+  const onKey = (currentKeys: Key[], possibles: IdAndKeys[]) => {};
 
-  const onMatch = (id: string) => {
+  const onMatch = (v: IdAndKeys | null) => {
     listAllCommands();
   };
 
-  return { onLog, onKey, onMatch };
+  const onWait = (v: IdAndKeys) => {};
+
+  return { onLog, onKey, onMatch, onWait };
 }
+
+type NestedCommand = {
+  categoryName: string;
+  children: NestedCommand[];
+  commands: { name: string; id: string; keys?: Key[] }[];
+};

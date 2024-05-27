@@ -70,3 +70,17 @@ export function dev(cb: () => unknown) {
 export function newCounter(number: number): () => number {
   return () => ++number;
 }
+
+export function useEventListeners(element: Element) {
+  const listeners = [] as [string, any][];
+  const add = (event: string, listener: any) => {
+    element.addEventListener(event, listener);
+    listeners.push([event, listener]);
+  };
+  const done = () => {
+    listeners.forEach(([e, l]) => {
+      element.removeEventListener(e, l);
+    });
+  };
+  return { add, done };
+}

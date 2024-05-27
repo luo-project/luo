@@ -1,5 +1,4 @@
 import type { HookDefinition } from "../hook";
-import type { Pallete } from "../state";
 import { pushTimeline } from "../timeline";
 import { deepEquals } from "../utils";
 
@@ -9,17 +8,17 @@ export const def: HookDefinition = {
       return;
     }
     if (!deepEquals(state.graph, ctx.previousState.graph)) {
-      pushTimeline(ctx.previousState.graph, state.timeline.graph, true);
+      pushTimeline(ctx.previousState.graph, state.timelines.graph, true);
     }
     if (state.focus !== undefined && !deepEquals(state.focus, ctx.previousState.focus)) {
-      pushTimeline(ctx.previousState.focus, state.timeline.focus, true);
+      pushTimeline(ctx.previousState.focus, state.timelines.focus, true);
     }
     if (!deepEquals(state.choices, ctx.previousState.choices)) {
-      pushTimeline(ctx.previousState.choices, state.timeline.choices, true);
+      pushTimeline(ctx.previousState.choices, state.timelines.choices, true);
     }
 
     if (!deepEquals(state.pallete, ctx.previousState.pallete)) {
-      pushTimeline(ctx.previousState.pallete, state.timeline.pallete, true);
+      pushTimeline(ctx.previousState.pallete, state.timelines.pallete, true);
     }
   },
 };

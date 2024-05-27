@@ -1,4 +1,3 @@
-import { isExistsId } from "./graph-index";
 import type { GlobalContext, State, VertexRenderInfo } from "./state";
 
 export type Graph = {
@@ -73,8 +72,8 @@ export function sortGraphElementsByPosition(
 
 export function getMaxIdFromState(state: State): number {
   let allElements = state.graph.elements.concat(
-    ...state.timeline.graph[0].map((e) => e.elements),
-    ...state.timeline.graph[1].map((e) => e.elements),
+    ...state.timelines.graph[0].map((e) => e.elements),
+    ...state.timelines.graph[1].map((e) => e.elements),
   );
   return Math.max(...allElements.map((e) => parseInt(e.id, 10)));
 }

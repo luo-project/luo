@@ -1,3 +1,3 @@
 import { makeYankCommand } from "../../register";
 
-export const def = makeYankCommand("focus");
+export const def = makeYankCommand("pallete");

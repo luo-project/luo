@@ -182,3 +182,14 @@ function keysEquals(a: Key[], b: Key[]) {
   }
   return true;
 }
+
+export function formatKey(key: Key) {
+  if (key.ctrl) {
+    return `ctrl-${key.key}`;
+  }
+  return key.key;
+}
+
+export function formatKeys(keys: Key[]) {
+  return keys.map(formatKey).join(" ");
+}

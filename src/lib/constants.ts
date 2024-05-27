@@ -1,6 +1,6 @@
 import type { Config } from "./config";
 import type { VertexShape } from "./graph";
-import type { Keybinding } from "./keymap";
+import type { KeybindingData } from "./keybinding";
 import type { State } from "./state";
 
 export const DEFAULT_STATE: State = {
@@ -174,7 +174,7 @@ export const DEFAULT_STATE: State = {
       },
     ],
   },
-  timeline: {
+  timelines: {
     graph: [[], []],
     focus: [[], []],
     choices: [[], []],
@@ -190,13 +190,11 @@ export const DEFAULT_STATE: State = {
       text: "",
     },
   },
-  register: {
+  registers: {
     focus: {},
     choices: {},
     viewport: {},
-    defaultVertex: {},
-    defaultEdge: {},
-    defaultLabel: {},
+    pallete: {},
   },
 };
 
@@ -222,56 +220,53 @@ export const DEFAULT_CONFIG: Config = {
       max: 3,
     },
   },
+  keyTimeout: 800,
 };
+
 export const VERTEX_SHAPES: VertexShape[] = ["rectangle", "circle", "ellipse", "diamond"];
 
-export const DEFAULT_KEYBINDING: Keybinding = {
-  h: "focus/vertex/left",
-  j: "focus/vertex/down",
-  k: "focus/vertex/up",
-  l: "focus/vertex/right",
-  H: "viewport/pan-left",
-  J: "viewport/pan-down",
-  K: "viewport/pan-up",
-  L: "viewport/pan-right",
-  p: "viewport/zoom-out",
-  P: "viewport/zoom-in",
-  Enter: "graph/set-label",
-  "ctrl-Enter": "pallete/set-label",
-  f: "choices/toggle-focus",
-  g: "choices/add-all",
-  G: "choices/delete-all",
-  t: "graph/delete-focus",
-  T: "graph/delete-choices",
-  a: "graph/vertex/add",
-  s: "graph/vertex/iterate-shape",
-  A: "graph/edge/add",
-  "z q": "viewport/yank",
-  "z w": "viewport/unyank",
-
-  "x q": "focus/yank",
-  "x w": "focus/unyank",
-  "x e": "focus/undo",
-  "x r": "focus/redo",
-
-  "c q": "choices/yank",
-  "c w": "choices/unyank",
-  "c e": "choices/undo",
-  "c r": "choices/redo",
-
-  "v e": "graph/undo",
-  "v r": "graph/redo",
-
-  "b q": "pallete/yank",
-  "b w": "pallete/unyank",
-  "b e": "pallete/undo",
-  "g r": "pallete/redo",
-
-  y: "focus/iterate-choices",
-  Y: "focus/iterate-subtree",
-  u: "focus/edge/target",
-  U: "focus/edge/source",
-};
+export const DEFAULT_KEYBINDING_Data: KeybindingData = [
+  { keys: [{ key: "h" }], id: "focus/vertex/left" },
+  { keys: [{ key: "j" }], id: "focus/vertex/down" },
+  { keys: [{ key: "k" }], id: "focus/vertex/up" },
+  { keys: [{ key: "l" }], id: "focus/vertex/right" },
+  { keys: [{ key: "H" }], id: "viewport/pan-left" },
+  { keys: [{ key: "J" }], id: "viewport/pan-down" },
+  { keys: [{ key: "K" }], id: "viewport/pan-up" },
+  { keys: [{ key: "L" }], id: "viewport/pan-right" },
+  { keys: [{ key: "p" }], id: "viewport/zoom-out" },
+  { keys: [{ key: "P" }], id: "viewport/zoom-in" },
+  { keys: [{ key: "y" }], id: "focus/vertex/iterate-choices" },
+  { keys: [{ key: "Y" }], id: "focus/iterate-subtree" },
+  { keys: [{ key: "u" }], id: "focus/edge/target" },
+  { keys: [{ key: "U" }], id: "focus/edge/source" },
+  { keys: [{ key: "Enter" }], id: "graph/set-label" },
+  { keys: [{ key: "f" }], id: "choices/toggle-focus" },
+  { keys: [{ key: "g" }], id: "choices/add-all" },
+  { keys: [{ key: "G" }], id: "choices/delete-all" },
+  { keys: [{ key: "t" }], id: "graph/delete-focus" },
+  { keys: [{ key: "T" }], id: "graph/delete-choices" },
+  { keys: [{ key: "a" }], id: "graph/vertex/add" },
+  { keys: [{ key: "s" }], id: "graph/vertex/iterate-shape" },
+  { keys: [{ key: "A" }], id: "graph/edge/add" },
+  { keys: [{ key: "Enter", ctrl: true }], id: "pallete/set-label" },
+  { keys: [{ key: "z" }, { key: "q" }], id: "viewport/yank" },
+  { keys: [{ key: "z" }, { key: "w" }], id: "viewport/unyank" },
+  { keys: [{ key: "x" }, { key: "q" }], id: "focus/yank" },
+  { keys: [{ key: "x" }, { key: "w" }], id: "focus/unyank" },
+  { keys: [{ key: "x" }, { key: "e" }], id: "focus/undo" },
+  { keys: [{ key: "x" }, { key: "r" }], id: "focus/redo" },
+  { keys: [{ key: "c" }, { key: "q" }], id: "choices/yank" },
+  { keys: [{ key: "c" }, { key: "w" }], id: "choices/unyank" },
+  { keys: [{ key: "c" }, { key: "e" }], id: "choices/undo" },
+  { keys: [{ key: "c" }, { key: "r" }], id: "choices/redo" },
+  { keys: [{ key: "v" }, { key: "e" }], id: "graph/undo" },
+  { keys: [{ key: "v" }, { key: "r" }], id: "graph/redo" },
+  { keys: [{ key: "b" }, { key: "q" }], id: "pallete/yank" },
+  { keys: [{ key: "b" }, { key: "w" }], id: "pallete/unyank" },
+  { keys: [{ key: "b" }, { key: "e" }], id: "pallete/undo" },
+  { keys: [{ key: "g" }, { key: "r" }], id: "pallete/redo" },
+];
 
 export const PROD = import.meta.env.MODE === "production";
 
@@ -372,3 +367,5 @@ export const VALID_KEYS = new Set([
   "`",
   "~",
 ]);
+
+export const UNREACHABLE = "unreachable" as any;

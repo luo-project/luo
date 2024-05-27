@@ -26,4 +26,5 @@ export type Config = {
       max: number;
     };
   };
+  keyTimeout: number;
 };

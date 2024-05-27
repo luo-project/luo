@@ -1,24 +1,15 @@
 import type { CommandDefinitionWithId } from "./command";
 import { select } from "./dom";
-import type { Keybinding } from "./keymap";
-import { deepCopy } from "./utils";
+import type { KeybindingData } from "./keybinding";
 
-export function initSidePanel(
-  commands: Record<string, CommandDefinitionWithId>,
-  keybinding: Keybinding,
-) {
+export function initSidePanel(options: {
+  commands: CommandDefinitionWithId[];
+  keybindingData: KeybindingData;
+}) {
   const divCommands = select("#commands");
   const divRegisters = select("#registers");
   const divPalletes = select("#palletes");
   const divLogs = select("#logs");
-
-  const reversedKeybinding: Record<string, string | null> = {};
-  Object.values(commands).forEach((cmd) => {
-    reversedKeybinding[cmd.id] = null;
-  });
-  Object.entries(keybinding).forEach(([kb, id]) => {
-    reversedKeybinding[id] = kb;
-  });
 
   const onLog = (level: string, args: any[]) => {
     const msg = args.join(" ");
@@ -34,23 +25,7 @@ export function initSidePanel(
     divLogs.scrollBy({ behavior: "smooth", left: 0, top: 9999999999 });
   };
 
-  const listAllCommands = () => {
-    divCommands.replaceChildren(
-      ...Object.entries(reversedKeybinding).map(([cmdId, kb]) => {
-        const wrapper = document.createElement("div");
-        wrapper.classList.add("wrapper");
-        const divKb = document.createElement("div");
-        divKb.classList.add("kb");
-        divKb.textContent = kb;
-
-        const divId = document.createElement("div");
-        divId.classList.add("id");
-        divId.textContent = cmdId;
-        wrapper.append(divId, divKb);
-        return wrapper;
-      }),
-    );
-  };
+  const listAllCommands = () => {};
   listAllCommands();
 
   const onKey = (currentKeys: string[], possibles: [string, string][]) => {};

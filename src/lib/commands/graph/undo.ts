@@ -1,15 +1,3 @@
-import type { CommandDefinition } from "../../command";
-import { hasTimeline, popTimeline } from "../../timeline";
+import { makeUndoCommand } from "../../timeline";
 
-export const def: CommandDefinition = {
-  skipTimeline: true,
-  available(state) {
-    if (hasTimeline(state.timeline.graph, true)) {
-      return true;
-    }
-    return "No history.";
-  },
-  func(state) {
-    state.graph = popTimeline(state.graph, state.timeline.graph, true);
-  },
-};
+export const def = makeUndoCommand("graph");

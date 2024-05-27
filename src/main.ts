@@ -1,54 +1,77 @@
-import { DEFAULT_CONFIG, DEFAULT_KEYBINDING, DEFAULT_STATE, PROD } from "./lib/constants";
-import { initCommandLoop, loadCommands } from "./lib/command";
-import { preventClose } from "./lib/dom";
 import "./css/main.css";
 import "./css/side-panel.css";
 import "./css/svg.css";
+import { initCommandLoop, loadCommands } from "./lib/command";
+import {
+  DEFAULT_CONFIG,
+  DEFAULT_KEYBINDING_Data,
+  DEFAULT_STATE,
+  PROD,
+  UNREACHABLE,
+} from "./lib/constants";
+import { preventClose } from "./lib/dom";
+import { getMaxIdFromState } from "./lib/graph";
 import { loadHooks } from "./lib/hook";
-import { startKeymap } from "./lib/keymap";
+import { formatKeys, initKeybinding } from "./lib/keybinding";
 import { logger, setOnLog } from "./lib/log";
 import { initSidePanel } from "./lib/side-panel";
+import type { GlobalContext } from "./lib/state";
+import { initUserInput } from "./lib/user-input";
+import { newCounter } from "./lib/utils";
 
 const state = DEFAULT_STATE;
 const config = DEFAULT_CONFIG;
-const keybinding = DEFAULT_KEYBINDING;
+const keybindingData = DEFAULT_KEYBINDING_Data;
 const l = logger("main");
 
 const commands = loadCommands();
 const hooks = loadHooks().filter((v) => (PROD ? !v.dev : true));
+const flatCommands = Object.values(commands);
 
-const runCommand = initCommandLoop(
-  state,
+const globalContext: GlobalContext = {
+  commands: flatCommands,
+  availableCommands: UNREACHABLE,
+  command: UNREACHABLE,
+  graphIndex: UNREACHABLE,
+  graphRenderInfo: UNREACHABLE,
+  nextId: newCounter(getMaxIdFromState(state)),
+  previousState: UNREACHABLE,
+  userInput: UNREACHABLE,
+};
+
+const runCommand = initCommandLoop({
+  initState: state,
   config,
-  Object.values(commands),
   hooks,
-  (cmd) => {
-    const kb = Object.entries(keybinding).find(([km, id]) => id === cmd.id) ?? [""];
-    l.info(`run '${cmd.id}' [${kb[0]}]`);
-  },
-);
+  onRun: (cmd) => {},
+  globalContext,
+});
 
-const sidePanel = initSidePanel(commands, keybinding);
+const sidePanel = initSidePanel({ commands: flatCommands, keybindingData });
 setOnLog(sidePanel.onLog);
 
-startKeymap(
-  keybinding,
-  (id) => {
-    sidePanel.onMatch(id);
-    const cmd = commands[id];
-    if (cmd === undefined) {
-      throw new Error(`invalid command ${id} is in keybinding`);
-    }
-    runCommand(cmd);
+const keybinding = initKeybinding({
+  data: keybindingData,
+  allIds: flatCommands.map((v) => v.id),
+  timeout: config.keyTimeout,
+  onEnabled: (enabled) => {
+    l.debug("keybinding", enabled ? "enabled" : "disabled");
   },
-  (current, possibles) => {
-    sidePanel.onKey(current, possibles);
-    if (possibles.length === 0) {
-      l.error(`no keybinding for [${current}]`);
+  onMatch: (matched) => {
+    if (matched) {
+      l.info(`run ${matched.id}: [${formatKeys(matched.keys)}]`);
+      runCommand(commands[matched.id]);
     }
   },
-  1000,
-);
+  onWait: (waited) => {},
+  onKey: (currentKeys, possibles) => {},
+});
+
+globalContext.userInput = initUserInput({
+  onEnabled: (e) => {
+    keybinding.setEnable(e!);
+  },
+});
 
 runCommand(commands["no-op"]);
 

@@ -22,8 +22,8 @@ export function initUserInput(options: { onEnabled: (b: boolean) => void }): Use
   return (userInputOptions) => {
     options.onEnabled(true);
     message.textContent = userInputOptions.message ?? "";
-    input.focus();
     container.style.display = "block";
+    input.focus();
     const el = useEventListeners(input);
     el.add("blur", () => {
       input.focus();
@@ -44,6 +44,8 @@ export function initUserInput(options: { onEnabled: (b: boolean) => void }): Use
           return done();
         }
         if (doneKeys.includes(e.key) || input.value.length === userInputOptions.length) {
+          e.preventDefault();
+          e.stopPropagation();
           resolve(input.value);
           return done();
         }

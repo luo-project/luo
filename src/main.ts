@@ -75,7 +75,7 @@ const keybinding = initKeybinding({
 
 globalContext.userInput = initUserInput({
   onEnabled: (e) => {
-    keybinding.setEnable(e!);
+    keybinding.setEnable(!e!);
   },
 });
 

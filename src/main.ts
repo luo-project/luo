@@ -14,7 +14,7 @@ import { getMaxIdFromState } from "./lib/graph";
 import { loadHooks } from "./lib/hook";
 import { formatKeys, initKeybinding } from "./lib/keybinding";
 import { logger, setOnLog } from "./lib/log";
-import { initSidePanel } from "./lib/side-panel";
+import { initSidePanelCommands } from "./lib/side-panel";
 import type { GlobalContext } from "./lib/state";
 import { initUserInput } from "./lib/user-input";
 import { newCounter } from "./lib/utils";
@@ -48,7 +48,7 @@ const runCommand = initCommandLoop({
   globalContext,
 });
 
-const sidePanel = initSidePanel({ commands: flatCommands, keybindingData });
+const sidePanel = initSidePanelCommands({ commands: flatCommands, keybindingData });
 setOnLog(sidePanel.onLog);
 
 const keybinding = initKeybinding({

@@ -7,14 +7,14 @@ import {
   type Key,
   type KeybindingData,
 } from "./keybinding";
+import type { Register } from "./register";
+import type { Palette } from "./state";
 
-export function initSidePanel(options: {
+export function initSidePanelCommands(options: {
   commands: CommandDefinitionWithId[];
   keybindingData: KeybindingData;
 }) {
   const divCommands = select("#commands");
-  const divRegisters = select("#registers");
-  const divPalette = select("#palettes");
   const divLogs = select("#logs");
   const root: NestedCommand = { categoryName: "", children: [], commands: [] };
 
@@ -101,7 +101,10 @@ export function initSidePanel(options: {
   listAllCommands();
 
   const onKey = (currentKeys: Key[], possibles: IdAndKeys[]) => {
-    divCommands.replaceChildren(createNestedCommandDiv(currentKeys, root));
+    divCommands.replaceChildren(
+      formatKeys(currentKeys),
+      createNestedCommandDiv(currentKeys, root),
+    );
   };
 
   const onMatch = (v: IdAndKeys | null) => {
@@ -118,3 +121,20 @@ type NestedCommand = {
   children: NestedCommand[];
   commands: { name: string; id: string; keys?: Key[] }[];
 };
+
+export function setSidePanelRegisters(registers: Record<string, Register<unknown>>) {
+  const divRegisters = select("#registers");
+  divRegisters.replaceChildren(
+    "Registers:",
+    ...Object.entries(registers).map(([name, register]) => {
+      const c = document.createElement("div");
+      c.innerHTML = `<pre>${name.padEnd(10)}: ${Object.keys(register).join(", ")}</pre>`;
+      return c;
+    }),
+  );
+}
+
+export function setSidePanelPalette(palette: Palette) {
+  const divPalette = select("#palette");
+  divPalette.innerHTML = `Palette:<pre>${JSON.stringify(palette, null, 4)}</pre>`;
+}

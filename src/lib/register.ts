@@ -1,5 +1,6 @@
 import type { CommandDefinition } from "./command";
 import type { State } from "./state";
+import { deepCopy } from "./utils";
 
 export type Register<T> = Record<string, T>;
 
@@ -13,7 +14,7 @@ export function makeYankCommand(name: keyof State["registers"]): CommandDefiniti
       });
 
       // @ts-ignore
-      state.registers[name][key] = state[name];
+      state.registers[name][key] = deepCopy(state[name]);
     },
   };
 }
@@ -30,7 +31,7 @@ export function makeUnyankCommand(name: keyof State["registers"]): CommandDefini
       if (register === undefined) {
         throw new Error(`register not found: '${name}.${key}'`);
       }
-      state[name] = register as any;
+      state[name] = deepCopy(register) as any;
     },
   };
 }

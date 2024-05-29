@@ -1,6 +1,5 @@
 import type { CommandDefinition } from "../../command";
-import { VERTEX_SHAPES } from "../../constants";
-import { Edge, GraphElement, isEdge, isVertex } from "../../graph";
+import { GraphElement, isEdge, isVertex } from "../../graph";
 
 export const def: CommandDefinition = {
   available(state, config, ctx) {

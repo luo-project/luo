@@ -1,9 +1,8 @@
 import type { CommandDefinition } from "../../../command";
 import { VERTEX_SHAPES } from "../../../constants";
-import { Edge, GraphElement, isEdge, isVertex } from "../../../graph";
+import { GraphElement, isVertex } from "../../../graph";
 
 export const def: CommandDefinition = {
-  description: "Change focused vertex's shape.",
   available(state, config, ctx) {
     const focus = state.focus!;
     if (!focus) {

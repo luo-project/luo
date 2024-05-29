@@ -3,7 +3,6 @@ import { Edge, isVertex } from "../../../graph";
 import { deepCopy } from "../../../utils";
 
 export const def: CommandDefinition = {
-  description: "Add edge to graph.",
   available(state, config, ctx) {
     const focus = state.focus!;
     if (!focus) {
@@ -34,7 +33,7 @@ export const def: CommandDefinition = {
       id: ctx.nextId().toString(),
       source: state.choices[0],
       target: focus,
-      label: deepCopy(state.palette.label),
+      label: { text: "" },
     };
     state.graph.elements.push(edge);
   },

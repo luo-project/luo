@@ -1,8 +1,6 @@
 import type { CommandDefinition } from "../../command";
 
 export const def: CommandDefinition = {
-  description: "Add or Delete focus from choices.",
-
   available(state) {
     if (!state.focus) {
       return "No focus.";

@@ -24,6 +24,15 @@ const config = DEFAULT_CONFIG;
 const keybindingData = DEFAULT_KEYBINDING_Data;
 const l = logger("main");
 
+window.addEventListener("unhandledrejection", (e) => {
+  l.error("unhandled:", e.reason);
+});
+
+window.addEventListener("error", (e) => {
+  l.error("error", e.error);
+  e.preventDefault();
+});
+
 const commands = loadCommands();
 const hooks = loadHooks().filter((v) => (PROD ? !v.dev : true));
 const flatCommands = Object.values(commands);
@@ -84,12 +93,3 @@ globalContext.userInput = initUserInput({
 runCommand("no-op");
 
 if (PROD) preventClose();
-
-window.addEventListener("unhandledrejection", (e) => {
-  l.error("unhandled:", e.reason);
-});
-
-window.addEventListener("error", (e) => {
-  l.error("error", e.error);
-  e.preventDefault();
-});

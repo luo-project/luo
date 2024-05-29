@@ -1,6 +1,6 @@
 import type { CommandDefinition } from "../../command";
-import { VERTEX_SHAPES } from "../../constants";
-import { Edge, GraphElement, isEdge, isVertex } from "../../graph";
+import { GraphElement, isEdge, isVertex } from "../../graph";
+import { deepCopy } from "../../utils";
 
 export const def: CommandDefinition = {
   available(state, config, ctx) {
@@ -21,9 +21,9 @@ export const def: CommandDefinition = {
     const focusElement: GraphElement = ctx.graphIndex(graph).any(focus);
 
     if (isVertex(focusElement)) {
-      focusElement.label = state.palette.label;
+      focusElement.label = deepCopy(state.palette.label);
     } else if (isEdge(focusElement)) {
-      focusElement.label = state.palette.label;
+      focusElement.label = deepCopy(state.palette.label);
     }
   },
 };

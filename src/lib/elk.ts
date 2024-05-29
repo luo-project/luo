@@ -7,9 +7,9 @@ import { deepCopy } from "./utils";
 import { initElkSvg, type InputEdge, type InputNode } from "elk-svg";
 0;
 const MIN_W = 100;
-const MIN_H = 100;
+const MIN_H = 60;
 const PAD_W = 40;
-const PAD_H = 40;
+const PAD_H = 20;
 const l = logger("elk");
 
 // LayoutOptions from https://github.com/kieler/elkjs/issues/21
@@ -17,7 +17,6 @@ const elk = new ElkConstructor({
   defaultLayoutOptions: {
     "elk.algorithm": "layered",
     "elk.direction": "DOWN",
-    "elk.edgeLabels.inline": true,
     "elk.edgeRouting": "ORTHOGONAL",
     "spacing.nodeNode": 50,
     "spacing.edgeNode": 50,
@@ -28,7 +27,8 @@ const elk = new ElkConstructor({
     "elk.nodeLabels.placement": "H_CENTER V_CENTER INSIDE",
     "spacing.portPort": "100",
     "nodeSize.constraints": "PORTS MINIMUM_SIZE",
-    "elk.layered.directionCongruency": "ROTATION",
+    "layered.nodePlacement.bk.fixedAlignment": "BALANCED",
+    "edgeLabels.placement": "TAIL",
   } as any,
 });
 
@@ -39,7 +39,7 @@ const elkSvg = initElkSvg({
 });
 
 const ROOT = "root";
-const LABEL = "label";
+const LABEL = "label_";
 
 type T = {
   v: InputNode;
@@ -65,7 +65,7 @@ function convertGraph(g: Graph, cb: <K extends keyof T>(e: T[K], n: K) => void) 
       // todo
       if (e.shape === "diamond") {
         width *= 1.2;
-        height *= 1.1;
+        height *= 1.2;
       }
 
       const minSize = `${width},${height}`;

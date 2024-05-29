@@ -202,9 +202,6 @@ export const DEFAULT_STATE: State = {
 export const DEFAULT_CONFIG: Config = {
   graph: {
     animation: 300,
-    timelineSize: 20,
-    focusTimelineSize: 10,
-    choiceTimelineSize: 10,
     collisionSize: 50,
   },
   viewport: {
@@ -222,6 +219,12 @@ export const DEFAULT_CONFIG: Config = {
     },
   },
   keyTimeout: 800,
+  timeline: {
+    choices: 10,
+    focus: 10,
+    graph: 10,
+    palette: 10,
+  },
 };
 
 export const VERTEX_SHAPES: VertexShape[] = [

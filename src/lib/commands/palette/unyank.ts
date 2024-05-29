@@ -1,3 +1,3 @@
 import { makeUnyankCommand } from "../../register";
 
-export const def = makeUnyankCommand("pallete");
+export const def = makeUnyankCommand("palette");

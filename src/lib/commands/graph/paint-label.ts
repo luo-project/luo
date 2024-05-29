@@ -21,9 +21,9 @@ export const def: CommandDefinition = {
     const focusElement: GraphElement = ctx.graphIndex(graph).any(focus);
 
     if (isVertex(focusElement)) {
-      focusElement.label = state.pallete.defaultLabel;
+      focusElement.label = state.palette.label;
     } else if (isEdge(focusElement)) {
-      focusElement.label = state.pallete.defaultLabel;
+      focusElement.label = state.palette.label;
     }
   },
 };

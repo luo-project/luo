@@ -8,7 +8,7 @@ export function initSidePanel(options: {
 }) {
   const divCommands = select("#commands");
   const divRegisters = select("#registers");
-  const divPalletes = select("#palletes");
+  const divPalette = select("#palettes");
   const divLogs = select("#logs");
   const root: NestedCommand = { categoryName: "", children: [], commands: [] };
 

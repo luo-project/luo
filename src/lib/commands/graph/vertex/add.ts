@@ -8,10 +8,10 @@ export const def: CommandDefinition = {
     const focus = state.focus;
     if (!focus) {
       state.graph.elements.push({
-        ...deepCopy(state.pallete.defaultVertex),
+        ...deepCopy(state.palette.vertex),
         t: "v",
         id: ctx.nextId().toString(),
-        label: deepCopy(state.pallete.defaultLabel),
+        label: deepCopy(state.palette.label),
       });
       return;
     }
@@ -21,36 +21,36 @@ export const def: CommandDefinition = {
       const newEdgeId = ctx.nextId().toString();
       const newVertexId = ctx.nextId().toString();
       state.graph.elements.push({
-        ...deepCopy(state.pallete.defaultEdge),
+        ...deepCopy(state.palette.edge),
         t: "e",
         id: newEdgeId,
         source: focus,
         target: newVertexId,
-        label: deepCopy(state.pallete.defaultLabel),
+        label: deepCopy(state.palette.label),
       });
       state.graph.elements.push({
-        ...deepCopy(state.pallete.defaultVertex),
+        ...deepCopy(state.palette.vertex),
         t: "v",
         id: newVertexId,
-        label: deepCopy(state.pallete.defaultLabel),
+        label: deepCopy(state.palette.label),
       });
     } else if (isEdge(focusElement)) {
       const newVertexId = ctx.nextId().toString();
       const newEdgeId = ctx.nextId().toString();
       state.graph.elements.push({
-        ...deepCopy(state.pallete.defaultEdge),
+        ...deepCopy(state.palette.edge),
         t: "e",
         id: newEdgeId,
         source: newVertexId,
         target: focusElement.target,
-        label: deepCopy(state.pallete.defaultLabel),
+        label: deepCopy(state.palette.label),
       });
       focusElement.target = newVertexId.toString();
       state.graph.elements.push({
-        ...deepCopy(state.pallete.defaultVertex),
+        ...deepCopy(state.palette.vertex),
         t: "v",
         id: newVertexId.toString(),
-        label: deepCopy(state.pallete.defaultLabel),
+        label: deepCopy(state.palette.label),
       });
 
       const focusIndex = state.graph.elements.findIndex((e) => e.id === focusElement.id);

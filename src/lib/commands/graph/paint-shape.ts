@@ -21,7 +21,7 @@ export const def: CommandDefinition = {
     const focusElement: GraphElement = ctx.graphIndex(graph).any(focus);
 
     if (isVertex(focusElement)) {
-      focusElement.shape = state.pallete.defaultVertex.shape;
+      focusElement.shape = state.palette.vertex.shape;
     } else if (isEdge(focusElement)) {
       // TODO: implement edge shape
     }

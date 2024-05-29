@@ -17,8 +17,8 @@ export const def: HookDefinition = {
       pushTimeline(ctx.previousState.choices, state.timelines.choices, true);
     }
 
-    if (!deepEquals(state.pallete, ctx.previousState.pallete)) {
-      pushTimeline(ctx.previousState.pallete, state.timelines.pallete, true);
+    if (!deepEquals(state.palette, ctx.previousState.palette)) {
+      pushTimeline(ctx.previousState.palette, state.timelines.palette, true);
     }
   },
 };

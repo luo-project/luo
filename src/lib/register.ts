@@ -26,9 +26,11 @@ export function makeUnyankCommand(name: keyof State["registers"]): CommandDefini
         message: `Register name for ${name}`,
         length: 1,
       });
-
-      // @ts-ignore
-      state[name] = state.registers[name][key];
+      const register = state.registers[name][key];
+      if (register === undefined) {
+        throw new Error(`register not found: '${name}.${key}'`);
+      }
+      state[name] = register as any;
     },
   };
 }

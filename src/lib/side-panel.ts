@@ -1,6 +1,12 @@
 import type { CommandDefinitionWithId } from "./command";
 import { select } from "./dom";
-import { formatKeys, type IdAndKeys, type Key, type KeybindingData } from "./keybinding";
+import {
+  formatKeys,
+  keysStartsWith,
+  type IdAndKeys,
+  type Key,
+  type KeybindingData,
+} from "./keybinding";
 
 export function initSidePanel(options: {
   commands: CommandDefinitionWithId[];
@@ -47,7 +53,7 @@ export function initSidePanel(options: {
     divLogs.scrollBy({ behavior: "smooth", left: 0, top: 9999999999 });
   };
 
-  const createNestedCommandDiv = (nc: NestedCommand) => {
+  const createNestedCommandDiv = (keys: Key[] | null, nc: NestedCommand) => {
     const container = document.createElement("div");
     container.classList.add("container");
     const category = document.createElement("div");
@@ -56,35 +62,47 @@ export function initSidePanel(options: {
 
     container.append(
       category,
-      ...nc.commands.map((c) => {
-        const row = document.createElement("row");
-        row.classList.add("row");
+      ...nc.commands
+        .filter((c) => {
+          if (!keys) {
+            return true;
+          }
+          if (!c.keys) {
+            return false;
+          }
+          return keysStartsWith(c.keys, keys);
+        })
+        .map((c) => {
+          const row = document.createElement("row");
+          row.classList.add("row");
 
-        const cmd = document.createElement("div");
-        cmd.classList.add("command");
-        cmd.textContent = c.name;
+          const cmd = document.createElement("div");
+          cmd.classList.add("command");
+          cmd.textContent = c.name;
 
-        const key = document.createElement("div");
-        key.classList.add("key");
-        if (c.keys) {
-          key.textContent = formatKeys(c.keys);
-        }
+          const key = document.createElement("div");
+          key.classList.add("key");
+          if (c.keys) {
+            key.textContent = formatKeys(c.keys);
+          }
 
-        row.append(cmd, key);
-        return row;
-      }),
-      ...nc.children.map(createNestedCommandDiv),
+          row.append(cmd, key);
+          return row;
+        }),
+      ...nc.children.map(createNestedCommandDiv.bind(null, keys)),
     );
     return container;
   };
 
   const listAllCommands = () => {
-    divCommands.replaceChildren(createNestedCommandDiv(root));
+    divCommands.replaceChildren(createNestedCommandDiv(null, root));
   };
 
   listAllCommands();
 
-  const onKey = (currentKeys: Key[], possibles: IdAndKeys[]) => {};
+  const onKey = (currentKeys: Key[], possibles: IdAndKeys[]) => {
+    divCommands.replaceChildren(createNestedCommandDiv(currentKeys, root));
+  };
 
   const onMatch = (v: IdAndKeys | null) => {
     listAllCommands();

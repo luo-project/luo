@@ -58,11 +58,13 @@ const keybinding = initKeybinding({
   onEnabled: (enabled) => {
     l.debug("keybinding", enabled ? "enabled" : "disabled");
   },
-  onMatch: (matched) => {
+  onMatch: (matched, keys) => {
     sidePanel.onMatch(matched);
     if (matched) {
-      l.info(`run ${matched.id}: [${formatKeys(matched.keys)}]`);
+      l.info(`[${formatKeys(matched.keys)}]: ${matched.id} `);
       runCommand(matched.id);
+    } else {
+      l.warn(`[${formatKeys(keys)}]: nothing`);
     }
   },
   onWait: (waited) => {

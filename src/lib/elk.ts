@@ -5,9 +5,11 @@ import { logger } from "./log";
 import type { EdgeRenderInfo, GraphRenderInfo, VertexRenderInfo } from "./state";
 import { deepCopy } from "./utils";
 import { initElkSvg, type InputEdge, type InputNode } from "elk-svg";
-
+0;
 const MIN_W = 100;
 const MIN_H = 100;
+const PAD_W = 40;
+const PAD_H = 40;
 const l = logger("elk");
 
 // LayoutOptions from https://github.com/kieler/elkjs/issues/21
@@ -25,7 +27,7 @@ const elk = new ElkConstructor({
     "elk.layered.unnecessaryBendpoints": true,
     "elk.nodeLabels.placement": "H_CENTER V_CENTER INSIDE",
     "spacing.portPort": "100",
-    "nodeSize.constraints": "PORTS  NODE_LABELS MINIMUM_SIZE",
+    "nodeSize.constraints": "PORTS MINIMUM_SIZE",
     "elk.layered.directionCongruency": "ROTATION",
   } as any,
 });
@@ -52,13 +54,20 @@ function convertGraph(g: Graph, cb: <K extends keyof T>(e: T[K], n: K) => void) 
     layoutOptions: {},
   };
 
-  const minSize = `${MIN_W},${MIN_H}`;
   g.elements.forEach((e) => {
     const label = makeLabel(e);
     const labels = label ? [label] : undefined;
     if (e.t === "v") {
-      const width = Math.max(label ? label.width : 0, MIN_W);
-      const height = Math.max(label ? label.height : 0, MIN_H);
+      let width = Math.max(label ? label.width + PAD_W : 0, MIN_W);
+      let height = Math.max(label ? label.height + PAD_H : 0, MIN_H);
+
+      // todo
+      if (e.shape === "diamond") {
+        width *= 1.2;
+        height *= 1.1;
+      }
+
+      const minSize = `${width},${height}`;
       const node: InputNode = {
         id: e.id,
         svg: {

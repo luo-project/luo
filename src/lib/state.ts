@@ -1,11 +1,11 @@
 import type { DeepReadonly } from "ts-essentials";
+import type { Choices } from "./choices";
 import type { CommandDefinitionWithId } from "./command";
 import type { Config } from "./config";
-import type { Focus, Graph, DefaultVertex, DefaultEdge, DefaultLabel } from "./graph";
+import type { Focus, Graph, Label, Vertex } from "./graph";
 import type { GraphIndex } from "./graph-index";
-import type { Timeline } from "./timeline";
-import type { Choices } from "./choices";
 import type { Register } from "./register";
+import type { Timeline } from "./timeline";
 import type { UserInput } from "./user-input";
 
 export type Viewport = {
@@ -14,10 +14,10 @@ export type Viewport = {
   zoom: number;
 };
 
-export type Pallete = {
-  defaultVertex: DefaultVertex;
-  defaultEdge: DefaultEdge;
-  defaultLabel: DefaultLabel;
+export type Palette = {
+  vertex: Pick<Vertex, "shape">;
+  edge: {};
+  label: Pick<Label, "text">;
 };
 /**
  * State is serializable object for load/mutate/save entire application state.
@@ -27,20 +27,20 @@ export type State = {
   focus?: Focus;
   choices: Choices;
   viewport: Viewport;
-  pallete: Pallete;
+  palette: Palette;
 
   registers: {
     focus: Register<Focus>;
     choices: Register<Choices>;
     viewport: Register<Viewport>;
-    pallete: Register<Pallete>;
+    palette: Register<Palette>;
   };
 
   timelines: {
     graph: Timeline<Graph>;
     focus: Timeline<Focus>;
     choices: Timeline<Choices>;
-    pallete: Timeline<Pallete>;
+    palette: Timeline<Palette>;
   };
 };
 

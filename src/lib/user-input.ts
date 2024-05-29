@@ -22,7 +22,7 @@ export function initUserInput(options: { onEnabled: (b: boolean) => void }): Use
   return (userInputOptions) => {
     options.onEnabled(true);
     message.textContent = userInputOptions.message ?? "";
-    container.style.display = "block";
+    container.classList.remove("hidden");
     input.focus();
     const el = useEventListeners(input);
     el.add("blur", () => {
@@ -30,22 +30,33 @@ export function initUserInput(options: { onEnabled: (b: boolean) => void }): Use
     });
     const done = () => {
       el.done();
-      container.style.display = "none";
       input.value = "";
       options.onEnabled(false);
+      container.classList.add("hidden");
     };
     return new Promise((resolve, reject) => {
       el.add("keydown", (e: KeyboardEvent) => {
         if (ignoredKeys.includes(e.key)) {
+          e.preventDefault();
+          e.stopPropagation();
           return;
         }
         if (cancelKeys.includes(e.key)) {
           reject("Cancelled");
           return done();
         }
-        if (doneKeys.includes(e.key) || input.value.length === userInputOptions.length) {
+        if (userInputOptions.length === undefined && doneKeys.includes(e.key)) {
           e.preventDefault();
           e.stopPropagation();
+          resolve(input.value);
+          return done();
+        }
+      });
+      el.add("keyup", (e: KeyboardEvent) => {
+        if (
+          userInputOptions.length !== undefined &&
+          userInputOptions.length === input.value.length
+        ) {
           resolve(input.value);
           return done();
         }

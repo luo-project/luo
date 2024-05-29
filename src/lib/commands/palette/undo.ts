@@ -1,3 +1,3 @@
 import { makeUndoCommand } from "../../timeline";
 
-export const def = makeUndoCommand("pallete");
+export const def = makeUndoCommand("palette");

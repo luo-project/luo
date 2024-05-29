@@ -17,7 +17,7 @@ export function initKeybinding(options: {
   data: KeybindingData;
   allIds: string[];
   timeout: number;
-  onMatch: (matched: IdAndKeys | null) => void;
+  onMatch: (matched: IdAndKeys | null, keys: Key[]) => void;
   onWait: (waited: IdAndKeys) => void;
   onEnabled: (enabled: boolean) => void;
   onKey: (currentKeys: Key[], possibles: IdAndKeys[]) => void;
@@ -38,13 +38,8 @@ export function initKeybinding(options: {
 
   const match = (matched: IdAndKeys | null) => {
     try {
-      options.onMatch(deepCopy(matched));
+      options.onMatch(deepCopy(matched), deepCopy(currentKeys));
     } finally {
-      if (matched) {
-        l.debug("match:", matched.id);
-      } else {
-        l.debug("nothing matched");
-      }
       clearTimeout(waitingTimeout);
       currentKeys.length = 0;
       waiting = null;
@@ -154,7 +149,7 @@ function validateKey(k: Key) {
   }
 }
 
-function keysStartsWith(keys: Key[], prefix: Key[]) {
+export function keysStartsWith(keys: Key[], prefix: Key[]) {
   if (keys.length < prefix.length) {
     return false;
   }

@@ -39,48 +39,52 @@ span {
 
 #graph-box {
   flex: 1;
+  position: relative;
 }
+
 #user-input {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  display: block;
+}
+
+#user-input.hidden {
+  display: none;
 }
 
 #user-input .background {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   background-color: black;
-  opacity: 0.3;
+  opacity: 0.1;
 }
 
-#user-input .container {
-  position: relative;
+#user-input .foreground {
+  position: absolute;
+  top: 10px;
   left: 0;
   right: 0;
-  top: 0;
   bottom: 0;
-  width: 100%;
-  height: 100%;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 30px;
 }
 
 #user-input .message {
   color: black;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 #user-input .input {
-  font-size: 20px;
+  font-size: 16px;
   outline: none;
   border: none;
-  margin: 12px;
-  padding: 12px;
+  padding: 6px;
 }

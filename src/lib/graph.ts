@@ -21,11 +21,7 @@ export type Vertex = GraphElementBase & {
   shape: VertexShape;
 };
 
-export type VertexShape = "rectangle" | "circle" | "ellipse" | "diamond";
-
-export type DefaultVertex = {
-  shape: VertexShape;
-};
+export type VertexShape = "rectangle" | "ellipse" | "diamond";
 
 export type Edge = GraphElementBase & {
   t: "e";
@@ -34,12 +30,6 @@ export type Edge = GraphElementBase & {
 };
 
 export type Label = {
-  text: string;
-};
-
-export type DefaultEdge = {};
-
-export type DefaultLabel = {
   text: string;
 };
 

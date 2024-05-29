@@ -178,15 +178,15 @@ export const DEFAULT_STATE: State = {
     graph: [[], []],
     focus: [[], []],
     choices: [[], []],
-    pallete: [[], []],
+    palette: [[], []],
   },
   viewport: { x: 0, y: 0, zoom: 0.3 },
   focus: "5",
   choices: [],
-  pallete: {
-    defaultVertex: { shape: "rectangle" },
-    defaultEdge: {},
-    defaultLabel: {
+  palette: {
+    vertex: { shape: "rectangle" },
+    edge: {},
+    label: {
       text: "",
     },
   },
@@ -194,7 +194,7 @@ export const DEFAULT_STATE: State = {
     focus: {},
     choices: {},
     viewport: {},
-    pallete: {},
+    palette: {},
   },
 };
 
@@ -223,7 +223,7 @@ export const DEFAULT_CONFIG: Config = {
   keyTimeout: 800,
 };
 
-export const VERTEX_SHAPES: VertexShape[] = ["rectangle", "circle", "ellipse", "diamond"];
+export const VERTEX_SHAPES: VertexShape[] = ["rectangle", "ellipse", "diamond"];
 
 export const DEFAULT_KEYBINDING_Data: KeybindingData = [
   { keys: [{ key: "h" }], id: "focus/vertex/left" },
@@ -249,7 +249,7 @@ export const DEFAULT_KEYBINDING_Data: KeybindingData = [
   { keys: [{ key: "a" }], id: "graph/vertex/add" },
   { keys: [{ key: "s" }], id: "graph/vertex/iterate-shape" },
   { keys: [{ key: "A" }], id: "graph/edge/add" },
-  { keys: [{ key: "Enter", ctrl: true }], id: "pallete/set-label" },
+  { keys: [{ key: "Enter", ctrl: true }], id: "palette/set-label" },
   { keys: [{ key: "z" }, { key: "q" }], id: "viewport/yank" },
   { keys: [{ key: "z" }, { key: "w" }], id: "viewport/unyank" },
   { keys: [{ key: "x" }, { key: "q" }], id: "focus/yank" },
@@ -262,10 +262,10 @@ export const DEFAULT_KEYBINDING_Data: KeybindingData = [
   { keys: [{ key: "c" }, { key: "r" }], id: "choices/redo" },
   { keys: [{ key: "v" }, { key: "e" }], id: "graph/undo" },
   { keys: [{ key: "v" }, { key: "r" }], id: "graph/redo" },
-  { keys: [{ key: "b" }, { key: "q" }], id: "pallete/yank" },
-  { keys: [{ key: "b" }, { key: "w" }], id: "pallete/unyank" },
-  { keys: [{ key: "b" }, { key: "e" }], id: "pallete/undo" },
-  { keys: [{ key: "g" }, { key: "r" }], id: "pallete/redo" },
+  { keys: [{ key: "b" }, { key: "q" }], id: "palette/yank" },
+  { keys: [{ key: "b" }, { key: "w" }], id: "palette/unyank" },
+  { keys: [{ key: "b" }, { key: "e" }], id: "palette/undo" },
+  { keys: [{ key: "g" }, { key: "r" }], id: "palette/redo" },
 ];
 
 export const PROD = import.meta.env.MODE === "production";

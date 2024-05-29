@@ -14,7 +14,7 @@ import { getMaxIdFromState } from "./lib/graph";
 import { loadHooks } from "./lib/hook";
 import { formatKeys, initKeybinding } from "./lib/keybinding";
 import { logger, setOnLog } from "./lib/log";
-import { initSidePanel } from "./lib/side-panel";
+import { initSidePanelCommands } from "./lib/side-panel";
 import type { GlobalContext } from "./lib/state";
 import { initUserInput } from "./lib/user-input";
 import { newCounter } from "./lib/utils";
@@ -48,7 +48,7 @@ const runCommand = initCommandLoop({
   globalContext,
 });
 
-const sidePanel = initSidePanel({ commands: flatCommands, keybindingData });
+const sidePanel = initSidePanelCommands({ commands: flatCommands, keybindingData });
 setOnLog(sidePanel.onLog);
 
 const keybinding = initKeybinding({
@@ -58,11 +58,13 @@ const keybinding = initKeybinding({
   onEnabled: (enabled) => {
     l.debug("keybinding", enabled ? "enabled" : "disabled");
   },
-  onMatch: (matched) => {
+  onMatch: (matched, keys) => {
     sidePanel.onMatch(matched);
     if (matched) {
-      l.info(`run ${matched.id}: [${formatKeys(matched.keys)}]`);
+      l.info(`[${formatKeys(matched.keys)}]: ${matched.id} `);
       runCommand(matched.id);
+    } else {
+      l.warn(`[${formatKeys(keys)}]: nothing`);
     }
   },
   onWait: (waited) => {

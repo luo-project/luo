@@ -241,8 +241,8 @@ export const DEFAULT_KEYBINDING_Data: KeybindingData = [
   { keys: [{ key: "J" }], id: "viewport/pan-down" },
   { keys: [{ key: "K" }], id: "viewport/pan-up" },
   { keys: [{ key: "L" }], id: "viewport/pan-right" },
-  { keys: [{ key: "p" }], id: "viewport/zoom-out" },
-  { keys: [{ key: "P" }], id: "viewport/zoom-in" },
+  { keys: [{ key: ";" }], id: "viewport/zoom-out" },
+  { keys: [{ key: ":" }], id: "viewport/zoom-in" },
   { keys: [{ key: "y" }], id: "focus/vertex/iterate-choices" },
   { keys: [{ key: "Y" }], id: "focus/iterate-subtree" },
   { keys: [{ key: "u" }], id: "focus/edge/target" },
@@ -274,6 +274,8 @@ export const DEFAULT_KEYBINDING_Data: KeybindingData = [
   { keys: [{ key: "b" }, { key: "e" }], id: "palette/undo" },
   { keys: [{ key: "b" }, { key: "r" }], id: "palette/redo" },
   { keys: [{ key: "[" }], id: "palette/vertex/iterate-shape" },
+  { keys: [{ key: "p" }], id: "graph/paint-label" },
+  { keys: [{ key: "P" }], id: "graph/paint-shape" },
 ];
 
 export const PROD = import.meta.env.MODE === "production";

@@ -21,7 +21,12 @@ export type Vertex = GraphElementBase & {
   shape: VertexShape;
 };
 
-export type VertexShape = "rectangle" | "ellipse" | "diamond";
+export type VertexShape =
+  | "rectangle"
+  | "round-rectangle"
+  | "capsule"
+  | "ellipse"
+  | "diamond";
 
 export type Edge = GraphElementBase & {
   t: "e";

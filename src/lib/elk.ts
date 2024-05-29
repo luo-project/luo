@@ -31,6 +31,7 @@ const elk = new ElkConstructor({
     "elk.layered.directionCongruency": "ROTATION",
   } as any,
 });
+
 const elkSvg = initElkSvg({
   container: document.getElementById("svg")!,
   logger: logger("elk-svg"),

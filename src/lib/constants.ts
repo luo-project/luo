@@ -223,7 +223,13 @@ export const DEFAULT_CONFIG: Config = {
   keyTimeout: 800,
 };
 
-export const VERTEX_SHAPES: VertexShape[] = ["rectangle", "ellipse", "diamond"];
+export const VERTEX_SHAPES: VertexShape[] = [
+  "rectangle",
+  "round-rectangle",
+  "capsule",
+  "ellipse",
+  "diamond",
+];
 
 export const DEFAULT_KEYBINDING_Data: KeybindingData = [
   { keys: [{ key: "h" }], id: "focus/vertex/left" },

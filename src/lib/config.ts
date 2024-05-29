@@ -4,9 +4,6 @@ export type Config = {
      * 0=disable
      */
     animation: number;
-    timelineSize: number;
-    focusTimelineSize: number;
-    choiceTimelineSize: number;
     collisionSize: number;
   };
   viewport: {
@@ -27,4 +24,10 @@ export type Config = {
     };
   };
   keyTimeout: number;
+  timeline: {
+    graph: number;
+    focus: number;
+    choices: number;
+    palette: number;
+  };
 };

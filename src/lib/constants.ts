@@ -202,7 +202,7 @@ export const DEFAULT_STATE: State = {
 export const DEFAULT_CONFIG: Config = {
   graph: {
     animation: 300,
-    collisionSize: 50,
+    collisionSize: 60,
   },
   viewport: {
     animation: 200,

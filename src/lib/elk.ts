@@ -6,8 +6,8 @@ import type { EdgeRenderInfo, GraphRenderInfo, VertexRenderInfo } from "./state"
 import { deepCopy } from "./utils";
 import { initElkSvg, type InputEdge, type InputNode } from "elk-svg";
 0;
-const MIN_W = 100;
-const MIN_H = 60;
+const MIN_W = 80;
+const MIN_H = 50;
 const PAD_W = 40;
 const PAD_H = 20;
 const l = logger("elk");

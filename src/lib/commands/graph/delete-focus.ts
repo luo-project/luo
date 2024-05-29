@@ -10,7 +10,6 @@ import { isExistsId } from "../../graph-index";
 import { deepCopy } from "../../utils";
 
 export const def: CommandDefinition = {
-  description: "Delete focus from graph.",
   available(state) {
     if (!state.focus) {
       return "No focus.";

@@ -1,8 +1,6 @@
 import type { CommandDefinition } from "../../command";
 
 export const def: CommandDefinition = {
-  description: "choice all.",
-
   available(state) {
     return true;
   },

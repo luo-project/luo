@@ -2,7 +2,6 @@ import type { CommandDefinition } from "../../command";
 import { isEdge, isVertex } from "../../graph";
 
 export const def: CommandDefinition = {
-  description: "Edit label of the focused element.",
   available(state) {
     if (!state.focus) {
       return "No focus.";
@@ -14,12 +13,12 @@ export const def: CommandDefinition = {
     const focusElement = ctx.graphIndex(state.graph).any(focus);
     if (isVertex(focusElement)) {
       const newLabel = await ctx.userInput({
-        message: "Enter new label for the vertex",
+        message: "vertex.label.text",
       });
       focusElement.label.text = newLabel;
     } else if (isEdge(focusElement)) {
       const newLabel = await ctx.userInput({
-        message: "Enter new label for the edge",
+        message: "edge.label.text",
       });
       focusElement.label.text = newLabel;
     }

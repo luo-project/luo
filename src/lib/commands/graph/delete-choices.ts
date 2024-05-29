@@ -10,7 +10,6 @@ import { isExistsId } from "../../graph-index";
 import { deepCopy } from "../../utils";
 
 export const def: CommandDefinition = {
-  description: "Delete choices from graph.",
   available(state) {
     if (state.choices.length === 0) {
       return "There's no choices to delete.";

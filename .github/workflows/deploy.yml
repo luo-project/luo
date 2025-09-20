@@ -11,7 +11,7 @@ jobs:
       - uses: actions/setup-node@v4
       - run: npm ci
       - run: npm test
-      - run: npm run build
+      - run: npm run build -- --base="/luo/" # for deploying to `https://luo-project.github.io/luo/`
       - uses: actions/upload-pages-artifact@v3
         with:
           path: "dist"
